@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "afb4c2f3-f1cc-414a-afa1-08c7f42e6c5d",
+		"name": "Store APi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6898919"
+	},
+	"item": [
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "delete product",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8001/api/product/delete/506b144b-dfad-4036-9398-f223732225f2",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"product",
+								"delete",
+								"506b144b-dfad-4036-9398-f223732225f2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all product",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8001/api/product/get/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"product",
+								"get",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8001/api/product/get/506b144b-dfad-4036-9398-f223732225f2",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"product",
+								"get",
+								"506b144b-dfad-4036-9398-f223732225f2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_name\": \"{{$randomProductName}}\",\n    \"product_desc\": \"created by prem\",\n    \"product_price\": {{$randomPrice}},\n    \"created_by\": \"50653527-ccd5-482b-b031-0f5113f02eb5\",\n    \"modified_by\": \"50653527-ccd5-482b-b031-0f5113f02eb5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8001/api/product/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"product",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "inventory",
+			"item": [
+				{
+					"name": "add qty",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": \"fcf5ae9a-2e2d-4b2b-9ed3-372a261e36e2\",\n    \"product_qty\": {{$randomInt}},\n    \"created_by\": \"50653527-ccd5-482b-b031-0f5113f02eb5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8002/api/inventory/addqty",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"inventory",
+								"addqty"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get qty",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/api/inventory/getqty/3db915d6-6b26-452e-86ac-8e460962a5be",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"inventory",
+								"getqty",
+								"3db915d6-6b26-452e-86ac-8e460962a5be"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete qty",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/api/inventory/delete/fcf5ae9a-2e2d-4b2b-9ed3-372a261e36e2",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"inventory",
+								"delete",
+								"fcf5ae9a-2e2d-4b2b-9ed3-372a261e36e2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "get order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8003/api/order/get/bde60a57-ec53-47c3-a5fe-f384895c132f",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"order",
+								"get",
+								"bde60a57-ec53-47c3-a5fe-f384895c132f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"products\" : [\n            {\n                \"product_id\": \"9d32da32-bd66-46a1-8b49-41609a8de8b4\",\n                \"product_price\": 407.15,\n                \"product_qty\": 2\n            },\n            {\n                \"product_id\": \"ee7d6acb-0470-4467-8220-38e30c292a29\",\n                \"product_price\": 499.5,\n                \"product_qty\": 2\n            }\n        ],\n    \"created_by\": \"50653527-ccd5-482b-b031-0f5113f02eb5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8003/api/order/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"order",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
