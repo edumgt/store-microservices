@@ -245,6 +245,31 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "refresh actuator",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{portNo}}/actuator/refresh",
+					"host": [
+						"localhost"
+					],
+					"port": "{{portNo}}",
+					"path": [
+						"actuator",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "portNo",
+			"value": "8001"
 		}
 	]
 }
