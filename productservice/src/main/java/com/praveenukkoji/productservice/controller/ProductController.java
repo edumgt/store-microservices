@@ -7,13 +7,17 @@ import com.praveenukkoji.productservice.exception.product.ProductNotFoundExcepti
 import com.praveenukkoji.productservice.exception.product.UnableToCreateProductException;
 import com.praveenukkoji.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+// @RefreshScope only changes property values which are used in service etc. using @Value
+
 @RestController
 @RequestMapping(path = "/api/product")
+@RefreshScope
 public class ProductController {
 
     @Autowired

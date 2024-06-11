@@ -5,13 +5,17 @@ import com.praveenukkoji.orderservice.dto.OrderDetail;
 import com.praveenukkoji.orderservice.exception.OrderDoesNotExistException;
 import com.praveenukkoji.orderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+// @RefreshScope only changes property values which are used in service etc. using @Value
+
 @RestController
 @RequestMapping("api/order/")
+@RefreshScope
 public class OrderController {
 
     @Autowired
