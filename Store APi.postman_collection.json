@@ -112,6 +112,43 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "refresh actuator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8001/actuator/refresh",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"actuator",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8001/actuator",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -188,6 +225,43 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "refresh actuator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/actuator/refresh",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"actuator",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/actuator",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -243,33 +317,67 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "refresh actuator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8003/actuator/refresh",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"actuator",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8003/actuator",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
 				}
 			]
-		},
-		{
-			"name": "refresh actuator",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "localhost:{{portNo}}/actuator/refresh",
-					"host": [
-						"localhost"
-					],
-					"port": "{{portNo}}",
-					"path": [
-						"actuator",
-						"refresh"
-					]
-				}
-			},
-			"response": []
 		}
 	],
-	"variable": [
+	"event": [
 		{
-			"key": "portNo",
-			"value": "8001"
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
