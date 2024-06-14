@@ -29,7 +29,7 @@ public class InventoryController {
         return ResponseEntity.status(200).body(inventoryService.getQty(product_id));
     }
 
-    @DeleteMapping(path = "/delete/{product_id}")
+    @DeleteMapping(path = "/deleteqty/{product_id}")
     public ResponseEntity<Boolean> deleteInventory(@PathVariable UUID product_id) {
         return ResponseEntity.status(200).body(inventoryService.deleteInventory(product_id));
     }
