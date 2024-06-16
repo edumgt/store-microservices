@@ -1,7 +1,7 @@
 # store-microservices
 
 ## requirements
- - java 21
+ - Java 21
  - Apache Maven 3.9.6
  - spring boot 3.3.0
 
