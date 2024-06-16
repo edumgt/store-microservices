@@ -2,7 +2,6 @@ package com.praveenukkoji.inventoryservice.service;
 
 import com.praveenukkoji.inventoryservice.dto.AddQuantityRequest;
 import com.praveenukkoji.inventoryservice.dto.GetQuantityRequest;
-import com.praveenukkoji.inventoryservice.dto.GetQuantityResponse;
 import com.praveenukkoji.inventoryservice.model.Inventory;
 import com.praveenukkoji.inventoryservice.repository.InventoryRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -45,33 +44,38 @@ public class InventoryService {
         return entity.getProduct_qty();
     }
 
-    public List<GetQuantityResponse> getQty(GetQuantityRequest getQuantityRequest) {
+    public Map<UUID, Integer> getQty(GetQuantityRequest getQuantityRequest) {
         List<UUID> product_ids = getQuantityRequest.getProduct_ids();
 
         List<Inventory> queryResult = inventoryRepository.findAllById(product_ids);
 
+        Map<UUID, Integer> productWithQty = new HashMap<>();
+
         if (!queryResult.isEmpty()) {
             log.info("get_qty - quantity fetched of product id's");
 
-            Map<UUID, Integer> productWithQty = new HashMap<>();
             for (Inventory inv : queryResult) {
                 productWithQty.put(inv.getProduct_id(), inv.getProduct_qty());
             }
 
-            List<GetQuantityResponse> response = product_ids.stream().map(id -> GetQuantityResponse.builder()
-                    .product_id(id)
-                    .qty(productWithQty.getOrDefault(id, 0))
-                    .build()).toList();
+            product_ids.forEach(id -> {
+                if (!productWithQty.containsKey(id)) {
+                    productWithQty.put(id, 0);
+                }
+            });
 
-            return response;
+            return productWithQty;
         }
 
         log.info("get_qty - product id's are not in inventory");
 
-        return product_ids.stream().map(id -> GetQuantityResponse.builder()
-                .product_id(id)
-                .qty(0)
-                .build()).toList();
+        product_ids.forEach(id -> {
+            if (!productWithQty.containsKey(id)) {
+                productWithQty.put(id, 0);
+            }
+        });
+
+        return productWithQty;
     }
 
     public Boolean deleteInventory(UUID productId) {
