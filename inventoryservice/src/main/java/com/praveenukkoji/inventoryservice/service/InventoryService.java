@@ -1,6 +1,8 @@
 package com.praveenukkoji.inventoryservice.service;
 
-import com.praveenukkoji.inventoryservice.dto.QuantityAddRequest;
+import com.praveenukkoji.inventoryservice.dto.AddQuantityRequest;
+import com.praveenukkoji.inventoryservice.dto.GetQuantityRequest;
+import com.praveenukkoji.inventoryservice.dto.GetQuantityResponse;
 import com.praveenukkoji.inventoryservice.model.Inventory;
 import com.praveenukkoji.inventoryservice.repository.InventoryRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -18,9 +19,9 @@ public class InventoryService {
     @Autowired
     private InventoryRepository inventoryRepository;
 
-    public Integer addQty(QuantityAddRequest quantityAddRequest) {
+    public Integer addQty(AddQuantityRequest addQuantityRequest) {
 
-        UUID product_id = quantityAddRequest.getProduct_id();
+        UUID product_id = addQuantityRequest.getProduct_id();
 
         Optional<Inventory> queryResult = inventoryRepository.findById(product_id);
 
@@ -28,14 +29,14 @@ public class InventoryService {
 
         if (queryResult.isEmpty()) {
             entity = Inventory.builder()
-                    .product_id(quantityAddRequest.getProduct_id())
-                    .product_qty(quantityAddRequest.getProduct_qty())
+                    .product_id(addQuantityRequest.getProduct_id())
+                    .product_qty(addQuantityRequest.getProduct_qty())
                     .created_on(LocalDate.now())
-                    .created_by(quantityAddRequest.getCreated_by())
+                    .created_by(addQuantityRequest.getCreated_by())
                     .build();
         } else {
             entity = queryResult.get();
-            entity.setProduct_qty(entity.getProduct_qty() + quantityAddRequest.getProduct_qty());
+            entity.setProduct_qty(entity.getProduct_qty() + addQuantityRequest.getProduct_qty());
         }
 
         entity = inventoryRepository.saveAndFlush(entity);
@@ -44,19 +45,33 @@ public class InventoryService {
         return entity.getProduct_qty();
     }
 
-    public Integer getQty(UUID product_id) {
+    public List<GetQuantityResponse> getQty(GetQuantityRequest getQuantityRequest) {
+        List<UUID> product_ids = getQuantityRequest.getProduct_ids();
 
-        Optional<Inventory> queryResult = inventoryRepository.findById(product_id);
+        List<Inventory> queryResult = inventoryRepository.findAllById(product_ids);
 
-        if (queryResult.isPresent()) {
-            log.info("get_qty - quantity fetched of product id = {}", product_id);
+        if (!queryResult.isEmpty()) {
+            log.info("get_qty - quantity fetched of product id's");
 
-            return queryResult.get().getProduct_qty();
+            Map<UUID, Integer> productWithQty = new HashMap<>();
+            for (Inventory inv : queryResult) {
+                productWithQty.put(inv.getProduct_id(), inv.getProduct_qty());
+            }
+
+            List<GetQuantityResponse> response = product_ids.stream().map(id -> GetQuantityResponse.builder()
+                    .product_id(id)
+                    .qty(productWithQty.getOrDefault(id, 0))
+                    .build()).toList();
+
+            return response;
         }
 
-        log.info("get_qty - not in inventory, product id = {}", product_id);
+        log.info("get_qty - product id's are not in inventory");
 
-        return 0;
+        return product_ids.stream().map(id -> GetQuantityResponse.builder()
+                .product_id(id)
+                .qty(0)
+                .build()).toList();
     }
 
     public Boolean deleteInventory(UUID productId) {

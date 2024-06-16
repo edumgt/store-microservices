@@ -11,8 +11,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuantityAddRequest {
-    
+public class AddQuantityRequest {
+
     private UUID product_id;
 
     private Integer product_qty;
