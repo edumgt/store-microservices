@@ -127,10 +127,22 @@ public class ProductService {
         Optional<Product> queryResult = productRepository.findById(product_id);
 
         if (queryResult.isPresent()) {
-            productRepository.deleteById(product_id);
-            log.info("delete_product - product deleted with id = {}", product_id);
+            try {
+                ResponseEntity<Boolean> res = inventoryClient.deleteInventory(product_id);
 
-            return true;
+                if (res.getStatusCode() == HttpStatusCode.valueOf(200) && Boolean.TRUE.equals(res.getBody())) {
+                    productRepository.deleteById(product_id);
+                    log.info("delete_product - product deleted with id = {}", product_id);
+
+                    return true;
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+
+            log.info("delete_product - unable to delete product with id = {}", product_id);
+            return false;
+
         } else {
             throw new ProductNotFoundException("delete_product - product not found");
         }

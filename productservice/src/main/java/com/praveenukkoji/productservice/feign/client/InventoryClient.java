@@ -2,7 +2,9 @@ package com.praveenukkoji.productservice.feign.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -14,4 +16,7 @@ public interface InventoryClient {
 
     @GetMapping(path = "/getqty")
     public ResponseEntity<Map<UUID, Integer>> getQty(@RequestParam List<UUID> product_ids);
+
+    @DeleteMapping(path = "/deleteqty/{product_id}")
+    public ResponseEntity<Boolean> deleteInventory(@PathVariable UUID product_id);
 }
