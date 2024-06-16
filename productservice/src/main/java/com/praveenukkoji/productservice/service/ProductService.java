@@ -3,6 +3,7 @@ package com.praveenukkoji.productservice.service;
 import com.praveenukkoji.productservice.dto.AllProductDetailResponse;
 import com.praveenukkoji.productservice.dto.ProductCreateRequest;
 import com.praveenukkoji.productservice.dto.ProductDetailResponse;
+import com.praveenukkoji.productservice.dto.inventory.AddQuantityRequest;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.UnableToCreateProductException;
 import com.praveenukkoji.productservice.feign.client.InventoryClient;
@@ -56,6 +57,21 @@ public class ProductService {
         try {
             Product queryResult = productRepository.saveAndFlush(entity);
             log.info("create_product - product created successfully with id = {}", queryResult.getProduct_id());
+
+            try {
+                AddQuantityRequest addQuantityRequest = AddQuantityRequest.builder()
+                        .product_id(queryResult.getProduct_id())
+                        .product_qty(0)
+                        .created_by(entity.getCreated_by())
+                        .build();
+
+                ResponseEntity<Integer> res = inventoryClient.addQty(addQuantityRequest);
+                if (res.getStatusCode() != HttpStatusCode.valueOf(201)) {
+                    log.info("Unable to initialize product in inventory");
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
 
             return queryResult.getProduct_id();
         } catch (Exception e) {
