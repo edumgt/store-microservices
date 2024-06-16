@@ -1,7 +1,6 @@
 package com.praveenukkoji.inventoryservice.service;
 
 import com.praveenukkoji.inventoryservice.dto.AddQuantityRequest;
-import com.praveenukkoji.inventoryservice.dto.GetQuantityRequest;
 import com.praveenukkoji.inventoryservice.model.Inventory;
 import com.praveenukkoji.inventoryservice.repository.InventoryRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +43,7 @@ public class InventoryService {
         return entity.getProduct_qty();
     }
 
-    public Map<UUID, Integer> getQty(GetQuantityRequest getQuantityRequest) {
-        List<UUID> product_ids = getQuantityRequest.getProduct_ids();
+    public Map<UUID, Integer> getQty(List<UUID> product_ids) {
 
         List<Inventory> queryResult = inventoryRepository.findAllById(product_ids);
 
