@@ -18,7 +18,6 @@ import java.util.UUID;
 @Builder
 @Table(name = "inventory_entity")
 public class Inventory {
-
     @Id
     private UUID product_id;
 
@@ -26,5 +25,5 @@ public class Inventory {
 
     private LocalDate created_on;
 
-    private UUID created_by;
+    private UUID modified_by;
 }

@@ -1,17 +1,14 @@
-package com.praveenukkoji.inventoryservice.dto;
+package com.praveenukkoji.inventoryservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetQuantityRequest {
-    private List<UUID> product_ids;
+public class InventoryResponse {
+    private String message;
 }

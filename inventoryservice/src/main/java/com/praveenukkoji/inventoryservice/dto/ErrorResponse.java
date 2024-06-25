@@ -5,17 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddQuantityRequest {
+public class ErrorResponse {
+    private String error_type;
 
-    private UUID product_id;
-
-    private Integer product_qty;
-
-    private UUID created_by;
+    private String error_message;
 }
