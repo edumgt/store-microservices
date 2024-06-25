@@ -20,7 +20,6 @@ import java.util.UUID;
 @Table(name = "order_item_entity")
 @IdClass(CompositeKey.class)
 public class OrderItem {
-
     @Id
     private UUID order_id;
 

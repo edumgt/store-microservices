@@ -19,7 +19,6 @@ import java.util.UUID;
 @Builder
 @Table(name = "order_entity")
 public class Order {
-
     @Id
     @GeneratedValue
     private UUID order_id;
@@ -27,6 +26,8 @@ public class Order {
     private Integer total_items;
 
     private Double total_amount;
+
+    private String order_status;
 
     private LocalDate created_on;
 

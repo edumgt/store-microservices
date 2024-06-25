@@ -1,5 +1,6 @@
-package com.praveenukkoji.orderservice.dto;
+package com.praveenukkoji.orderservice.dto.response;
 
+import com.praveenukkoji.orderservice.dto.extra.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderDetail {
-
+public class GetOrderResponse {
     private UUID orderId;
 
     private List<Product> product_list;
@@ -22,6 +22,8 @@ public class OrderDetail {
     private Integer total_items;
 
     private Double total_amount;
+
+    private String order_status;
 
     private LocalDate created_on;
 

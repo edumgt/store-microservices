@@ -1,8 +1,10 @@
 package com.praveenukkoji.orderservice.controller;
 
-import com.praveenukkoji.orderservice.dto.OrderCreateRequest;
-import com.praveenukkoji.orderservice.dto.OrderDetail;
-import com.praveenukkoji.orderservice.exception.OrderDoesNotExistException;
+import com.praveenukkoji.orderservice.dto.request.CreateOrderRequest;
+import com.praveenukkoji.orderservice.dto.response.GetOrderResponse;
+import com.praveenukkoji.orderservice.dto.response.OrderResponse;
+import com.praveenukkoji.orderservice.exception.CreateOrderException;
+import com.praveenukkoji.orderservice.exception.OrderNotFoundException;
 import com.praveenukkoji.orderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -22,13 +24,14 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<UUID> createOrder(@RequestBody OrderCreateRequest orderCreateRequest) {
-        return ResponseEntity.status(201).body(orderService.createOrder(orderCreateRequest));
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest)
+            throws CreateOrderException {
+        return ResponseEntity.status(201).body(orderService.createOrder(createOrderRequest));
     }
 
     @GetMapping(path = "/get/{order_id}")
-    public ResponseEntity<OrderDetail> getOrder(@PathVariable UUID order_id)
-            throws OrderDoesNotExistException {
+    public ResponseEntity<GetOrderResponse> getOrder(@PathVariable UUID order_id)
+            throws OrderNotFoundException {
         return ResponseEntity.status(200).body(orderService.getOrder(order_id));
     }
 }
