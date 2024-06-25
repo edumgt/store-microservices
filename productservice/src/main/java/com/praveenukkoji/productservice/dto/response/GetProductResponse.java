@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto;
+package com.praveenukkoji.productservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +12,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDetailResponse {
-
+public class GetProductResponse {
     private UUID product_id;
 
     private String product_name;

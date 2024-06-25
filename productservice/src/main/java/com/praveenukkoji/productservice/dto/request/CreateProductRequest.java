@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto.inventory;
+package com.praveenukkoji.productservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +11,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddQuantityRequest {
+public class CreateProductRequest {
+    private String product_name;
 
-    private UUID product_id;
+    private String product_desc;
 
-    private Integer product_qty;
+    private Double product_price;
 
     private UUID created_by;
 }

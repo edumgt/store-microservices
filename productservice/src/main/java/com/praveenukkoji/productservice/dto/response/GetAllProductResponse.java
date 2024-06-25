@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto;
+package com.praveenukkoji.productservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AllProductDetailResponse {
+public class GetAllProductResponse {
     private Integer total_products;
-    private List<ProductDetailResponse> product_list;
+
+    private List<GetProductResponse> products;
 }

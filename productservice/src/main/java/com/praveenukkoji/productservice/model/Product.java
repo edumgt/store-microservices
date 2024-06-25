@@ -19,7 +19,6 @@ import java.util.UUID;
 @Builder
 @Table(name = "product_entity")
 public class Product {
-
     @Id
     @GeneratedValue
     private UUID product_id;

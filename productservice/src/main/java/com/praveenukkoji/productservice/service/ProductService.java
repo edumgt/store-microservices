@@ -1,11 +1,11 @@
 package com.praveenukkoji.productservice.service;
 
-import com.praveenukkoji.productservice.dto.AllProductDetailResponse;
-import com.praveenukkoji.productservice.dto.ProductCreateRequest;
-import com.praveenukkoji.productservice.dto.ProductDetailResponse;
-import com.praveenukkoji.productservice.dto.inventory.AddQuantityRequest;
-import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
-import com.praveenukkoji.productservice.exception.product.UnableToCreateProductException;
+import com.praveenukkoji.productservice.dto.request.CreateProductRequest;
+import com.praveenukkoji.productservice.dto.response.GetAllProductResponse;
+import com.praveenukkoji.productservice.dto.response.GetProductResponse;
+import com.praveenukkoji.productservice.dto.response.ProductResponse;
+import com.praveenukkoji.productservice.exception.CreateProductException;
+import com.praveenukkoji.productservice.exception.ProductNotFoundException;
 import com.praveenukkoji.productservice.feign.client.InventoryClient;
 import com.praveenukkoji.productservice.model.Product;
 import com.praveenukkoji.productservice.repository.ProductRepository;
@@ -28,11 +28,13 @@ public class ProductService {
     @Autowired
     private InventoryClient inventoryClient;
 
-    public Map<UUID, Integer> getQty(List<UUID> product_ids) {
+    public Map<UUID, Integer> getQtyOfProducts(List<UUID> product_id) {
         try {
-            ResponseEntity<Map<UUID, Integer>> response = inventoryClient.getQty(product_ids);
+            ResponseEntity<Map<UUID, Integer>> response = inventoryClient.getQty(product_id);
 
             if (response.getStatusCode() == HttpStatusCode.valueOf(200)) {
+                log.info("fetched qty of products");
+
                 return response.getBody();
             }
         } catch (Exception e) {
@@ -42,125 +44,103 @@ public class ProductService {
         return Collections.emptyMap();
     }
 
-    public UUID createProduct(ProductCreateRequest productCreateRequest)
-            throws UnableToCreateProductException {
+    public ProductResponse createProduct(CreateProductRequest createProductRequest)
+            throws CreateProductException {
 
-        Product entity = Product.builder()
-                .product_name(productCreateRequest.getProduct_name())
-                .product_desc(productCreateRequest.getProduct_desc())
-                .product_price(productCreateRequest.getProduct_price())
+        Product product_entity = Product.builder()
+                .product_name(createProductRequest.getProduct_name())
+                .product_desc(createProductRequest.getProduct_desc())
+                .product_price(createProductRequest.getProduct_price())
                 .created_on(LocalDate.now())
-                .created_by(productCreateRequest.getCreated_by())
-                .modified_by(productCreateRequest.getCreated_by())
+                .created_by(createProductRequest.getCreated_by())
+                .modified_by(createProductRequest.getCreated_by())
                 .build();
 
         try {
-            Product queryResult = productRepository.saveAndFlush(entity);
-            log.info("create_product - product created successfully with id = {}", queryResult.getProduct_id());
+            Product queryResult = productRepository.saveAndFlush(product_entity);
 
-            try {
-                AddQuantityRequest addQuantityRequest = AddQuantityRequest.builder()
-                        .product_id(queryResult.getProduct_id())
-                        .product_qty(0)
-                        .created_by(entity.getCreated_by())
-                        .build();
+            log.info("product created successfully with id = {}", queryResult.getProduct_id());
 
-                ResponseEntity<Integer> res = inventoryClient.addQty(addQuantityRequest);
-                if (res.getStatusCode() != HttpStatusCode.valueOf(201)) {
-                    log.info("Unable to initialize product in inventory");
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
-
-            return queryResult.getProduct_id();
+            return ProductResponse.builder()
+                    .message("product created successfully with id = " + queryResult.getProduct_id())
+                    .build();
         } catch (Exception e) {
-            throw new UnableToCreateProductException("create_product - unable to save product");
+            throw new CreateProductException("unable to create product");
         }
     }
 
-    public ProductDetailResponse getProduct(UUID product_id)
+    public GetProductResponse getProduct(UUID product_id)
             throws ProductNotFoundException {
 
         Optional<Product> queryResult = productRepository.findById(product_id);
 
         if (queryResult.isPresent()) {
-            Product entity = queryResult.get();
-            log.info("get_product - product fetched with id = {}", product_id);
+            Product product_entity = queryResult.get();
+
+            log.info("fetched product with id = {}", product_id);
 
             List<UUID> product_id_list = new ArrayList<>();
             product_id_list.add(product_id);
 
-            Map<UUID, Integer> qty = getQty(product_id_list);
+            Map<UUID, Integer> qty = getQtyOfProducts(product_id_list);
 
-            return ProductDetailResponse.builder()
-                    .product_id(entity.getProduct_id())
-                    .product_name(entity.getProduct_name())
-                    .product_desc(entity.getProduct_desc())
-                    .product_price(entity.getProduct_price())
+            return GetProductResponse.builder()
+                    .product_id(product_entity.getProduct_id())
+                    .product_name(product_entity.getProduct_name())
+                    .product_desc(product_entity.getProduct_desc())
+                    .product_price(product_entity.getProduct_price())
                     .product_qty(qty.getOrDefault(product_id, 0))
-                    .created_on(entity.getCreated_on())
-                    .created_by(entity.getCreated_by())
-                    .modified_by(entity.getModified_by())
+                    .created_on(product_entity.getCreated_on())
+                    .created_by(product_entity.getCreated_by())
+                    .modified_by(product_entity.getModified_by())
                     .build();
         } else {
-            throw new ProductNotFoundException("get_product - product not found");
+            throw new ProductNotFoundException("product not found");
         }
     }
 
-    public AllProductDetailResponse getAllProduct() {
+    public GetAllProductResponse getAllProduct() {
 
         List<Product> queryResult = productRepository.findAll();
-        log.info("get_all_product - fetched all products");
 
-        List<UUID> product_id_list = new ArrayList<>();
-        product_id_list = queryResult.stream().map(Product::getProduct_id).toList();
+        log.info("fetched all products");
 
-        Map<UUID, Integer> qty = getQty(product_id_list);
+        List<UUID> product_id_list = queryResult.stream().map(Product::getProduct_id).toList();
 
-        List<ProductDetailResponse> products = queryResult.stream().map(entity -> {
-            return ProductDetailResponse.builder()
-                    .product_id(entity.getProduct_id())
-                    .product_name(entity.getProduct_name())
-                    .product_desc(entity.getProduct_desc())
-                    .product_price(entity.getProduct_price())
-                    .product_qty(qty.getOrDefault(entity.getProduct_id(), 0))
-                    .created_on(entity.getCreated_on())
-                    .created_by(entity.getCreated_by())
-                    .modified_by(entity.getModified_by())
-                    .build();
-        }).toList();
+        Map<UUID, Integer> qty = getQtyOfProducts(product_id_list);
 
-        return AllProductDetailResponse.builder()
+        List<GetProductResponse> products = queryResult.stream().map(entity -> GetProductResponse.builder()
+                .product_id(entity.getProduct_id())
+                .product_name(entity.getProduct_name())
+                .product_desc(entity.getProduct_desc())
+                .product_price(entity.getProduct_price())
+                .product_qty(qty.getOrDefault(entity.getProduct_id(), 0))
+                .created_on(entity.getCreated_on())
+                .created_by(entity.getCreated_by())
+                .modified_by(entity.getModified_by())
+                .build()).toList();
+
+        return GetAllProductResponse.builder()
                 .total_products(products.size())
-                .product_list(products)
+                .products(products)
                 .build();
     }
 
-    public Boolean deleteProduct(UUID product_id)
+    public ProductResponse deleteProduct(UUID product_id)
             throws ProductNotFoundException {
 
         Optional<Product> queryResult = productRepository.findById(product_id);
 
         if (queryResult.isPresent()) {
-            try {
-                ResponseEntity<Boolean> res = inventoryClient.deleteInventory(product_id);
+            productRepository.deleteById(product_id);
 
-                if (res.getStatusCode() == HttpStatusCode.valueOf(200) && Boolean.TRUE.equals(res.getBody())) {
-                    productRepository.deleteById(product_id);
-                    log.info("delete_product - product deleted with id = {}", product_id);
+            log.info("product deleted with id = {}", product_id);
 
-                    return true;
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
-
-            log.info("delete_product - unable to delete product with id = {}", product_id);
-            return false;
-
+            return ProductResponse.builder()
+                    .message("product deleted with id = " + product_id)
+                    .build();
         } else {
-            throw new ProductNotFoundException("delete_product - product not found");
+            throw new ProductNotFoundException("product not found");
         }
     }
 }
