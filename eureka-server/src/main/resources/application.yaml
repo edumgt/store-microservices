@@ -1,0 +1,14 @@
+eureka:
+    instance:
+        hostname: localhost
+    client:
+        fetch-registry: 'false'
+        register-with-eureka: 'false'
+logging:
+    pattern:
+        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'
+spring:
+    application:
+        name: eureka-server
+server:
+    port: '8761'

@@ -1,0 +1,41 @@
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    endpoint:
+        health:
+            show-details: always
+spring:
+    cloud:
+        gateway:
+            routes[2]:
+                uri: lb://ORDER-SERVICE
+                id: order-service
+                predicates[0]: Path=/api/order/**
+            routes[1]:
+                id: product-service
+                uri: lb://PRODUCT-SERVICE
+                predicates[0]: Path=/api/product/**
+            routes[0]:
+                id: user-service
+                predicates[0]: Path=/api/user/**
+                uri: lb://USER-SERVICE
+    boot:
+        admin:
+            client:
+                instance:
+                    service-base-url: http://localhost:8222
+                    name: api-gateway
+                url: http://localhost:9090/
+    application:
+        name: api-gateway
+logging:
+    pattern:
+        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'
+server:
+    port: '8222'
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka
