@@ -12,7 +12,7 @@
     <artifactId>userservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>userservice</name>
-    <description>User Service</description>
+    <description>user service</description>
     <properties>
         <java.version>21</java.version>
         <spring-boot-admin.version>3.3.2</spring-boot-admin.version>
