@@ -21,17 +21,19 @@ import java.util.UUID;
 public class Product {
     @Id
     @GeneratedValue
-    private UUID product_id;
+    private UUID productId;
 
-    private String product_name;
+    private String productName;
 
-    private String product_desc;
+    private String productDesc;
 
-    private Double product_price;
+    private Double productPrice;
 
-    private LocalDate created_on;
+    private Integer productQty;
 
-    private UUID created_by;
+    private LocalDate createdOn;
 
-    private UUID modified_by;
+    private UUID createdBy;
+
+    private UUID modifiedBy;
 }

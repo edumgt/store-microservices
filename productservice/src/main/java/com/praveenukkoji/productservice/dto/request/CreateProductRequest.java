@@ -12,11 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CreateProductRequest {
-    private String product_name;
-
-    private String product_desc;
-
-    private Double product_price;
-
-    private UUID created_by;
+    private String productName;
+    private String productDesc;
+    private Double productPrice;
+    private Integer productQty;
+    private UUID createdBy;
 }

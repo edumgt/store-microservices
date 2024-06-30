@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
 @Slf4j
+@RestControllerAdvice
 public class CustomExceptionHandler {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CreateProductException.class)
-    public ErrorResponse handleCreateProductException(CreateProductException exception) {
+    public ErrorResponse handleException(CreateProductException exception) {
         log.error("CreateProductException - {}", exception.getMessage());
 
         return ErrorResponse.builder()
@@ -26,7 +26,7 @@ public class CustomExceptionHandler {
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ProductNotFoundException.class)
-    public ErrorResponse handleProductNotFoundException(ProductNotFoundException exception) {
+    public ErrorResponse handleException(ProductNotFoundException exception) {
         log.error("ProductNotFoundException - {}", exception.getMessage());
 
         return ErrorResponse.builder()

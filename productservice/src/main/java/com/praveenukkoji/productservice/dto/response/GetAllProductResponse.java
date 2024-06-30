@@ -13,6 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class GetAllProductResponse {
     private Integer total_products;
-
     private List<GetProductResponse> products;
 }

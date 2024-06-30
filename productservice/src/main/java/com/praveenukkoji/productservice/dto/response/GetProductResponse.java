@@ -13,19 +13,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetProductResponse {
-    private UUID product_id;
-
-    private String product_name;
-
-    private String product_desc;
-
-    private Double product_price;
-
-    private Integer product_qty;
-
-    private LocalDate created_on;
-
-    private UUID created_by;
-
-    private UUID modified_by;
+    private UUID productId;
+    private String productName;
+    private String productDesc;
+    private Double productPrice;
+    private Integer productQty;
+    private LocalDate createdOn;
+    private UUID createdBy;
+    private UUID modifiedBy;
 }
