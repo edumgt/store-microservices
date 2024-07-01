@@ -1,15 +1,13 @@
 package com.praveenukkoji.orderservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,15 +19,18 @@ import java.util.UUID;
 public class Order {
     @Id
     @GeneratedValue
-    private UUID order_id;
+    private UUID orderId;
 
-    private Integer total_items;
+    private Integer totalItems;
 
-    private Double total_amount;
+    private Double totalAmount;
 
-    private String order_status;
+    private String orderStatus;
 
-    private LocalDate created_on;
+    private LocalDate createdOn;
 
-    private UUID created_by;
+    private UUID createdBy;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    private List<OrderItem> orderItems;
 }

@@ -1,6 +1,6 @@
 package com.praveenukkoji.orderservice.dto.response;
 
-import com.praveenukkoji.orderservice.dto.extra.Product;
+import com.praveenukkoji.orderservice.dto.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,16 +16,10 @@ import java.util.UUID;
 @Builder
 public class GetOrderResponse {
     private UUID orderId;
-
-    private List<Product> product_list;
-
-    private Integer total_items;
-
-    private Double total_amount;
-
-    private String order_status;
-
-    private LocalDate created_on;
-
-    private UUID created_by;
+    private List<Product> products;
+    private Integer totalItems;
+    private Double totalAmount;
+    private String orderStatus;
+    private LocalDate createdOn;
+    private UUID createdBy;
 }

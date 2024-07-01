@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.dto.extra;
+package com.praveenukkoji.orderservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    private UUID product_id;
-
-    private Double product_price;
-
-    private Integer product_qty;
+    private UUID productId;
+    private Integer productQty;
 }

@@ -1,9 +1,8 @@
 package com.praveenukkoji.orderservice.service;
 
-import com.praveenukkoji.orderservice.dto.extra.Product;
+import com.praveenukkoji.orderservice.dto.Product;
 import com.praveenukkoji.orderservice.dto.request.CreateOrderRequest;
 import com.praveenukkoji.orderservice.dto.response.GetOrderResponse;
-import com.praveenukkoji.orderservice.dto.response.OrderResponse;
 import com.praveenukkoji.orderservice.exception.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.OrderNotFoundException;
 import com.praveenukkoji.orderservice.model.Order;
@@ -19,8 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
 @Slf4j
+@Service
 public class OrderService {
 
     @Autowired
@@ -29,48 +28,43 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    public OrderResponse createOrder(CreateOrderRequest createOrderRequest)
+    public UUID createOrder(CreateOrderRequest createOrderRequest)
             throws CreateOrderException {
+        Integer totalItems = createOrderRequest.getProducts().stream()
+                .mapToInt(Product::getProductQty).sum();
 
-        Integer total_items = createOrderRequest.getProducts().stream().mapToInt(Product::getProduct_qty).sum();
+        Double totalAmount = 0.0;
 
-//        Double total_amount = 0.0;
-        Double total_amount = createOrderRequest.getProducts().stream()
-                .mapToDouble(ele -> ele.getProduct_qty() * ele.getProduct_price()).sum();
-
-        Order order_entity = Order.builder()
-                .total_items(total_items)
-                .total_amount(total_amount)
-                .order_status("PROCESSING")
-                .created_on(LocalDate.now())
-                .created_by(createOrderRequest.getCreated_by())
+        Order newOrder = Order.builder()
+                .orderId(UUID.randomUUID())
+                .totalItems(totalItems)
+                .totalAmount(totalAmount)
+                .orderStatus("PROCESSING")
+                .createdOn(LocalDate.now())
+                .createdBy(createOrderRequest.getCreatedBy())
                 .build();
+
+        List<OrderItem> orderItem_entity = createOrderRequest.getProducts().stream()
+                .map(product -> OrderItem.builder()
+                        .orderItemId(UUID.randomUUID())
+                        .productId(product.getProductId())
+                        .productQty(product.getProductQty())
+                        .order(newOrder)
+                        .build()
+                ).toList();
+
+        newOrder.setOrderItems(orderItem_entity);
 
         UUID order_id = null;
 
         try {
-            Order queryResult = orderRepository.saveAndFlush(order_entity);
+            Order queryResult = orderRepository.saveAndFlush(newOrder);
 
-            order_id = queryResult.getOrder_id();
+            order_id = queryResult.getOrderId();
 
-            log.info("order created with id = {} and in processing", queryResult.getOrder_id());
+            log.info("order created with id = {} and processing", order_id);
 
-            List<OrderItem> orderItem_entity = createOrderRequest.getProducts().stream()
-                    .map(ele -> OrderItem.builder()
-                            .order_id(queryResult.getOrder_id())
-                            .product_id(ele.getProduct_id())
-                            .product_price(ele.getProduct_price())
-                            .product_qty(ele.getProduct_qty())
-                            .build()
-                    ).toList();
-
-            orderItemRepository.saveAll(orderItem_entity);
-
-            log.info("order items saved for order id = {}", order_id);
-
-            return OrderResponse.builder()
-                    .message("order created with id = " + queryResult.getOrder_id() + " and in processing")
-                    .build();
+            return order_id;
 
         } catch (Exception e) {
             if (order_id != null) {
@@ -81,34 +75,30 @@ public class OrderService {
         }
     }
 
-    public GetOrderResponse getOrder(UUID order_id)
+    public GetOrderResponse getOrder(UUID orderId)
             throws OrderNotFoundException {
+        Optional<Order> order = orderRepository.findById(orderId);
 
-        Optional<Order> entity = orderRepository.findById(order_id);
+        if (order.isPresent()) {
+            log.info("order fetched with order id = {}", orderId);
 
-        if (entity.isPresent()) {
-            log.info("order fetched with order id = {}", order_id);
+            List<OrderItem> orderItems = order.get().getOrderItems();
 
-            List<OrderItem> orderItemQueryResult = orderItemRepository.findAllById(order_id);
-
-            List<Product> products = orderItemQueryResult.stream().map(ele ->
+            List<Product> products = orderItems.stream().map(ele ->
                     Product.builder()
-                            .product_id(ele.getProduct_id())
-                            .product_price(ele.getProduct_price())
-                            .product_qty(ele.getProduct_qty())
+                            .productId(ele.getProductId())
+                            .productQty(ele.getProductQty())
                             .build()
             ).toList();
 
-            log.info("order items fetched of order id = {}", order_id);
-
             return GetOrderResponse.builder()
-                    .orderId(order_id)
-                    .product_list(products)
-                    .total_items(entity.get().getTotal_items())
-                    .total_amount(entity.get().getTotal_amount())
-                    .order_status(entity.get().getOrder_status())
-                    .created_on(entity.get().getCreated_on())
-                    .created_by(entity.get().getCreated_by())
+                    .orderId(orderId)
+                    .products(products)
+                    .totalItems(order.get().getTotalItems())
+                    .totalAmount(order.get().getTotalAmount())
+                    .orderStatus(order.get().getOrderStatus())
+                    .createdOn(order.get().getCreatedOn())
+                    .createdBy(order.get().getCreatedBy())
                     .build();
         } else {
             throw new OrderNotFoundException("order not found");

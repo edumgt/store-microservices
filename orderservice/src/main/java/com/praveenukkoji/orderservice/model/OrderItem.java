@@ -1,10 +1,6 @@
 package com.praveenukkoji.orderservice.model;
 
-import com.praveenukkoji.orderservice.model.key.CompositeKey;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,15 +14,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "order_item_entity")
-@IdClass(CompositeKey.class)
 public class OrderItem {
     @Id
-    private UUID order_id;
+    @GeneratedValue
+    private UUID orderItemId;
 
-    @Id
-    private UUID product_id;
+    private UUID productId;
 
-    private Double product_price;
+    private Integer productQty;
 
-    private Integer product_qty;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 }

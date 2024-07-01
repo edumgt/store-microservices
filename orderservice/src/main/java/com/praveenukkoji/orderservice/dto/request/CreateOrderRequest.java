@@ -1,6 +1,6 @@
 package com.praveenukkoji.orderservice.dto.request;
 
-import com.praveenukkoji.orderservice.dto.extra.Product;
+import com.praveenukkoji.orderservice.dto.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +15,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CreateOrderRequest {
     private List<Product> products;
-
-    private UUID created_by;
+    private UUID createdBy;
 }
