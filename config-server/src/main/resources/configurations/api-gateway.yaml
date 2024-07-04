@@ -12,14 +12,14 @@ spring:
             routes[2]:
                 uri: lb://ORDER-SERVICE
                 id: order-service
-                predicates[0]: Path=/api/order/**
+                predicates[0]: Path=/api/v1/orders/**
             routes[1]:
                 id: product-service
                 uri: lb://PRODUCT-SERVICE
-                predicates[0]: Path=/api/product/**
+                predicates[0]: Path=/api/v1/products/**
             routes[0]:
                 id: user-service
-                predicates[0]: Path=/api/user/**
+                predicates[0]: Path=/api/v1/users/**
                 uri: lb://USER-SERVICE
     boot:
         admin:
