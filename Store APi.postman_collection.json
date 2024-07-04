@@ -10,48 +10,6 @@
 			"name": "product",
 			"item": [
 				{
-					"name": "Extras",
-					"item": [
-						{
-							"name": "refresh actuator",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "localhost:8001/actuator/refresh",
-									"host": [
-										"localhost"
-									],
-									"port": "8001",
-									"path": [
-										"actuator",
-										"refresh"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "actuator",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8001/actuator",
-									"host": [
-										"localhost"
-									],
-									"port": "8001",
-									"path": [
-										"actuator"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "delete product",
 					"request": {
 						"auth": {
@@ -60,16 +18,17 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8222/api/product/delete/8674aca9-a4f2-4f6c-9978-0e4e1828730a",
+							"raw": "localhost:8222/api/v1/products/delete/e003de5c-9928-4c4b-8e7b-3e0fccf65e13",
 							"host": [
 								"localhost"
 							],
 							"port": "8222",
 							"path": [
 								"api",
-								"product",
+								"v1",
+								"products",
 								"delete",
-								"8674aca9-a4f2-4f6c-9978-0e4e1828730a"
+								"e003de5c-9928-4c4b-8e7b-3e0fccf65e13"
 							]
 						}
 					},
@@ -84,14 +43,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8222/api/product/get/all",
+							"raw": "localhost:8222/api/v1/products/get/all",
 							"host": [
 								"localhost"
 							],
 							"port": "8222",
 							"path": [
 								"api",
-								"product",
+								"v1",
+								"products",
 								"get",
 								"all"
 							]
@@ -108,16 +68,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8222/api/product/get/733c73e5-0f4c-46e4-a736-33dc9909402e",
+							"raw": "localhost:8222/api/v1/products/get/e003de5c-9928-4c4b-8e7b-3e0fccf65e13",
 							"host": [
 								"localhost"
 							],
 							"port": "8222",
 							"path": [
 								"api",
-								"product",
+								"v1",
+								"products",
 								"get",
-								"733c73e5-0f4c-46e4-a736-33dc9909402e"
+								"e003de5c-9928-4c4b-8e7b-3e0fccf65e13"
 							]
 						}
 					},
@@ -133,7 +94,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"product_name\": \"product 2\",\n    \"product_desc\": \"prem\",\n    \"product_price\": {{$randomPrice}},\n    \"created_by\": \"50653527-ccd5-482b-b031-0f5113f02eb8\",\n    \"modified_by\": \"50653527-ccd5-482b-b031-0f5113f02eb8\"\n}\n\n// 50653527-ccd5-482b-b031-0f5113f02eb7 - praveen\n// 50653527-ccd5-482b-b031-0f5113f02eb8 - prem",
+							"raw": "{\n    \"productName\": \"{{$randomProductName}}\",\n    \"productDesc\": \"{{$randomLoremSentence}}\",\n    \"productPrice\": {{$randomPrice}},\n    \"productQty\": {{$randomInt}},\n    \"createdBy\": \"72301c91-466a-4704-980b-4cd33a982162\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -141,158 +102,16 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8222/api/product/create",
+							"raw": "localhost:8222/api/v1/products/create",
 							"host": [
 								"localhost"
 							],
 							"port": "8222",
 							"path": [
 								"api",
-								"product",
+								"v1",
+								"products",
 								"create"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "inventory",
-			"item": [
-				{
-					"name": "Extras",
-					"item": [
-						{
-							"name": "refresh actuator",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "localhost:8002/actuator/refresh",
-									"host": [
-										"localhost"
-									],
-									"port": "8002",
-									"path": [
-										"actuator",
-										"refresh"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "actuator",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8002/actuator",
-									"host": [
-										"localhost"
-									],
-									"port": "8002",
-									"path": [
-										"actuator"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "create qty",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"product_id\": \"733c73e5-0f4c-46e4-a736-33dc9909402e\",\n    \"product_qty\": {{$randomInt}},\n    \"modified_by\": \"50653527-ccd5-482b-b031-0f5113f02eb7\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8222/api/inventory/create",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"inventory",
-								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get qty",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"product_ids\": []\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8222/api/inventory/get?product_id=733c73e5-0f4c-46e4-a736-33dc99094020&product_id=733c73e5-0f4c-46e4-a736-33dc99094022&product_id=733c73e5-0f4c-46e4-a736-33dc99094010",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"inventory",
-								"get"
-							],
-							"query": [
-								{
-									"key": "product_id",
-									"value": "733c73e5-0f4c-46e4-a736-33dc99094020"
-								},
-								{
-									"key": "product_id",
-									"value": "733c73e5-0f4c-46e4-a736-33dc99094022"
-								},
-								{
-									"key": "product_id",
-									"value": "733c73e5-0f4c-46e4-a736-33dc99094010"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete qty",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:8002/api/inventory/delete/733c73e5-0f4c-46e4-a736-33dc9909402e",
-							"host": [
-								"localhost"
-							],
-							"port": "8002",
-							"path": [
-								"api",
-								"inventory",
-								"delete",
-								"733c73e5-0f4c-46e4-a736-33dc9909402e"
 							]
 						}
 					},
@@ -304,63 +123,22 @@
 			"name": "order",
 			"item": [
 				{
-					"name": "Extras",
-					"item": [
-						{
-							"name": "refresh actuator",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "localhost:8003/actuator/refresh",
-									"host": [
-										"localhost"
-									],
-									"port": "8003",
-									"path": [
-										"actuator",
-										"refresh"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "actuator",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8003/actuator",
-									"host": [
-										"localhost"
-									],
-									"port": "8003",
-									"path": [
-										"actuator"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "get order",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8003/api/order/get/5905c83b-2911-4e4d-a411-04f0c2a2e5d4",
+							"raw": "localhost:8002/api/v1/orders/get/5a15f5d8-d38a-43e4-917b-6a75b00d9ec0",
 							"host": [
 								"localhost"
 							],
-							"port": "8003",
+							"port": "8002",
 							"path": [
 								"api",
-								"order",
+								"v1",
+								"orders",
 								"get",
-								"5905c83b-2911-4e4d-a411-04f0c2a2e5d4"
+								"5a15f5d8-d38a-43e4-917b-6a75b00d9ec0"
 							]
 						}
 					},
@@ -373,7 +151,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"products\" : [\n            {\n                \"product_id\": \"aae87a9f-0224-4c1a-933e-4c30876027b3\",\n                \"product_price\": 2.0,\n                \"product_qty\": 1234\n            }\n        ],\n    \"created_by\": \"50653527-ccd5-482b-b031-0f5113f02eb8\"\n}",
+							"raw": "{\n    \"products\" : [\n            {\n                \"productId\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"productQty\": 2\n            },\n            {\n                \"productId\": \"874e7f6f-1f5a-4008-acfb-e0722acd8e8e\",\n                \"productQty\": 4\n            }\n        ],\n    \"createdBy\": \"72301c91-466a-4704-980b-4cd33a982162\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -381,15 +159,95 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8003/api/order/create",
+							"raw": "localhost:8002/api/v1/orders/create",
 							"host": [
 								"localhost"
 							],
-							"port": "8003",
+							"port": "8002",
 							"path": [
 								"api",
-								"order",
+								"v1",
+								"orders",
 								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"demo\",\n    \"password\": \"demo\",\n    \"email\": \"demo@domain.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8222/api/v1/users/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8222",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8222/api/v1/users/get/d9cd1129-dd88-4815-8fad-9bb7c99c392a",
+							"host": [
+								"localhost"
+							],
+							"port": "8222",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"get",
+								"d9cd1129-dd88-4815-8fad-9bb7c99c392a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8222/api/v1/users/delete/d9cd1129-dd88-4815-8fad-9bb7c99c392a",
+							"host": [
+								"localhost"
+							],
+							"port": "8222",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"delete",
+								"d9cd1129-dd88-4815-8fad-9bb7c99c392a"
 							]
 						}
 					},
