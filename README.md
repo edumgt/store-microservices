@@ -60,25 +60,25 @@ Technologies used in the project:
 ### Product Service
 
 ```http
-  POST /api/product/create
+  POST /api/v1/products/create
 ```
 
 - creates product.
 
 ```http
-  GET /api/product/get/{productId}
+  GET /api/v1/products/get/{productId}
 ```
 
 - retrieves the details for passed productId.
 
 ```http
-  GET /api/product/get/all
+  GET /api/v1/products/get/all
 ```
 
 - retrieves the details of all products.
 
 ```http
-  DELETE /api/product/delete/{productId}
+  DELETE /api/v1/products/delete/{productId}
 ```
 
 - deletes the product having productId same as passed productId.
@@ -86,13 +86,13 @@ Technologies used in the project:
 ### Order Service
 
 ```http
-  POST /api/order/create
+  POST /api/v1/orders/create
 ```
 
 - creates order with products belonging to order.
 
 ```http
-  GET /api/order/get/{orderId}
+  GET /api/v1/orders/get/{orderId}
 ```
 
 - retrieves the order details for passed orderId.
@@ -100,19 +100,19 @@ Technologies used in the project:
 ### User Service
 
 ```http
-  POST /api/user/create
+  POST /api/v1/users/create
 ```
 
 - creates user.
 
 ```http
-  GET /api/user/get/{userId}
+  GET /api/v1/users/get/{userId}
 ```
 
 - retrieves the user details for passed userId.
 
 ```http
-  DELETE /api/user/delete/{userId}
+  DELETE /api/v1/users/delete/{userId}
 ```
 
 - deletes the user having userId same as passed userId.
