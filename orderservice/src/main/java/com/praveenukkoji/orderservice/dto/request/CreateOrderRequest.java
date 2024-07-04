@@ -1,6 +1,5 @@
 package com.praveenukkoji.orderservice.dto.request;
 
-import com.praveenukkoji.orderservice.dto.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

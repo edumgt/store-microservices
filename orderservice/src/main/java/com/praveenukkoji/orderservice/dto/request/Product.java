@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.dto;
+package com.praveenukkoji.orderservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/order/")
+@RequestMapping("api/v1/orders/")
 public class OrderController {
 
     @Autowired

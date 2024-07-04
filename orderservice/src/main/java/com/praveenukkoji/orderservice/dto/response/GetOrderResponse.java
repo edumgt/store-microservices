@@ -1,6 +1,6 @@
 package com.praveenukkoji.orderservice.dto.response;
 
-import com.praveenukkoji.orderservice.dto.Product;
+import com.praveenukkoji.orderservice.dto.request.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

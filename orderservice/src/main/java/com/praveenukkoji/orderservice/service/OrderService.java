@@ -1,7 +1,7 @@
 package com.praveenukkoji.orderservice.service;
 
-import com.praveenukkoji.orderservice.dto.Product;
 import com.praveenukkoji.orderservice.dto.request.CreateOrderRequest;
+import com.praveenukkoji.orderservice.dto.request.Product;
 import com.praveenukkoji.orderservice.dto.response.GetOrderResponse;
 import com.praveenukkoji.orderservice.exception.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.OrderNotFoundException;
@@ -33,6 +33,7 @@ public class OrderService {
         Integer totalItems = createOrderRequest.getProducts().stream()
                 .mapToInt(Product::getProductQty).sum();
 
+        // TODO: fetch and calculate the amount from product service
         Double totalAmount = 0.0;
 
         Order newOrder = Order.builder()
@@ -55,22 +56,16 @@ public class OrderService {
 
         newOrder.setOrderItems(orderItem_entity);
 
-        UUID order_id = null;
-
         try {
             Order queryResult = orderRepository.saveAndFlush(newOrder);
 
-            order_id = queryResult.getOrderId();
+            // TODO: reduce the value of quantity of product in product db
 
-            log.info("order created with id = {} and processing", order_id);
+            log.info("order created with id = {} and processing", queryResult.getOrderId());
 
-            return order_id;
+            return queryResult.getOrderId();
 
         } catch (Exception e) {
-            if (order_id != null) {
-                orderRepository.deleteById(order_id);
-            }
-
             throw new CreateOrderException("unable to create order");
         }
     }
