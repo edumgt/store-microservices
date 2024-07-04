@@ -32,7 +32,6 @@ public class ProductService {
                 .productQty(createProductRequest.getProductQty())
                 .createdOn(LocalDate.now())
                 .createdBy(createProductRequest.getCreatedBy())
-                .modifiedBy(createProductRequest.getCreatedBy())
                 .build();
 
         try {
