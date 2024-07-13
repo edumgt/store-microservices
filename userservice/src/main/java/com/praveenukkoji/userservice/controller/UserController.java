@@ -1,6 +1,6 @@
 package com.praveenukkoji.userservice.controller;
 
-import com.praveenukkoji.userservice.dto.Response;
+import com.praveenukkoji.userservice.dto.UserResponse;
 import com.praveenukkoji.userservice.dto.request.CreateUserRequest;
 import com.praveenukkoji.userservice.exception.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.UserCreateException;
@@ -36,10 +36,10 @@ public class UserController {
             return ResponseEntity.status(200).body(userService.getUser(id));
         }
 
-        Response response = Response.builder()
+        UserResponse userResponse = UserResponse.builder()
                 .message("user id is empty")
                 .build();
-        return ResponseEntity.status(400).body(response);
+        return ResponseEntity.status(400).body(userResponse);
     }
 
     @PatchMapping(path = "/update")
@@ -52,10 +52,10 @@ public class UserController {
             return ResponseEntity.status(200).body(userService.updateUser(id, updates));
         }
 
-        Response response = Response.builder()
+        UserResponse userResponse = UserResponse.builder()
                 .message("user id is empty")
                 .build();
-        return ResponseEntity.status(400).body(response);
+        return ResponseEntity.status(400).body(userResponse);
     }
 
     @DeleteMapping(path = "/delete")
@@ -66,9 +66,9 @@ public class UserController {
             return ResponseEntity.status(200).body(userService.deleteUser(id));
         }
 
-        Response response = Response.builder()
+        UserResponse userResponse = UserResponse.builder()
                 .message("user id is empty")
                 .build();
-        return ResponseEntity.status(400).body(response);
+        return ResponseEntity.status(400).body(userResponse);
     }
 }

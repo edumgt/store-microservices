@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Response {
+public class UserResponse {
     private GetUserResponse payload;
     private String message;
 }

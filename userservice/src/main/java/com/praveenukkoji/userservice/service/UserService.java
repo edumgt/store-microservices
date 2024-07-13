@@ -1,6 +1,6 @@
 package com.praveenukkoji.userservice.service;
 
-import com.praveenukkoji.userservice.dto.Response;
+import com.praveenukkoji.userservice.dto.UserResponse;
 import com.praveenukkoji.userservice.dto.request.CreateUserRequest;
 import com.praveenukkoji.userservice.dto.response.GetUserResponse;
 import com.praveenukkoji.userservice.exception.RoleNotFoundException;
@@ -32,7 +32,7 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public Response createUser(CreateUserRequest createUserRequest)
+    public UserResponse createUser(CreateUserRequest createUserRequest)
             throws UserCreateException, RoleNotFoundException {
 
         Optional<Role> role = roleRepository.findById(createUserRequest.getRoleId());
@@ -61,7 +61,7 @@ public class UserService {
                         .roleType(user.getRole().getRoleType())
                         .build();
 
-                return Response.builder()
+                return UserResponse.builder()
                         .payload(payload)
                         .message("user created with userId = " + user.getUserId())
                         .build();
@@ -73,7 +73,7 @@ public class UserService {
         }
     }
 
-    public Response getUser(UUID userId)
+    public UserResponse getUser(UUID userId)
             throws UserNotFoundException {
 
         Optional<User> userEntity = userRepository.findById(userId);
@@ -90,7 +90,7 @@ public class UserService {
                     .roleType(user.getRole().getRoleType())
                     .build();
 
-            return Response.builder()
+            return UserResponse.builder()
                     .payload(payload)
                     .message("")
                     .build();
@@ -100,7 +100,7 @@ public class UserService {
     }
 
     @Transactional
-    public Response updateUser(UUID userId, Map<String, String> updates)
+    public UserResponse updateUser(UUID userId, Map<String, String> updates)
             throws UserNotFoundException, UserUpdateException {
 
         Optional<User> user = userRepository.findById(userId);
@@ -146,7 +146,7 @@ public class UserService {
                         .roleType(updatedUser.getRole().getRoleType())
                         .build();
 
-                return Response.builder()
+                return UserResponse.builder()
                         .payload(payload)
                         .message("user updated with userId = " + userId)
                         .build();
@@ -159,7 +159,7 @@ public class UserService {
         }
     }
 
-    public Response deleteUser(UUID userId)
+    public UserResponse deleteUser(UUID userId)
             throws UserNotFoundException {
 
         Optional<User> user = userRepository.findById(userId);
@@ -168,7 +168,7 @@ public class UserService {
             userRepository.deleteById(userId);
             log.info("user deleted with userId = {}", userId);
 
-            return Response.builder()
+            return UserResponse.builder()
                     .message("user deleted with userId = " + userId)
                     .build();
         }
