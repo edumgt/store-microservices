@@ -1,15 +1,13 @@
 package com.praveenukkoji.userservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -23,15 +21,22 @@ public class User {
     @GeneratedValue
     private UUID userId;
 
-    private String username;
+    private String userFullname;
+    private String userUsername;
+    private String userEmail;
+    private String userPassword;
 
-    private String email;
+    private Boolean isActive;
 
-    private String password;
-
-    private LocalDate createdOn;
-
+    private LocalDateTime createdOn;
     private UUID createdBy;
-
+    private LocalDateTime modifiedOn;
     private UUID modifiedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Address> addressList;
 }

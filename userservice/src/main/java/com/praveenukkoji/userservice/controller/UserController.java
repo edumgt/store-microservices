@@ -1,14 +1,18 @@
 package com.praveenukkoji.userservice.controller;
 
+import com.praveenukkoji.userservice.dto.Response;
 import com.praveenukkoji.userservice.dto.request.CreateUserRequest;
-import com.praveenukkoji.userservice.dto.response.GetUserResponse;
-import com.praveenukkoji.userservice.exception.CreateUserException;
+import com.praveenukkoji.userservice.exception.RoleNotFoundException;
+import com.praveenukkoji.userservice.exception.UserCreateException;
 import com.praveenukkoji.userservice.exception.UserNotFoundException;
+import com.praveenukkoji.userservice.exception.UserUpdateException;
 import com.praveenukkoji.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -19,20 +23,52 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<UUID> createUser(@RequestBody CreateUserRequest createUserRequest)
-            throws CreateUserException {
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest)
+            throws UserCreateException, RoleNotFoundException {
         return ResponseEntity.status(201).body(userService.createUser(createUserRequest));
     }
 
-    @GetMapping(path = "/get/{userId}")
-    public ResponseEntity<GetUserResponse> getUser(@PathVariable UUID userId)
+    @GetMapping(path = "/get")
+    public ResponseEntity<?> getUser(@RequestParam(defaultValue = "", name = "userId") String userId)
             throws UserNotFoundException {
-        return ResponseEntity.status(200).body(userService.getUser(userId));
+        if (!Objects.equals(userId, "")) {
+            UUID id = UUID.fromString(userId);
+            return ResponseEntity.status(200).body(userService.getUser(id));
+        }
+
+        Response response = Response.builder()
+                .message("user id is empty")
+                .build();
+        return ResponseEntity.status(400).body(response);
     }
 
-    @DeleteMapping(path = "/delete/{userId}")
-    public ResponseEntity<UUID> deleteUser(@PathVariable UUID userId)
+    @PatchMapping(path = "/update")
+    public ResponseEntity<?> updateUser(
+            @RequestParam(defaultValue = "", name = "userId") String userId,
+            @RequestBody Map<String, String> updates
+    ) throws UserNotFoundException, UserUpdateException {
+        if (!Objects.equals(userId, "")) {
+            UUID id = UUID.fromString(userId);
+            return ResponseEntity.status(200).body(userService.updateUser(id, updates));
+        }
+
+        Response response = Response.builder()
+                .message("user id is empty")
+                .build();
+        return ResponseEntity.status(400).body(response);
+    }
+
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<?> deleteUser(@RequestParam(defaultValue = "", name = "userId") String userId)
             throws UserNotFoundException {
-        return ResponseEntity.status(200).body(userService.deleteUser(userId));
+        if (!Objects.equals(userId, "")) {
+            UUID id = UUID.fromString(userId);
+            return ResponseEntity.status(200).body(userService.deleteUser(id));
+        }
+
+        Response response = Response.builder()
+                .message("user id is empty")
+                .build();
+        return ResponseEntity.status(400).body(response);
     }
 }
