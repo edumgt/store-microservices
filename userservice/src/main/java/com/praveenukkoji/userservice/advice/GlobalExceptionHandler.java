@@ -65,4 +65,15 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(404).body(response);
     }
+
+    @ExceptionHandler(AddressUpdateException.class)
+    public ResponseEntity<?> handleException(AddressUpdateException exception) {
+        log.error("AddressUpdateException - {}", exception.getMessage());
+
+        Response response = Response.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(404).body(response);
+    }
 }
