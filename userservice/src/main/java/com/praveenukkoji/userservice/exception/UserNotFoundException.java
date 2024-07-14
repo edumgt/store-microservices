@@ -1,7 +1,7 @@
 package com.praveenukkoji.userservice.exception;
 
 public class UserNotFoundException extends Exception {
-    public UserNotFoundException(String message) {
-        super(message);
+    public UserNotFoundException() {
+        super("user not found");
     }
 }

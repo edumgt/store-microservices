@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.dto;
+package com.praveenukkoji.userservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddressResponse {
-    private String message;
+public class UpdateRoleRequest {
+    private String roleType;
 }
