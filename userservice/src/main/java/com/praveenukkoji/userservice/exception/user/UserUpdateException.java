@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.exception;
+package com.praveenukkoji.userservice.exception.user;
 
 public class UserUpdateException extends Exception {
     public UserUpdateException() {

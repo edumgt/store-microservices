@@ -1,7 +1,12 @@
 package com.praveenukkoji.userservice.advice;
 
 import com.praveenukkoji.userservice.dto.Response;
-import com.praveenukkoji.userservice.exception.*;
+import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
+import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
+import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
+import com.praveenukkoji.userservice.exception.user.UserCreateException;
+import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
+import com.praveenukkoji.userservice.exception.user.UserUpdateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

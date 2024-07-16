@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.exception;
+package com.praveenukkoji.userservice.exception.user;
 
 public class UserNotFoundException extends Exception {
     public UserNotFoundException() {

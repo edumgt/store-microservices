@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.dto.request;
+package com.praveenukkoji.userservice.dto.request.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UpdateRoleRequest {
-    private String roleType;
+    private String type;
 }

@@ -1,15 +1,17 @@
-package com.praveenukkoji.userservice.dto.request;
+package com.praveenukkoji.userservice.dto.response.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginUserRequest {
-    private String email;
-    private String password;
+public class RoleResponse {
+    private UUID roleId;
+    private String type;
 }

@@ -1,6 +1,7 @@
-package com.praveenukkoji.userservice.dto.response;
+package com.praveenukkoji.userservice.dto.response.user;
 
 import com.praveenukkoji.userservice.model.Address;
+import com.praveenukkoji.userservice.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +14,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetUserResponse {
+public class UserResponse {
     private UUID userId;
     private String fullname;
     private String username;
     private String email;
-    private String roleType;
+    private Boolean isActive;
+    private Role role;
     private List<Address> addressList;
 }

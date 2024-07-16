@@ -1,12 +1,12 @@
 package com.praveenukkoji.userservice.controller;
 
 import com.praveenukkoji.userservice.dto.Response;
-import com.praveenukkoji.userservice.dto.request.CreateUserRequest;
-import com.praveenukkoji.userservice.dto.request.LoginUserRequest;
-import com.praveenukkoji.userservice.exception.RoleNotFoundException;
-import com.praveenukkoji.userservice.exception.UserCreateException;
-import com.praveenukkoji.userservice.exception.UserNotFoundException;
-import com.praveenukkoji.userservice.exception.UserUpdateException;
+import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
+import com.praveenukkoji.userservice.dto.request.user.LoginUserRequest;
+import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
+import com.praveenukkoji.userservice.exception.user.UserCreateException;
+import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
+import com.praveenukkoji.userservice.exception.user.UserUpdateException;
 import com.praveenukkoji.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

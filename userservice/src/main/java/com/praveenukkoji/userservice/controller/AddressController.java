@@ -1,10 +1,10 @@
 package com.praveenukkoji.userservice.controller;
 
 import com.praveenukkoji.userservice.dto.Response;
-import com.praveenukkoji.userservice.exception.AddressNotFoundException;
-import com.praveenukkoji.userservice.exception.AddressUpdateException;
-import com.praveenukkoji.userservice.exception.UserNotFoundException;
-import com.praveenukkoji.userservice.model.Address;
+import com.praveenukkoji.userservice.dto.request.address.AddAddressRequest;
+import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
+import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
+import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +24,11 @@ public class AddressController {
     @PostMapping(path = "/add")
     public ResponseEntity<?> addAddress(
             @RequestParam(defaultValue = "", name = "userId") String userId,
-            @RequestBody Address address
+            @RequestBody AddAddressRequest addAddressRequest
     ) throws UserNotFoundException {
         if (!Objects.equals(userId, "")) {
             UUID id = UUID.fromString(userId);
-            return ResponseEntity.status(201).body(addressService.addAddress(id, address));
+            return ResponseEntity.status(201).body(addressService.addAddress(id, addAddressRequest));
         }
 
         Response response = Response.builder()
@@ -53,7 +53,7 @@ public class AddressController {
     }
 
     @PatchMapping(path = "/update")
-    public ResponseEntity<?> updateUser(
+    public ResponseEntity<?> updateAddress(
             @RequestParam(defaultValue = "", name = "addressId") String addressId,
             @RequestBody Map<String, String> updates
     ) throws AddressNotFoundException, AddressUpdateException {
@@ -64,6 +64,30 @@ public class AddressController {
 
         Response response = Response.builder()
                 .message("address id is empty")
+                .build();
+        return ResponseEntity.status(400).body(response);
+    }
+
+    @PatchMapping(path = "/set-default")
+    public ResponseEntity<?> setAddressDefault(
+            @RequestParam(defaultValue = "", name = "userId") String userId,
+            @RequestParam(defaultValue = "", name = "addressId") String addressId
+    ) throws UserNotFoundException, AddressNotFoundException, AddressUpdateException {
+        if (!Objects.equals(userId, "")) {
+            if (!Objects.equals(addressId, "")) {
+                UUID uId = UUID.fromString(userId);
+                UUID aId = UUID.fromString(addressId);
+                return ResponseEntity.status(200).body(addressService.setAddressDefault(uId, aId));
+            }
+
+            Response response = Response.builder()
+                    .message("address id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
+        }
+
+        Response response = Response.builder()
+                .message("user id is empty")
                 .build();
         return ResponseEntity.status(400).body(response);
     }

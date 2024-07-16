@@ -24,7 +24,7 @@ public class Address {
     private String addressCountry;
     private String addressState;
     private String addressCity;
-    private String addressPincode;
+    private Integer addressPincode;
 
     private Boolean isDefault;
 
