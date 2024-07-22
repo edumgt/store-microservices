@@ -4,7 +4,9 @@ import com.praveenukkoji.userservice.dto.Response;
 import com.praveenukkoji.userservice.dto.request.role.CreateRoleRequest;
 import com.praveenukkoji.userservice.dto.request.role.UpdateRoleRequest;
 import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
+import com.praveenukkoji.userservice.exception.role.RoleCreateException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
+import com.praveenukkoji.userservice.exception.role.RoleUpdateException;
 import com.praveenukkoji.userservice.model.Role;
 import com.praveenukkoji.userservice.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +21,26 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public RoleResponse createRole(CreateRoleRequest createRoleRequest) {
-        Role role = Role.builder()
+    public RoleResponse createRole(CreateRoleRequest createRoleRequest)
+            throws RoleCreateException {
+        Role newRole = Role.builder()
                 .roleType(createRoleRequest.getType().toUpperCase())
                 .build();
 
-        role = roleRepository.saveAndFlush(role);
+        try {
+            Role role = roleRepository.saveAndFlush(newRole);
 
-        return RoleResponse.builder()
-                .roleId(role.getRoleId())
-                .type(role.getRoleType())
-                .build();
+            return RoleResponse.builder()
+                    .roleId(role.getRoleId())
+                    .type(role.getRoleType())
+                    .build();
+        } catch (Exception e) {
+            throw new RoleCreateException();
+        }
     }
 
-    public String getRoleType(UUID roleId) throws RoleNotFoundException {
+    public String getRoleType(UUID roleId)
+            throws RoleNotFoundException {
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent())
@@ -42,26 +50,30 @@ public class RoleService {
     }
 
     public RoleResponse updateRole(UUID roleId, UpdateRoleRequest updateRoleRequest)
-            throws RoleNotFoundException {
+            throws RoleNotFoundException, RoleUpdateException {
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {
-            Role updatedRole = role.get();
 
-            updatedRole.setRoleType(updateRoleRequest.getType().toUpperCase());
+            try {
+                role.get().setRoleType(updateRoleRequest.getType().toUpperCase());
 
-            updatedRole = roleRepository.saveAndFlush(updatedRole);
+                Role updatedRole = roleRepository.saveAndFlush(role.get());
 
-            return RoleResponse.builder()
-                    .roleId(updatedRole.getRoleId())
-                    .type(updatedRole.getRoleType())
-                    .build();
+                return RoleResponse.builder()
+                        .roleId(updatedRole.getRoleId())
+                        .type(updatedRole.getRoleType())
+                        .build();
+            } catch (Exception e) {
+                throw new RoleUpdateException();
+            }
         }
 
         throw new RoleNotFoundException();
     }
 
-    public Object deleteRole(UUID roleId) throws RoleNotFoundException {
+    public Object deleteRole(UUID roleId)
+            throws RoleNotFoundException {
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {

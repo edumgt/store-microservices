@@ -12,6 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CreateCategoryRequest {
-    private String categoryName;
+    private String name;
     private UUID createdBy;
 }

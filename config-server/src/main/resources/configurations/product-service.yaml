@@ -23,10 +23,10 @@ spring:
     application:
         name: product-service
     datasource:
-        password: ${db_password}
+        password: postgres
         driver-class-name: org.postgresql.Driver
-        username: ${db_username}
-        url: jdbc:postgresql://localhost:5432/${db_name}
+        username: praveenukkoji
+        url: jdbc:postgresql://localhost:5432/store
 logging:
     pattern:
         console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'

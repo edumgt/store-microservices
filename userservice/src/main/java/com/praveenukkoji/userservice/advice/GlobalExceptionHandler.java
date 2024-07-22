@@ -1,9 +1,12 @@
 package com.praveenukkoji.userservice.advice;
 
 import com.praveenukkoji.userservice.dto.Response;
+import com.praveenukkoji.userservice.exception.address.AddressCreateException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
+import com.praveenukkoji.userservice.exception.role.RoleCreateException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
+import com.praveenukkoji.userservice.exception.role.RoleUpdateException;
 import com.praveenukkoji.userservice.exception.user.UserCreateException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.exception.user.UserUpdateException;
@@ -49,9 +52,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(response);
     }
 
-    @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<?> handleException(RoleNotFoundException exception) {
-        log.error("RoleNotFoundException - {}", exception.getMessage());
+    @ExceptionHandler(AddressCreateException.class)
+    public ResponseEntity<?> handleException(AddressCreateException exception) {
+        log.error("AddressCreateException - {}", exception.getMessage());
 
         Response response = Response.builder()
                 .message(exception.getMessage())
@@ -74,6 +77,39 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AddressUpdateException.class)
     public ResponseEntity<?> handleException(AddressUpdateException exception) {
         log.error("AddressUpdateException - {}", exception.getMessage());
+
+        Response response = Response.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<?> handleException(RoleNotFoundException exception) {
+        log.error("RoleNotFoundException - {}", exception.getMessage());
+
+        Response response = Response.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @ExceptionHandler(RoleCreateException.class)
+    public ResponseEntity<?> handleException(RoleCreateException exception) {
+        log.error("RoleCreateException - {}", exception.getMessage());
+
+        Response response = Response.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @ExceptionHandler(RoleUpdateException.class)
+    public ResponseEntity<?> handleException(RoleUpdateException exception) {
+        log.error("RoleUpdateException - {}", exception.getMessage());
 
         Response response = Response.builder()
                 .message(exception.getMessage())

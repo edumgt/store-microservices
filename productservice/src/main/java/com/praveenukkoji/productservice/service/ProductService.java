@@ -37,15 +37,13 @@ public class ProductService {
         try {
             Product product = productRepository.saveAndFlush(newProduct);
 
-            ProductResponse response = ProductResponse.builder()
+            return ProductResponse.builder()
                     .productId(product.getProductId())
                     .productName(product.getProductName())
                     .productDescription(product.getProductDescription())
                     .productPrice(product.getProductPrice())
                     .productQuantity(product.getProductQuantity())
                     .build();
-
-            return response;
         } catch (Exception e) {
             throw new CreateProductException();
         }
@@ -57,15 +55,13 @@ public class ProductService {
 
         if (product.isPresent()) {
 
-            ProductResponse response = ProductResponse.builder()
+            return ProductResponse.builder()
                     .productId(product.get().getProductId())
                     .productName(product.get().getProductName())
                     .productDescription(product.get().getProductDescription())
                     .productPrice(product.get().getProductPrice())
                     .productQuantity(product.get().getProductQuantity())
                     .build();
-
-            return response;
         }
 
         throw new ProductNotFoundException();
@@ -74,7 +70,7 @@ public class ProductService {
     public List<ProductResponse> getAllProduct() {
         List<Product> productList = productRepository.findAll();
 
-        List<ProductResponse> productResponseList = productList.stream()
+        return productList.stream()
                 .map(product -> {
                     return ProductResponse.builder()
                             .productId(product.getProductId())
@@ -85,8 +81,6 @@ public class ProductService {
                             .build();
                 })
                 .toList();
-
-        return productResponseList;
     }
 
     public Response deleteProduct(UUID productId)
@@ -96,11 +90,9 @@ public class ProductService {
         if (product.isPresent()) {
             productRepository.deleteById(productId);
 
-            Response response = Response.builder()
+            return Response.builder()
                     .message("product deleted with productId = " + productId)
                     .build();
-
-            return response;
         }
 
         throw new ProductNotFoundException();

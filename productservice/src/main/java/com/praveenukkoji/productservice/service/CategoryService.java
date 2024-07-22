@@ -28,7 +28,7 @@ public class CategoryService {
             throws CreateCategoryException {
 
         Category newCategory = Category.builder()
-                .categoryName(createCategoryRequest.getCategoryName())
+                .categoryName(createCategoryRequest.getName())
                 .createdBy(createCategoryRequest.getCreatedBy())
                 .createdOn(LocalDateTime.now())
                 .build();
@@ -36,12 +36,10 @@ public class CategoryService {
         try {
             Category category = categoryRepository.saveAndFlush(newCategory);
 
-            CategoryResponse response = CategoryResponse.builder()
+            return CategoryResponse.builder()
                     .categoryId(category.getCategoryId())
-                    .categoryName(category.getCategoryName())
+                    .name(category.getCategoryName())
                     .build();
-
-            return response;
         } catch (Exception e) {
             throw new CreateCategoryException();
         }
@@ -50,16 +48,14 @@ public class CategoryService {
     public List<CategoryResponse> getAllCategory() {
         List<Category> categoryList = categoryRepository.findAll();
 
-        List<CategoryResponse> categoryResponseList = categoryList.stream()
+        return categoryList.stream()
                 .map(category -> {
                     return CategoryResponse.builder()
                             .categoryId(category.getCategoryId())
-                            .categoryName(category.getCategoryName())
+                            .name(category.getCategoryName())
                             .build();
                 })
                 .toList();
-
-        return categoryResponseList;
     }
 
     @Transactional
@@ -68,7 +64,7 @@ public class CategoryService {
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
-            String categoryName = updateCategoryRequest.getCategoryName();
+            String categoryName = updateCategoryRequest.getName();
             UUID modifiedBy = updateCategoryRequest.getModifiedBy();
 
             try {
@@ -79,12 +75,10 @@ public class CategoryService {
 
                     Category updatedCategory = categoryRepository.saveAndFlush(category.get());
 
-                    CategoryResponse response = CategoryResponse.builder()
+                    return CategoryResponse.builder()
                             .categoryId(updatedCategory.getCategoryId())
-                            .categoryName(updatedCategory.getCategoryName())
+                            .name(updatedCategory.getCategoryName())
                             .build();
-
-                    return response;
                 }
 
                 throw new CategoryUpdateException();
@@ -103,11 +97,9 @@ public class CategoryService {
         if (category.isPresent()) {
             categoryRepository.deleteById(categoryId);
 
-            Response response = Response.builder()
+            return Response.builder()
                     .message("category deleted with categoryId = " + categoryId)
                     .build();
-
-            return response;
         }
 
         throw new CategoryNotFoundException();

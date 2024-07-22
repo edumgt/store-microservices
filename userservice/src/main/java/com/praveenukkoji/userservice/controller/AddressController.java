@@ -2,6 +2,7 @@ package com.praveenukkoji.userservice.controller;
 
 import com.praveenukkoji.userservice.dto.Response;
 import com.praveenukkoji.userservice.dto.request.address.AddAddressRequest;
+import com.praveenukkoji.userservice.exception.address.AddressCreateException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
@@ -25,31 +26,31 @@ public class AddressController {
     public ResponseEntity<?> addAddress(
             @RequestParam(defaultValue = "", name = "userId") String userId,
             @RequestBody AddAddressRequest addAddressRequest
-    ) throws UserNotFoundException {
-        if (!Objects.equals(userId, "")) {
-            UUID id = UUID.fromString(userId);
-            return ResponseEntity.status(201).body(addressService.addAddress(id, addAddressRequest));
+    ) throws UserNotFoundException, AddressCreateException {
+        if (Objects.equals(userId, "")) {
+            Response response = Response.builder()
+                    .message("user id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("user id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(201).body(addressService.addAddress(id, addAddressRequest));
     }
 
     @GetMapping(path = "/get")
     public ResponseEntity<?> getAddress(
             @RequestParam(defaultValue = "", name = "userId") String userId
     ) throws UserNotFoundException {
-        if (!Objects.equals(userId, "")) {
-            UUID id = UUID.fromString(userId);
-            return ResponseEntity.status(200).body(addressService.getAddress(id));
+        if (Objects.equals(userId, "")) {
+            Response response = Response.builder()
+                    .message("user id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("user id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(200).body(addressService.getAddress(id));
     }
 
     @PatchMapping(path = "/update")
@@ -57,15 +58,16 @@ public class AddressController {
             @RequestParam(defaultValue = "", name = "addressId") String addressId,
             @RequestBody Map<String, String> updates
     ) throws AddressNotFoundException, AddressUpdateException {
-        if (!Objects.equals(addressId, "")) {
-            UUID id = UUID.fromString(addressId);
-            return ResponseEntity.status(200).body(addressService.updateAddress(id, updates));
+
+        if (Objects.equals(addressId, "")) {
+            Response response = Response.builder()
+                    .message("address id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("address id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID id = UUID.fromString(addressId);
+        return ResponseEntity.status(200).body(addressService.updateAddress(id, updates));
     }
 
     @PatchMapping(path = "/set-default")
@@ -73,37 +75,38 @@ public class AddressController {
             @RequestParam(defaultValue = "", name = "userId") String userId,
             @RequestParam(defaultValue = "", name = "addressId") String addressId
     ) throws UserNotFoundException, AddressNotFoundException, AddressUpdateException {
-        if (!Objects.equals(userId, "")) {
-            if (!Objects.equals(addressId, "")) {
-                UUID uId = UUID.fromString(userId);
-                UUID aId = UUID.fromString(addressId);
-                return ResponseEntity.status(200).body(addressService.setAddressDefault(uId, aId));
-            }
 
+        if (Objects.equals(userId, "")) {
+            Response response = Response.builder()
+                    .message("user id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
+        }
+
+        if (Objects.equals(addressId, "")) {
             Response response = Response.builder()
                     .message("address id is empty")
                     .build();
             return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("user id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID uId = UUID.fromString(userId);
+        UUID aId = UUID.fromString(addressId);
+        return ResponseEntity.status(200).body(addressService.setAddressDefault(uId, aId));
     }
 
     @DeleteMapping(path = "/delete")
     public ResponseEntity<?> deleteAddress(
             @RequestParam(defaultValue = "", name = "addressId") String addressId
     ) throws AddressNotFoundException {
-        if (!Objects.equals(addressId, "")) {
-            UUID id = UUID.fromString(addressId);
-            return ResponseEntity.status(200).body(addressService.deleteAddress(id));
+        if (Objects.equals(addressId, "")) {
+            Response response = Response.builder()
+                    .message("address id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("address id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID id = UUID.fromString(addressId);
+        return ResponseEntity.status(200).body(addressService.deleteAddress(id));
     }
 }

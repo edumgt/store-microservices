@@ -19,5 +19,4 @@ public class AddressResponse {
     private String city;
     private Integer pincode;
     private Boolean isDefault;
-    private UUID userId;
 }

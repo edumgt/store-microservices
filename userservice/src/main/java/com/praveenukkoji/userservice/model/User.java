@@ -19,7 +19,6 @@ import java.util.UUID;
 @Table(name = "user_entity")
 public class User {
     @Id
-    @GeneratedValue
     private UUID userId;
 
     private String userFullname;

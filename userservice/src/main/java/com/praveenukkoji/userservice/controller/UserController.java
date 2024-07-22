@@ -34,15 +34,16 @@ public class UserController {
     public ResponseEntity<?> getUser(
             @RequestParam(defaultValue = "", name = "userId") String userId
     ) throws UserNotFoundException {
-        if (!Objects.equals(userId, "")) {
-            UUID id = UUID.fromString(userId);
-            return ResponseEntity.status(200).body(userService.getUser(id));
+
+        if (Objects.equals(userId, "")) {
+            Response response = Response.builder()
+                    .message("user id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("user id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(200).body(userService.getUser(id));
     }
 
     @PatchMapping(path = "/update")
@@ -50,30 +51,30 @@ public class UserController {
             @RequestParam(defaultValue = "", name = "userId") String userId,
             @RequestBody Map<String, String> updates
     ) throws UserNotFoundException, UserUpdateException {
-        if (!Objects.equals(userId, "")) {
-            UUID id = UUID.fromString(userId);
-            return ResponseEntity.status(200).body(userService.updateUser(id, updates));
+        if (Objects.equals(userId, "")) {
+            Response response = Response.builder()
+                    .message("user id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("user id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(200).body(userService.updateUser(id, updates));
     }
 
     @DeleteMapping(path = "/delete")
     public ResponseEntity<?> deleteUser(
             @RequestParam(defaultValue = "", name = "userId") String userId
     ) throws UserNotFoundException {
-        if (!Objects.equals(userId, "")) {
-            UUID id = UUID.fromString(userId);
-            return ResponseEntity.status(200).body(userService.deleteUser(id));
+        if (Objects.equals(userId, "")) {
+            Response response = Response.builder()
+                    .message("user id is empty")
+                    .build();
+            return ResponseEntity.status(400).body(response);
         }
 
-        Response response = Response.builder()
-                .message("user id is empty")
-                .build();
-        return ResponseEntity.status(400).body(response);
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(200).body(userService.deleteUser(id));
     }
 
     @PostMapping(path = "/login")

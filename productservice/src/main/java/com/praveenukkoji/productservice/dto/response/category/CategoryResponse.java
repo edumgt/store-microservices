@@ -13,5 +13,5 @@ import java.util.UUID;
 @Builder
 public class CategoryResponse {
     private UUID categoryId;
-    private String categoryName;
+    private String name;
 }

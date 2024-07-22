@@ -40,20 +40,22 @@ public class UserService {
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {
-            User user = User.builder()
+            UUID newUserId = UUID.randomUUID();
+
+            User newUser = User.builder()
+                    .userId(newUserId)
                     .userFullname(createUserRequest.getFullname())
                     .userUsername(createUserRequest.getUsername())
                     .userPassword(createUserRequest.getPassword())
                     .userEmail(createUserRequest.getEmail())
                     .isActive(true)
                     .createdOn(LocalDateTime.now())
+                    .createdBy(newUserId)
                     .role(role.get())
                     .build();
 
             try {
-                user = userRepository.saveAndFlush(user);
-
-                log.info("user created with userId = {}", user.getUserId());
+                User user = userRepository.saveAndFlush(newUser);
 
                 return UserResponse.builder()
                         .userId(user.getUserId())
@@ -66,27 +68,25 @@ public class UserService {
             } catch (Exception e) {
                 throw new UserCreateException();
             }
-        } else {
-            throw new RoleNotFoundException();
         }
+
+        throw new RoleNotFoundException();
     }
 
-    public UserResponse getUser(UUID userId) throws UserNotFoundException {
+    public UserResponse getUser(UUID userId)
+            throws UserNotFoundException {
 
-        Optional<User> userEntity = userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
 
-        if (userEntity.isPresent()) {
-            User user = userEntity.get();
-            log.info("user fetched with userId = {}", userId);
+        if (user.isPresent()) {
 
             return UserResponse.builder()
-                    .userId(user.getUserId())
-                    .fullname(user.getUserFullname())
-                    .username(user.getUserUsername())
-                    .email(user.getUserEmail())
-                    .isActive(user.getIsActive())
-                    .role(user.getRole())
-                    .addressList(user.getAddressList())
+                    .userId(user.get().getUserId())
+                    .fullname(user.get().getUserFullname())
+                    .username(user.get().getUserUsername())
+                    .email(user.get().getUserEmail())
+                    .isActive(user.get().getIsActive())
+                    .role(user.get().getRole())
                     .build();
         }
 
@@ -99,7 +99,7 @@ public class UserService {
 
         Optional<User> user = userRepository.findById(userId);
 
-        // fields that can be updated fullname, username, email, password
+        // only fields that can be updated are: fullname, username, email, password
         if (user.isPresent()) {
 
             for (Map.Entry<String, String> entry : updates.entrySet()) {
@@ -131,8 +131,7 @@ public class UserService {
                 user.get().setModifiedOn(LocalDateTime.now());
                 user.get().setModifiedBy(user.get().getUserId());
 
-                User updatedUser = user.get();
-                updatedUser = userRepository.saveAndFlush(updatedUser);
+                User updatedUser = userRepository.saveAndFlush(user.get());
 
                 return UserResponse.builder()
                         .userId(updatedUser.getUserId())
@@ -141,24 +140,22 @@ public class UserService {
                         .email(updatedUser.getUserEmail())
                         .isActive(updatedUser.getIsActive())
                         .role(updatedUser.getRole())
-                        .addressList(updatedUser.getAddressList())
                         .build();
             } catch (Exception e) {
                 throw new UserUpdateException();
             }
-
-        } else {
-            throw new UserNotFoundException();
         }
+
+        throw new UserNotFoundException();
     }
 
-    public Response deleteUser(UUID userId) throws UserNotFoundException {
+    public Response deleteUser(UUID userId)
+            throws UserNotFoundException {
 
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
             userRepository.deleteById(userId);
-            log.info("user deleted with userId = {}", userId);
 
             return Response.builder()
                     .message("user deleted with userId = " + userId)
@@ -168,16 +165,17 @@ public class UserService {
         throw new UserNotFoundException();
     }
 
-    public String getUserId(LoginUserRequest loginUserRequest) throws UserNotFoundException {
-        String email = loginUserRequest.getEmail();
+    public String getUserId(LoginUserRequest loginUserRequest)
+            throws UserNotFoundException {
+        String username = loginUserRequest.getUsername();
         String password = loginUserRequest.getPassword();
 
-        Optional<UUID> userId = userRepository.findByEmailAndPassword(email, password);
+        Optional<UUID> userId = userRepository.findByUsernameAndPassword(username, password);
 
         if (userId.isPresent()) {
             return userId.get().toString();
-        } else {
-            throw new UserNotFoundException();
         }
+
+        throw new UserNotFoundException();
     }
 }
