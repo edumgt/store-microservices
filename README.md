@@ -36,7 +36,7 @@ Technologies used in the project:
         1. gatewayservice (port : 8222)
         2. userservice (port : 8000)
         3. productservice (port : 8001)
-        4. order service (port : 8002)
+        4. orderservice (port : 8002)
 
 ## Things TODO
 
