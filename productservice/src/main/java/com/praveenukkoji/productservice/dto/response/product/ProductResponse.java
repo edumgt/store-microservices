@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto.request;
+package com.praveenukkoji.productservice.dto.response.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CreateProductRequest {
+public class ProductResponse {
+    private UUID productId;
     private String productName;
-    private String productDesc;
+    private String productDescription;
     private Double productPrice;
-    private Integer productQty;
-    private UUID createdBy;
+    private Integer productQuantity;
 }

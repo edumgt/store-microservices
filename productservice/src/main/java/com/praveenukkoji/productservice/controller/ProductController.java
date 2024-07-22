@@ -1,15 +1,15 @@
 package com.praveenukkoji.productservice.controller;
 
-import com.praveenukkoji.productservice.dto.request.CreateProductRequest;
-import com.praveenukkoji.productservice.dto.response.GetAllProductResponse;
-import com.praveenukkoji.productservice.dto.response.GetProductResponse;
-import com.praveenukkoji.productservice.exception.CreateProductException;
-import com.praveenukkoji.productservice.exception.ProductNotFoundException;
+import com.praveenukkoji.productservice.dto.Response;
+import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
+import com.praveenukkoji.productservice.exception.product.CreateProductException;
+import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -20,25 +20,47 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<UUID> createProduct(@RequestBody CreateProductRequest createProductRequest)
+    public ResponseEntity<?> createProduct(@RequestBody CreateProductRequest createProductRequest)
             throws CreateProductException {
         return ResponseEntity.status(201).body(productService.createProduct(createProductRequest));
     }
 
-    @GetMapping(path = "/get/{productId}")
-    public ResponseEntity<GetProductResponse> getProduct(@PathVariable UUID productId)
+    @GetMapping(path = "/get")
+    public ResponseEntity<?> getProduct(
+            @RequestParam(defaultValue = "", name = "productId") String productId)
             throws ProductNotFoundException {
-        return ResponseEntity.status(200).body(productService.getProduct(productId));
+
+        if (Objects.equals(productId, "")) {
+            Response response = Response.builder()
+                    .message("product id is empty")
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        UUID id = UUID.fromString(productId);
+        return ResponseEntity.status(200).body(productService.getProduct(id));
     }
 
     @GetMapping(path = "/get/all")
-    public ResponseEntity<GetAllProductResponse> getAllProduct() {
+    public ResponseEntity<?> getAllProduct() {
         return ResponseEntity.status(200).body(productService.getAllProduct());
     }
 
-    @DeleteMapping(path = "/delete/{productId}")
-    public ResponseEntity<UUID> deleteProduct(@PathVariable UUID productId)
-            throws ProductNotFoundException {
-        return ResponseEntity.status(200).body(productService.deleteProduct(productId));
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<?> deleteProduct(
+            @RequestParam(defaultValue = "", name = "productId") String productId
+    ) throws ProductNotFoundException {
+
+        if (Objects.equals(productId, "")) {
+            Response response = Response.builder()
+                    .message("product id is empty")
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        UUID id = UUID.fromString(productId);
+        return ResponseEntity.status(200).body(productService.deleteProduct(id));
     }
 }

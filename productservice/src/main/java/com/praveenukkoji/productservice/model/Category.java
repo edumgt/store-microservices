@@ -15,26 +15,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "product_entity")
-public class Product {
+@Table(name = "category_entity")
+public class Category {
     @Id
     @GeneratedValue
-    private UUID productId;
+    private UUID categoryId;
 
-    private String productName;
-    private String productDescription;
-    private Double productPrice;
-    private Integer productQuantity;
+    private String categoryName;
 
     private LocalDateTime createdOn;
     private UUID createdBy;
     private LocalDateTime modifiedOn;
     private UUID modifiedBy;
 
-    @ManyToMany
-    @JoinTable(
-            name = "category_product_relation_entity",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<Category> category;
+    @ManyToMany(mappedBy = "category")
+    private List<Product> productList;
 }

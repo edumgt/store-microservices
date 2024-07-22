@@ -1,17 +1,17 @@
 package com.praveenukkoji.productservice.service;
 
-import com.praveenukkoji.productservice.dto.request.CreateProductRequest;
-import com.praveenukkoji.productservice.dto.response.GetAllProductResponse;
-import com.praveenukkoji.productservice.dto.response.GetProductResponse;
-import com.praveenukkoji.productservice.exception.CreateProductException;
-import com.praveenukkoji.productservice.exception.ProductNotFoundException;
+import com.praveenukkoji.productservice.dto.Response;
+import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
+import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
+import com.praveenukkoji.productservice.exception.product.CreateProductException;
+import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.model.Product;
 import com.praveenukkoji.productservice.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,81 +23,86 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public UUID createProduct(CreateProductRequest createProductRequest)
+    public ProductResponse createProduct(CreateProductRequest createProductRequest)
             throws CreateProductException {
         Product newProduct = Product.builder()
                 .productName(createProductRequest.getProductName())
-                .productDesc(createProductRequest.getProductDesc())
+                .productDescription(createProductRequest.getProductDescription())
                 .productPrice(createProductRequest.getProductPrice())
-                .productQty(createProductRequest.getProductQty())
-                .createdOn(LocalDate.now())
+                .productQuantity(createProductRequest.getProductQuantity())
+                .createdOn(LocalDateTime.now())
                 .createdBy(createProductRequest.getCreatedBy())
                 .build();
 
         try {
             Product product = productRepository.saveAndFlush(newProduct);
-            log.info("product created with id = {}", product.getProductId());
-            return product.getProductId();
-        } catch (Exception e) {
-            throw new CreateProductException("unable to create product");
-        }
-    }
 
-    public GetProductResponse getProduct(UUID productId)
-            throws ProductNotFoundException {
-        Optional<Product> queryResult = productRepository.findById(productId);
-
-        if (queryResult.isPresent()) {
-            Product product = queryResult.get();
-            log.info("product fetched with id = {}", productId);
-
-            return GetProductResponse.builder()
+            ProductResponse response = ProductResponse.builder()
                     .productId(product.getProductId())
                     .productName(product.getProductName())
-                    .productDesc(product.getProductDesc())
+                    .productDescription(product.getProductDescription())
                     .productPrice(product.getProductPrice())
-                    .productQty(product.getProductQty())
-                    .createdOn(product.getCreatedOn())
-                    .createdBy(product.getCreatedBy())
-                    .modifiedBy(product.getModifiedBy())
+                    .productQuantity(product.getProductQuantity())
                     .build();
+
+            return response;
+        } catch (Exception e) {
+            throw new CreateProductException();
         }
-
-        throw new ProductNotFoundException("product not found");
     }
 
-    public GetAllProductResponse getAllProduct() {
-        List<Product> queryResult = productRepository.findAll();
-        log.info("fetched all products");
-
-        List<GetProductResponse> products = queryResult.stream().map(product -> GetProductResponse.builder()
-                .productId(product.getProductId())
-                .productName(product.getProductName())
-                .productDesc(product.getProductDesc())
-                .productPrice(product.getProductPrice())
-                .productQty(product.getProductQty())
-                .createdOn(product.getCreatedOn())
-                .createdBy(product.getCreatedBy())
-                .modifiedBy(product.getModifiedBy())
-                .build()).toList();
-
-        return GetAllProductResponse.builder()
-                .total_products(products.size())
-                .products(products)
-                .build();
-    }
-
-    public UUID deleteProduct(UUID productId)
+    public ProductResponse getProduct(UUID productId)
             throws ProductNotFoundException {
-        Optional<Product> queryResult = productRepository.findById(productId);
+        Optional<Product> product = productRepository.findById(productId);
 
-        if (queryResult.isPresent()) {
-            productRepository.deleteById(productId);
-            log.info("product deleted with id = {}", productId);
+        if (product.isPresent()) {
 
-            return productId;
-        } else {
-            throw new ProductNotFoundException("product not found");
+            ProductResponse response = ProductResponse.builder()
+                    .productId(product.get().getProductId())
+                    .productName(product.get().getProductName())
+                    .productDescription(product.get().getProductDescription())
+                    .productPrice(product.get().getProductPrice())
+                    .productQuantity(product.get().getProductQuantity())
+                    .build();
+
+            return response;
         }
+
+        throw new ProductNotFoundException();
+    }
+
+    public List<ProductResponse> getAllProduct() {
+        List<Product> productList = productRepository.findAll();
+
+        List<ProductResponse> productResponseList = productList.stream()
+                .map(product -> {
+                    return ProductResponse.builder()
+                            .productId(product.getProductId())
+                            .productName(product.getProductName())
+                            .productDescription(product.getProductDescription())
+                            .productPrice(product.getProductPrice())
+                            .productQuantity(product.getProductQuantity())
+                            .build();
+                })
+                .toList();
+
+        return productResponseList;
+    }
+
+    public Response deleteProduct(UUID productId)
+            throws ProductNotFoundException {
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            productRepository.deleteById(productId);
+
+            Response response = Response.builder()
+                    .message("product deleted with productId = " + productId)
+                    .build();
+
+            return response;
+        }
+
+        throw new ProductNotFoundException();
     }
 }
