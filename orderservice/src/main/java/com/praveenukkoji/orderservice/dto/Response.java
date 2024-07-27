@@ -5,11 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class ErrorResponse {
-    private String error_type;
-    private String error_message;
+public class Response {
+    private String message;
 }

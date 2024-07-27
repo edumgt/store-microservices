@@ -1,5 +1,6 @@
 package com.praveenukkoji.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,10 @@ public class OrderItem {
     private UUID orderItemId;
 
     private UUID productId;
+    private Integer productQuantity;
+    private Double productPrice;
 
-    private Integer productQty;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

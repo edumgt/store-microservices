@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Item {
     private UUID productId;
-    private Integer productQty;
+    private Integer quantity;
 }
