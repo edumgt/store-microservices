@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BACKEND_SERVER } from "../../constants/Constant";
 
 /* eslint-disable react/no-unescaped-entities */
 export default function Login() {
@@ -11,9 +12,7 @@ export default function Login() {
     const username = document.getElementById("inputUsername").value;
     const password = document.getElementById("inputPassword").value;
 
-    const apiGatewayPort = "8000";
-
-    const URL = "http://localhost:" + apiGatewayPort + "/api/v1/users/login";
+    const url = BACKEND_SERVER + "/users/login";
 
     const body = {
       username: username,
@@ -21,7 +20,7 @@ export default function Login() {
     };
 
     axios
-      .post(URL, body)
+      .post(url, body)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   }
