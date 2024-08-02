@@ -1,27 +1,13 @@
-management:
-    endpoints:
-        web:
-            exposure:
-                include: '*'
-    endpoint:
-        health:
-            show-details: always
 spring:
-    boot:
-        admin:
-            client:
-                instance:
-                    service-base-url: http://localhost:8000
-                    name: user-service
-                url: http://localhost:9090/
     jpa:
         database: postgresql
         hibernate:
             ddl-auto: update
-        show-sql: 'true'
-        format-sql: 'true'
+        show-sql: true
+        properties:
+            hibernate.format_sql: true
     application:
-        name: user-service
+        name: product-service
     datasource:
         password: postgres
         driver-class-name: org.postgresql.Driver
@@ -31,7 +17,7 @@ logging:
     pattern:
         console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'
 server:
-    port: '8000'
+    port: '8001'
 eureka:
     client:
         serviceUrl:

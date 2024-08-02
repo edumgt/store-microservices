@@ -1,11 +1,3 @@
-management:
-    endpoints:
-        web:
-            exposure:
-                include: '*'
-    endpoint:
-        health:
-            show-details: always
 spring:
     cloud:
         gateway:
@@ -29,13 +21,6 @@ spring:
                 id: user-service
                 uri: lb://USER-SERVICE
                 predicates[0]: Path=/api/v1/users/**, /api/v1/roles/**, /api/v1/addresses/**
-    boot:
-        admin:
-            client:
-                instance:
-                    service-base-url: http://localhost:8222
-                    name: api-gateway
-                url: http://localhost:9090/
     application:
         name: api-gateway
 logging:

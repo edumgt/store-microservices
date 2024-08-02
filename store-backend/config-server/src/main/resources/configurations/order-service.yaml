@@ -1,25 +1,11 @@
-management:
-    endpoints:
-        web:
-            exposure:
-                include: '*'
-    endpoint:
-        health:
-            show-details: always
 spring:
-    boot:
-        admin:
-            client:
-                instance:
-                    service-base-url: http://localhost:8002
-                    name: order-service
-                url: http://localhost:9090/
     jpa:
         database: postgresql
         hibernate:
             ddl-auto: update
-        show-sql: 'true'
-        format-sql: 'true'
+        show-sql: true
+        properties:
+            hibernate.format_sql: true
     application:
         name: order-service
     datasource:
