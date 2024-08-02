@@ -9,9 +9,9 @@ spring:
     application:
         name: order-service
     datasource:
-        password: postgres
+        password: password
         driver-class-name: org.postgresql.Driver
-        username: praveenukkoji
+        username: username
         url: jdbc:postgresql://localhost:5432/store
 logging:
     pattern:
