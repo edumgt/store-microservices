@@ -1,43 +1,59 @@
 package com.praveenukkoji.userservice.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import static jakarta.persistence.FetchType.EAGER;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_entity")
+@Table(name = "_user")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
-    private UUID userId;
+    @GeneratedValue
+    private UUID id;
 
-    private String userFullname;
-    private String userUsername;
-    private String userEmail;
-    private String userPassword;
+    private String fullname;
+
+    @Column(unique = true)
+    private String username;
+
+    @Column(unique = true)
+    private String email;
+
+    private String password;
 
     private Boolean isActive;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdOn;
+
     private UUID createdBy;
+
+    @LastModifiedDate
+    @Column(insertable = false)
     private LocalDateTime modifiedOn;
+
     private UUID modifiedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+    @ManyToOne(fetch = EAGER)
     private Role role;
 
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = EAGER, mappedBy = "user")
     private List<Address> addressList;
 }

@@ -1,12 +1,13 @@
 package com.praveenukkoji.userservice.controller;
 
-import com.praveenukkoji.userservice.dto.Response;
+import com.praveenukkoji.userservice.dto.error.ErrorResponse;
 import com.praveenukkoji.userservice.dto.request.address.AddAddressRequest;
 import com.praveenukkoji.userservice.exception.address.AddressCreateException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.service.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +26,14 @@ public class AddressController {
     @PostMapping(path = "/add")
     public ResponseEntity<?> addAddress(
             @RequestParam(defaultValue = "", name = "userId") String userId,
-            @RequestBody AddAddressRequest addAddressRequest
+            @RequestBody @Valid AddAddressRequest addAddressRequest
     ) throws UserNotFoundException, AddressCreateException {
+
         if (Objects.equals(userId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("user id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(userId);
@@ -42,11 +44,12 @@ public class AddressController {
     public ResponseEntity<?> getAddress(
             @RequestParam(defaultValue = "", name = "userId") String userId
     ) throws UserNotFoundException {
+
         if (Objects.equals(userId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("user id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(userId);
@@ -60,10 +63,10 @@ public class AddressController {
     ) throws AddressNotFoundException, AddressUpdateException {
 
         if (Objects.equals(addressId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("address id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(addressId);
@@ -77,17 +80,17 @@ public class AddressController {
     ) throws UserNotFoundException, AddressNotFoundException, AddressUpdateException {
 
         if (Objects.equals(userId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("user id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         if (Objects.equals(addressId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("address id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID uId = UUID.fromString(userId);
@@ -99,11 +102,12 @@ public class AddressController {
     public ResponseEntity<?> deleteAddress(
             @RequestParam(defaultValue = "", name = "addressId") String addressId
     ) throws AddressNotFoundException {
+
         if (Objects.equals(addressId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("address id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(addressId);

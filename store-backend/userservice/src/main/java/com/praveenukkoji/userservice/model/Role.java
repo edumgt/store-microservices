@@ -1,14 +1,17 @@
 package com.praveenukkoji.userservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -16,12 +19,29 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "role_entity")
+@Table(name = "_role")
+@EntityListeners(AuditingEntityListener.class)
 public class Role {
     @Id
     @GeneratedValue
-    private UUID roleId;
+    private UUID id;
 
-    // SUPERUSER, ADMIN, USER
-    private String roleType;
+    @Column(unique = true)
+    private String type;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdOn;
+
+    private UUID createdBy;
+
+    @LastModifiedDate
+    @Column(insertable = false)
+    private LocalDateTime modifiedOn;
+
+    private UUID modifiedBy;
+
+    @OneToMany(mappedBy = "role")
+    @JsonIgnore
+    private List<User> user;
 }

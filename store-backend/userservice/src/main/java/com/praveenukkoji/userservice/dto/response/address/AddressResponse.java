@@ -12,11 +12,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class AddressResponse {
-    private UUID addressId;
-    private String addressLine;
+    private UUID id;
+    private String line;
     private String country;
     private String state;
     private String city;
-    private Integer pincode;
+    private String pincode;
     private Boolean isDefault;
 }

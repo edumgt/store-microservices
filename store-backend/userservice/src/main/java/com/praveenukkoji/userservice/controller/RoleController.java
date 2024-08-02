@@ -1,12 +1,13 @@
 package com.praveenukkoji.userservice.controller;
 
-import com.praveenukkoji.userservice.dto.Response;
+import com.praveenukkoji.userservice.dto.error.ErrorResponse;
 import com.praveenukkoji.userservice.dto.request.role.CreateRoleRequest;
 import com.praveenukkoji.userservice.dto.request.role.UpdateRoleRequest;
 import com.praveenukkoji.userservice.exception.role.RoleCreateException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.role.RoleUpdateException;
 import com.praveenukkoji.userservice.service.RoleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,21 +23,21 @@ public class RoleController {
     private RoleService roleService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<?> createRole(@RequestBody CreateRoleRequest createRoleRequest)
+    public ResponseEntity<?> createRole(@RequestBody @Valid CreateRoleRequest createRoleRequest)
             throws RoleCreateException {
         return ResponseEntity.status(201).body(roleService.createRole(createRoleRequest));
     }
 
-    @GetMapping(path = "/get-role-type")
+    @GetMapping(path = "/role-type")
     public ResponseEntity<?> getRoleType(
             @RequestParam(defaultValue = "", name = "roleId") String roleId
     ) throws RoleNotFoundException {
 
         if (Objects.equals(roleId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("role id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(roleId);
@@ -47,14 +48,14 @@ public class RoleController {
     @PatchMapping(path = "/update")
     public ResponseEntity<?> updateRole(
             @RequestParam(defaultValue = "", name = "roleId") String roleId,
-            @RequestBody UpdateRoleRequest updateRoleRequest
+            @RequestBody @Valid UpdateRoleRequest updateRoleRequest
     ) throws RoleNotFoundException, RoleUpdateException {
 
         if (Objects.equals(roleId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("role id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(roleId);
@@ -67,10 +68,10 @@ public class RoleController {
     ) throws RoleNotFoundException {
 
         if (Objects.equals(roleId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("role id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(roleId);
