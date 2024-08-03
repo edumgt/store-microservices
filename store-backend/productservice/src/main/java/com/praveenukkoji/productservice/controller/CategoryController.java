@@ -1,12 +1,13 @@
 package com.praveenukkoji.productservice.controller;
 
-import com.praveenukkoji.productservice.dto.Response;
+import com.praveenukkoji.productservice.dto.error.ErrorResponse;
 import com.praveenukkoji.productservice.dto.request.category.CreateCategoryRequest;
 import com.praveenukkoji.productservice.dto.request.category.UpdateCategoryRequest;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.category.CategoryUpdateException;
 import com.praveenukkoji.productservice.exception.category.CreateCategoryException;
 import com.praveenukkoji.productservice.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<?> createCategory(@RequestBody CreateCategoryRequest createCategoryRequest)
+    public ResponseEntity<?> createCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest)
             throws CreateCategoryException {
         return ResponseEntity.status(201).body(categoryService.createCategory(createCategoryRequest));
     }
@@ -35,13 +36,14 @@ public class CategoryController {
     @PatchMapping(path = "/update")
     public ResponseEntity<?> updateCategory(
             @RequestParam(defaultValue = "", name = "categoryId") String categoryId,
-            @RequestBody UpdateCategoryRequest updateCategoryRequest
+            @RequestBody @Valid UpdateCategoryRequest updateCategoryRequest
     ) throws CategoryNotFoundException, CategoryUpdateException {
+
         if (Objects.equals(categoryId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("category id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(categoryId);
@@ -52,11 +54,12 @@ public class CategoryController {
     public ResponseEntity<?> deleteCategory(
             @RequestParam(defaultValue = "", name = "categoryId") String categoryId
     ) throws CategoryNotFoundException {
+
         if (Objects.equals(categoryId, "")) {
-            Response response = Response.builder()
+            ErrorResponse errorResponse = ErrorResponse.builder()
                     .message("category id is empty")
                     .build();
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         UUID id = UUID.fromString(categoryId);

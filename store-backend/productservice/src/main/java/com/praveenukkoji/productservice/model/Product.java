@@ -5,36 +5,44 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
+
+import static jakarta.persistence.FetchType.EAGER;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "product_entity")
+@Table(name = "_product")
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
     @Id
     @GeneratedValue
-    private UUID productId;
+    private UUID id;
 
-    private String productName;
-    private String productDescription;
-    private Double productPrice;
-    private Integer productQuantity;
+    private String name;
+    private String description;
+    private Double price;
+    private Integer quantity;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdOn;
+
     private UUID createdBy;
+
+    @LastModifiedDate
+    @Column(insertable = false)
     private LocalDateTime modifiedOn;
+
     private UUID modifiedBy;
 
-    @ManyToMany
-    @JoinTable(
-            name = "category_product_relation_entity",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<Category> category;
+    @ManyToOne(fetch = EAGER)
+    private Category category;
 }

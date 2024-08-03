@@ -1,5 +1,6 @@
 package com.praveenukkoji.productservice.dto.response.product;
 
+import com.praveenukkoji.productservice.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +13,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductResponse {
-    private UUID productId;
-    private String productName;
-    private String productDescription;
-    private Double productPrice;
-    private Integer productQuantity;
+    private UUID id;
+    private String name;
+    private String description;
+    private Double price;
+    private Integer quantity;
+    private Category category;
 }

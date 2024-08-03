@@ -1,5 +1,7 @@
 package com.praveenukkoji.productservice.dto.request.product;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +14,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CreateProductRequest {
-    private String productName;
-    private String productDescription;
-    private Double productPrice;
-    private Integer productQuantity;
-    private UUID createdBy;
+    @NotNull(message = "product name is null")
+    @NotEmpty(message = "product name is empty")
+    private String name;
+
+    @NotNull(message = "description is null")
+    @NotEmpty(message = "description is empty")
+    private String description;
+
+    @NotNull(message = "price is null")
+    private Double price;
+
+    @NotNull(message = "quantity is null")
+    private Integer quantity;
+
+    @NotNull(message = "category id is null")
+    private UUID categoryId;
 }
