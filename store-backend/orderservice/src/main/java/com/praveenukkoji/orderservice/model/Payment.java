@@ -1,5 +1,6 @@
 package com.praveenukkoji.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,7 @@ public class Payment {
 
     private UUID modifiedBy;
 
-    @OneToOne
+    @OneToOne(mappedBy = "payment")
+    @JsonIgnore
     private Order order;
 }

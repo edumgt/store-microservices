@@ -108,23 +108,33 @@ public class OrderService {
         Optional<Order> order = orderRepository.findById(orderId);
 
         if (order.isPresent()) {
-            Optional<Payment> payment = paymentRepository.findByOrderId(orderId);
-            if (payment.isPresent()) {
-                return OrderResponse.builder()
-                        .id(order.get().getId())
-                        .totalItems(order.get().getTotalItems())
-                        .amount(order.get().getAmount())
-                        .status(order.get().getStatus())
-                        .createdOn(order.get().getCreatedOn())
-                        .createdBy(order.get().getCreatedBy())
-                        .modifiedOn(order.get().getModifiedOn())
-                        .modifiedBy(order.get().getModifiedBy())
-                        .payment(payment.get())
-                        .orderItemList(order.get().getOrderItemList())
-                        .build();
+
+            OrderResponse response = OrderResponse.builder()
+                    .id(order.get().getId())
+                    .totalItems(order.get().getTotalItems())
+                    .amount(order.get().getAmount())
+                    .status(order.get().getStatus())
+                    .createdOn(order.get().getCreatedOn())
+                    .createdBy(order.get().getCreatedBy())
+                    .modifiedOn(order.get().getModifiedOn())
+                    .modifiedBy(order.get().getModifiedBy())
+                    .orderItemList(order.get().getOrderItemList())
+                    .build();
+
+            if (order.get().getPayment() != null) {
+
+                UUID paymentId = order.get().getPayment().getId();
+                Optional<Payment> payment = paymentRepository.findById(paymentId);
+
+                if (payment.isPresent()) {
+                    response.setPayment(payment.get());
+                } else {
+                    throw new PaymentNotFoundException();
+                }
             }
 
-            throw new PaymentNotFoundException();
+            return response;
+
         } else {
             throw new OrderNotFoundException();
         }

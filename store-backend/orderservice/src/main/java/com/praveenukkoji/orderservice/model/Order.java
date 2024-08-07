@@ -46,4 +46,7 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = EAGER, mappedBy = "order")
     private List<OrderItem> orderItemList;
+
+    @OneToOne(fetch = EAGER)
+    private Payment payment;
 }
