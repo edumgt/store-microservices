@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.feign.product.model;
+package com.praveenukkoji.orderservice.feignClient.product.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

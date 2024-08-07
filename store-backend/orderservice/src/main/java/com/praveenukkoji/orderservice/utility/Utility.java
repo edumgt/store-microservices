@@ -2,55 +2,53 @@ package com.praveenukkoji.orderservice.utility;
 
 import com.praveenukkoji.orderservice.dto.request.CreateOrderRequest;
 import com.praveenukkoji.orderservice.dto.request.Item;
-import com.praveenukkoji.orderservice.exception.ProductDoesNotExist;
-import com.praveenukkoji.orderservice.exception.QuantityNotAvailable;
-import com.praveenukkoji.orderservice.feign.product.model.Product;
-import org.springframework.stereotype.Component;
+import com.praveenukkoji.orderservice.exception.product.ProductDoesNotExist;
+import com.praveenukkoji.orderservice.feignClient.product.model.Product;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Service
 public class Utility {
 
-    public List<Product> getProductList(CreateOrderRequest createOrderRequest) {
-        // collecting id's of product to fetch product from product-service
-        List<UUID> productIds = createOrderRequest.getItemList()
-                .stream().map(Item::getProductId).toList();
+    public List<Product> getProducts(List<Item> itemList) {
+        // collecting id's of product
+        List<UUID> productIds = itemList.stream().map(Item::getId).toList();
 
-        // fetching list of product from product-service
+        // TODO: fetch list of products from product-service
+
         return productIds.stream()
                 .map(productId -> Product.builder()
                         .productId(productId)
-                        .price(10.0)
+                        .price(10.546)
                         .quantity(10)
                         .build())
                 .toList();
     }
 
-    public Double getOrderAmount(CreateOrderRequest createOrderRequest, List<Product> productList)
-            throws QuantityNotAvailable, ProductDoesNotExist {
+    public Double getOrderAmount(CreateOrderRequest createOrderRequest)
+            throws ProductDoesNotExist {
+
+        List<Product> productList = getProducts(createOrderRequest.getItemList());
 
         double orderAmount = 0.0;
 
         // calculating order amount
         for (Item item : createOrderRequest.getItemList()) {
-            UUID itemId = item.getProductId();
-            Integer quantity = item.getQuantity();
+            UUID itemId = item.getId();
+            int quantity = item.getQuantity();
 
             Optional<Product> matchingProduct = productList.stream()
                     .filter(product -> product.getProductId().equals(itemId))
                     .findFirst();
 
             if (matchingProduct.isPresent()) {
-                if (matchingProduct.get().getQuantity() < quantity) {
-                    throw new QuantityNotAvailable(matchingProduct.get().getQuantity() +
-                            " quantity available for product with id = " + itemId);
-                } else {
-                    double productPrice = matchingProduct.get().getPrice();
-                    orderAmount += quantity * productPrice;
-                }
+
+                double productPrice = matchingProduct.get().getPrice();
+                orderAmount += quantity * productPrice;
+
             } else {
                 throw new ProductDoesNotExist("product with id = " + itemId + " doesn't exist.");
             }

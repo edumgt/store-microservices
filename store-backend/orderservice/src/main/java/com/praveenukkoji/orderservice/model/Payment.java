@@ -1,14 +1,13 @@
 package com.praveenukkoji.orderservice.model;
 
-import com.praveenukkoji.orderservice.model.types.PaymentStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,17 +17,29 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "payment_entity")
+@Table(name = "_payment")
+@EntityListeners(AuditingEntityListener.class)
 public class Payment {
     @Id
     @GeneratedValue
-    private UUID paymentId;
+    private UUID id;
 
-    private Double paymentAmount;
+    private Double amount;
 
-    private PaymentStatus paymentStatus;
+    private String status;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdOn;
+
     private UUID createdBy;
+
+    @LastModifiedDate
+    @Column(insertable = false)
     private LocalDateTime modifiedOn;
+
+    private UUID modifiedBy;
+
+    @OneToOne
+    private Order order;
 }

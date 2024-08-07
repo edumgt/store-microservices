@@ -2,7 +2,6 @@ package com.praveenukkoji.orderservice.dto.response;
 
 import com.praveenukkoji.orderservice.model.OrderItem;
 import com.praveenukkoji.orderservice.model.Payment;
-import com.praveenukkoji.orderservice.model.types.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,14 +16,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class OrderResponse {
-    private UUID orderId;
-    private List<OrderItem> orderItemList;
-    private Payment payment;
-    private Integer orderItemCount;
-    private Double orderAmount;
-    private OrderStatus orderStatus;
+    private UUID id;
+    private Integer totalItems;
+    private Double amount;
+    private String status;
     private LocalDateTime createdOn;
     private UUID createdBy;
     private LocalDateTime modifiedOn;
+    private UUID modifiedBy;
 
+    private Payment payment;
+
+    private List<OrderItem> orderItemList;
 }

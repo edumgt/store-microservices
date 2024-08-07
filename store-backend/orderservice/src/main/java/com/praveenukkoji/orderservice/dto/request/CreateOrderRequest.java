@@ -1,18 +1,21 @@
 package com.praveenukkoji.orderservice.dto.request;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateOrderRequest {
-    private List<Item> itemList;
-    private UUID createdBy;
+    @NotNull(message = "item list is null")
+    @NotEmpty(message = "item list is empty")
+    private List<@Valid Item> itemList;
 }

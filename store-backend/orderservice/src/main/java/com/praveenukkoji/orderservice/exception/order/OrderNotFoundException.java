@@ -1,7 +1,7 @@
-package com.praveenukkoji.orderservice.exception;
+package com.praveenukkoji.orderservice.exception.order;
 
 public class OrderNotFoundException extends Exception {
     public OrderNotFoundException() {
-        super("order not found");
+        super("unable to find order");
     }
 }
