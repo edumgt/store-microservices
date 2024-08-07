@@ -7,251 +7,785 @@
 	},
 	"item": [
 		{
-			"name": "product",
+			"name": "product-service",
 			"item": [
 				{
-					"name": "delete product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:8222/api/v1/products/delete/e003de5c-9928-4c4b-8e7b-3e0fccf65e13",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"v1",
-								"products",
-								"delete",
-								"e003de5c-9928-4c4b-8e7b-3e0fccf65e13"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get all product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8222/api/v1/products/get/all",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"v1",
-								"products",
-								"get",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8222/api/v1/products/get/e003de5c-9928-4c4b-8e7b-3e0fccf65e13",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"v1",
-								"products",
-								"get",
-								"e003de5c-9928-4c4b-8e7b-3e0fccf65e13"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"productName\": \"{{$randomProductName}}\",\n    \"productDesc\": \"{{$randomLoremSentence}}\",\n    \"productPrice\": {{$randomPrice}},\n    \"productQty\": {{$randomInt}},\n    \"createdBy\": \"72301c91-466a-4704-980b-4cd33a982162\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "product",
+					"item": [
+						{
+							"name": "delete product",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/products/delete?productId=d5e9a743-da50-405c-9bb1-7ee12ef76369",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "d5e9a743-da50-405c-9bb1-7ee12ef76369"
+										}
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "localhost:8222/api/v1/products/create",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"v1",
-								"products",
-								"create"
-							]
+						{
+							"name": "get all product",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/products/get/all",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"get",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/products/get?productId=d5e9a743-da50-405c-9bb1-7ee12ef76369",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"get"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "d5e9a743-da50-405c-9bb1-7ee12ef76369"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create product",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"463578f8-c90c-405a-8bef-6eaa859d9ce5\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/products/create",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"create"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "category",
+					"item": [
+						{
+							"name": "delete category",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/categories/delete?categoryId=fbceb0a1-335a-4d40-a120-2a52c6c85cb5",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "categoryId",
+											"value": "fbceb0a1-335a-4d40-a120-2a52c6c85cb5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update category",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"updated\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/categories/update?categoryId=6dc38a0f-3741-4603-bfc2-7f4598ff04f1",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"update"
+									],
+									"query": [
+										{
+											"key": "categoryId",
+											"value": "6dc38a0f-3741-4603-bfc2-7f4598ff04f1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all category",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/categories/get/all",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"get",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create category",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{$randomDepartment}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/categories/create",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"create"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "order",
+			"name": "user-service",
 			"item": [
 				{
-					"name": "get order",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8002/api/v1/orders/get/5a15f5d8-d38a-43e4-917b-6a75b00d9ec0",
-							"host": [
-								"localhost"
-							],
-							"port": "8002",
-							"path": [
-								"api",
-								"v1",
-								"orders",
-								"get",
-								"5a15f5d8-d38a-43e4-917b-6a75b00d9ec0"
-							]
+					"name": "address",
+					"item": [
+						{
+							"name": "add address",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"line\":\"address two\",\n    \"country\": \"India\",\n    \"state\": \"Karnataka\",\n    \"city\": \"Belagavi\",\n    \"pincode\": \"590008\",\n    \"isDefault\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/addresses/add?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"addresses",
+										"add"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get addresses",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/addresses/get?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"addresses",
+										"get"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete address",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/addresses/delete?addressId=49c4e160-9091-4a67-a93e-e3caa2a301c1",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"addresses",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "addressId",
+											"value": "49c4e160-9091-4a67-a93e-e3caa2a301c1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update address",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"line\": \"updated\",\n    \"state\": \"updated\",\n    \"city\": \"updated\",\n    \"country\": \"updated\",\n    \"pincode\": \"000000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/addresses/update?addressId=49c4e160-9091-4a67-a93e-e3caa2a301c1",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"addresses",
+										"update"
+									],
+									"query": [
+										{
+											"key": "addressId",
+											"value": "49c4e160-9091-4a67-a93e-e3caa2a301c1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "upadte default address",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/addresses/set-default?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7&addressId=eb9cbbc3-6d75-4f8e-8706-85f1313b46ff",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"addresses",
+										"set-default"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+										},
+										{
+											"key": "addressId",
+											"value": "eb9cbbc3-6d75-4f8e-8706-85f1313b46ff"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "create order",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"products\" : [\n            {\n                \"productId\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"productQty\": 2\n            },\n            {\n                \"productId\": \"874e7f6f-1f5a-4008-acfb-e0722acd8e8e\",\n                \"productQty\": 4\n            }\n        ],\n    \"createdBy\": \"72301c91-466a-4704-980b-4cd33a982162\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "user",
+					"item": [
+						{
+							"name": "create user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullname\": \"demo\",\n    \"username\": \"demo\",\n    \"password\": \"password\",\n    \"email\": \"demo@doamin.com\",\n    \"roleId\": \"12f74f1a-9328-4ed7-8c91-839ea0ed8ce7\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/users/create",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"create"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "localhost:8002/api/v1/orders/create",
-							"host": [
-								"localhost"
-							],
-							"port": "8002",
-							"path": [
-								"api",
-								"v1",
-								"orders",
-								"create"
-							]
+						{
+							"name": "get user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/users/get?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"get"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/users/delete?userId=0a250be6-870b-43cf-b254-216cc273b59b",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "0a250be6-870b-43cf-b254-216cc273b59b"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update user",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullname\": \"updated\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\",\n    \"password\" :\"updated\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/users/update?userId=0a250be6-870b-43cf-b254-216cc273b59b",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"update"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "0a250be6-870b-43cf-b254-216cc273b59b"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"host": true,
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"updated\",\n    \"password\": \"updated\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/users/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "role",
+					"item": [
+						{
+							"name": "create role",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"customer\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/roles/create",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"roles",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get role type",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/roles/role-type?roleId=1971703e-c7ac-4cff-ba28-29b7709d8a61",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"roles",
+										"role-type"
+									],
+									"query": [
+										{
+											"key": "roleId",
+											"value": "1971703e-c7ac-4cff-ba28-29b7709d8a61"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update role",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"superuser\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/roles/update?roleId=f4f3c6d0-1040-4847-9ab7-3ca97665a720",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"roles",
+										"update"
+									],
+									"query": [
+										{
+											"key": "roleId",
+											"value": "f4f3c6d0-1040-4847-9ab7-3ca97665a720"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete role",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/roles/delete?roleId=1971703e-c7ac-4cff-ba28-29b7709d8a61",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"roles",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "roleId",
+											"value": "1971703e-c7ac-4cff-ba28-29b7709d8a61"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "user",
+			"name": "order-service",
 			"item": [
 				{
-					"name": "create user",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"demo\",\n    \"password\": \"demo\",\n    \"email\": \"demo@domain.com\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "order",
+					"item": [
+						{
+							"name": "get order",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/orders/get?orderId=83506ab3-f4df-4779-a82f-af26f4b336d0",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"get"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "83506ab3-f4df-4779-a82f-af26f4b336d0"
+										}
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "localhost:8222/api/v1/users/create",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"v1",
-								"users",
-								"create"
-							]
+						{
+							"name": "create order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"quantity\": 8\n            }\n        ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/orders/create",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"create"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "get user",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8222/api/v1/users/get/d9cd1129-dd88-4815-8fad-9bb7c99c392a",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"v1",
-								"users",
-								"get",
-								"d9cd1129-dd88-4815-8fad-9bb7c99c392a"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete user",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:8222/api/v1/users/delete/d9cd1129-dd88-4815-8fad-9bb7c99c392a",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"api",
-								"v1",
-								"users",
-								"delete",
-								"d9cd1129-dd88-4815-8fad-9bb7c99c392a"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
