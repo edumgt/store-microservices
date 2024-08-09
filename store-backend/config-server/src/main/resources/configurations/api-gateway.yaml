@@ -10,9 +10,9 @@ spring:
                         allowedMethods: "*"
                         allowedHeaders: "*"
             routes[2]:
-                uri: lb://ORDER-SERVICE
                 id: order-service
-                predicates[0]: Path=/api/v1/orders/**
+                uri: lb://ORDER-SERVICE
+                predicates[0]: Path=/api/v1/orders/**, /api/v1/payments/**
             routes[1]:
                 id: product-service
                 uri: lb://PRODUCT-SERVICE
