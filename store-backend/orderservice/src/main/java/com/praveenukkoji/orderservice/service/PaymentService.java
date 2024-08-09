@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,29 +27,50 @@ public class PaymentService {
     private OrderRepository orderRepository;
 
     @Transactional
-    public UUID makePayment(MakePaymentRequest makePaymentRequest)
+    public PaymentResponse makePayment(MakePaymentRequest makePaymentRequest)
             throws OrderNotFoundException, CreatePaymentException {
 
         Optional<Order> order = orderRepository.findById(makePaymentRequest.getOrderId());
 
         if (order.isPresent()) {
+
+            // TODO: OUT_FOR_DELIVERY, CASH_ON_DELIVERY, DISPATCHED
+
+            if (Objects.equals(order.get().getStatus(), "PROCESSING")) {
+                return PaymentResponse.builder()
+                        .message("payment is processing")
+                        .build();
+            } else if (Objects.equals(order.get().getStatus(), "PLACED")) {
+                return PaymentResponse.builder()
+                        .message("already paid")
+                        .build();
+            } else if (Objects.equals(order.get().getStatus(), "DELIVERED")) {
+                return PaymentResponse.builder()
+                        .message("order delivered, you cannot pay")
+                        .build();
+            }
+
             Payment newPayment = Payment.builder()
                     .amount(makePaymentRequest.getAmount())
                     .status(makePaymentRequest.getStatus().toUpperCase())
                     .build();
 
             if (makePaymentRequest.getStatus().equalsIgnoreCase("FAILED")) {
-                order.get().setStatus("PAYMENT-FAILED");
+                order.get().setStatus("CANCELED");
             } else if (makePaymentRequest.getStatus().equalsIgnoreCase("SUCCESS")) {
                 order.get().setStatus("PLACED");
             } else {
-                order.get().setStatus("PAYMENT-PROCESSING");
+                order.get().setStatus("PROCESSING");
             }
 
             order.get().setPayment(newPayment);
 
             try {
-                return paymentRepository.save(newPayment).getId();
+                UUID paymentId = paymentRepository.save(newPayment).getId();
+
+                return PaymentResponse.builder()
+                        .id(paymentId)
+                        .build();
             } catch (Exception e) {
                 throw new CreatePaymentException();
             }
