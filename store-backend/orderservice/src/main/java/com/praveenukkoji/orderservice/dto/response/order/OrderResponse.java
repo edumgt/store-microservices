@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.dto.response;
+package com.praveenukkoji.orderservice.dto.response.order;
 
 import com.praveenukkoji.orderservice.model.OrderItem;
 import com.praveenukkoji.orderservice.model.Payment;

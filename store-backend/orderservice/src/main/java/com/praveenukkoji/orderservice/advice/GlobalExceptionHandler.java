@@ -4,6 +4,7 @@ import com.praveenukkoji.orderservice.dto.error.ErrorResponse;
 import com.praveenukkoji.orderservice.dto.error.ExceptionResponse;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
+import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import com.praveenukkoji.orderservice.exception.product.ProductDoesNotExist;
 import com.praveenukkoji.orderservice.exception.product.QuantityNotAvailable;
@@ -75,6 +76,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(errorResponse);
     }
 
+    @ExceptionHandler(CreatePaymentException.class)
+    public ResponseEntity<?> handleException(CreatePaymentException exception) {
+        log.error("CreatePaymentException - {}", exception.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(errorResponse);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException exception) {
         Set<String> errors = new HashSet<>();
@@ -92,5 +104,16 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception exception) {
+        log.error("Exception - {}", exception.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(errorResponse);
     }
 }

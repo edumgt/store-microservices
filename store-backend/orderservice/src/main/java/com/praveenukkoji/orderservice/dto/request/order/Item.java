@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.dto.request;
+package com.praveenukkoji.orderservice.dto.request.order;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

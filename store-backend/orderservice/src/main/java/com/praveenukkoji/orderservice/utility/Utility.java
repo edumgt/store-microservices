@@ -1,7 +1,7 @@
 package com.praveenukkoji.orderservice.utility;
 
-import com.praveenukkoji.orderservice.dto.request.CreateOrderRequest;
-import com.praveenukkoji.orderservice.dto.request.Item;
+import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
+import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.exception.product.ProductDoesNotExist;
 import com.praveenukkoji.orderservice.feignClient.product.model.Product;
 import org.springframework.stereotype.Service;

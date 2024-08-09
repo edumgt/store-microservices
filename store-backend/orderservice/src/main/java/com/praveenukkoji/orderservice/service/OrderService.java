@@ -1,8 +1,8 @@
 package com.praveenukkoji.orderservice.service;
 
-import com.praveenukkoji.orderservice.dto.request.CreateOrderRequest;
-import com.praveenukkoji.orderservice.dto.request.Item;
-import com.praveenukkoji.orderservice.dto.response.OrderResponse;
+import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
+import com.praveenukkoji.orderservice.dto.request.order.Item;
+import com.praveenukkoji.orderservice.dto.response.order.OrderResponse;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
