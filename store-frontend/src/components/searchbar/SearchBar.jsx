@@ -4,7 +4,7 @@ export default function SearchBar() {
   let [category, setCategory] = useState("Select Category");
 
   return (
-    <form className="d-flex mt-4" role="search">
+    <form className="d-flex" role="search">
       <div className="btn-group">
         <button
           type="button"
