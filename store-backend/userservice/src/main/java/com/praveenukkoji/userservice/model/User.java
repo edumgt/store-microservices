@@ -54,6 +54,6 @@ public class User {
     @ManyToOne(fetch = EAGER)
     private Role role;
 
-    @OneToMany(fetch = EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = EAGER, mappedBy = "user", orphanRemoval = true)
     private List<Address> addressList;
 }

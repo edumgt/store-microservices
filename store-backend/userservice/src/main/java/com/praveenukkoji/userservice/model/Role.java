@@ -1,6 +1,5 @@
 package com.praveenukkoji.userservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -41,7 +39,7 @@ public class Role {
 
     private UUID modifiedBy;
 
-    @OneToMany(mappedBy = "role")
-    @JsonIgnore
-    private List<User> user;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
+//    @JsonIgnore
+//    private List<User> user;
 }

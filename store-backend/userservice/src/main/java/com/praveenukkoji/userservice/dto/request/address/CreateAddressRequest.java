@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddAddressRequest {
+public class CreateAddressRequest {
     @NotNull(message = "address line is null")
     @NotEmpty(message = "address line is empty")
     private String line;

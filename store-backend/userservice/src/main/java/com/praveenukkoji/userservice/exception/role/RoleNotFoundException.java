@@ -2,6 +2,10 @@ package com.praveenukkoji.userservice.exception.role;
 
 public class RoleNotFoundException extends Exception {
     public RoleNotFoundException() {
-        super("unable to find role");
+        super("role not found");
+    }
+
+    public RoleNotFoundException(String message) {
+        super(message);
     }
 }

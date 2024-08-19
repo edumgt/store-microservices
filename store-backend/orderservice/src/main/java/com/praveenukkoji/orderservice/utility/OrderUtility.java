@@ -17,7 +17,6 @@ public class Utility {
         // collecting id's of product
         List<UUID> productIds = itemList.stream().map(Item::getId).toList();
 
-        // TODO: fetch list of products from product-service
 
         return productIds.stream()
                 .map(productId -> Product.builder()

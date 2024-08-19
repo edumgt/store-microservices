@@ -30,10 +30,9 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
-
+    
     public UUID createUser(CreateUserRequest createUserRequest)
             throws UserCreateException, RoleNotFoundException {
-
         Optional<Role> role = roleRepository.findById(createUserRequest.getRoleId());
 
         if (role.isPresent()) {
@@ -58,11 +57,9 @@ public class UserService {
 
     public UserResponse getUser(UUID userId)
             throws UserNotFoundException {
-
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
-
             return UserResponse.builder()
                     .id(user.get().getId())
                     .fullname(user.get().getFullname())
@@ -83,34 +80,35 @@ public class UserService {
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
+            User updatedUser = user.get();
 
             for (Map.Entry<String, String> entry : updates.entrySet()) {
                 switch (entry.getKey()) {
                     case "fullname":
                         if (!Objects.equals(entry.getValue(), "")) {
-                            user.get().setFullname(entry.getValue());
+                            updatedUser.setFullname(entry.getValue());
                         }
                         break;
                     case "username":
                         if (!Objects.equals(entry.getValue(), "")) {
-                            user.get().setUsername(entry.getValue());
+                            updatedUser.setUsername(entry.getValue());
                         }
                         break;
                     case "email":
                         if (!Objects.equals(entry.getValue(), "")) {
-                            user.get().setEmail(entry.getValue());
+                            updatedUser.setEmail(entry.getValue());
                         }
                         break;
                     case "password":
                         if (!Objects.equals(entry.getValue(), "")) {
-                            user.get().setPassword(entry.getValue());
+                            updatedUser.setPassword(entry.getValue());
                         }
                         break;
                 }
             }
 
             try {
-                return userRepository.save(user.get()).getId();
+                return userRepository.save(updatedUser).getId();
             } catch (Exception e) {
                 throw new UserUpdateException();
             }
@@ -119,23 +117,20 @@ public class UserService {
         throw new UserNotFoundException();
     }
 
-    public UUID deleteUser(UUID userId)
+    public void deleteUser(UUID userId)
             throws UserNotFoundException {
-
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
             userRepository.deleteById(userId);
-
-            return userId;
+            return;
         }
 
         throw new UserNotFoundException();
     }
 
-    public UUID getUserId(LoginUserRequest loginUserRequest)
+    public UUID loginUser(LoginUserRequest loginUserRequest)
             throws UserNotFoundException {
-
         String username = loginUserRequest.getUsername();
         String password = loginUserRequest.getPassword();
 

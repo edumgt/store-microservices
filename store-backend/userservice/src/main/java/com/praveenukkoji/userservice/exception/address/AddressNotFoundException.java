@@ -2,6 +2,10 @@ package com.praveenukkoji.userservice.exception.address;
 
 public class AddressNotFoundException extends Exception {
     public AddressNotFoundException() {
-        super("unable to find address");
+        super("address not found");
+    }
+
+    public AddressNotFoundException(String message) {
+        super(message);
     }
 }

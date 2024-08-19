@@ -76,7 +76,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/products/get?productId=d5e9a743-da50-405c-9bb1-7ee12ef76369",
+									"raw": "localhost:8222/api/v1/products/get?productId=1a7ec121-3f63-4c44-b626-82fce979410f",
 									"host": [
 										"localhost"
 									],
@@ -90,7 +90,7 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "d5e9a743-da50-405c-9bb1-7ee12ef76369"
+											"value": "1a7ec121-3f63-4c44-b626-82fce979410f"
 										}
 									]
 								}
@@ -125,6 +125,69 @@
 										"v1",
 										"products",
 										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-product-list",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"productIdList\": [\"1a7ec121-3f63-4c44-b626-82fce979410f\", \"3224e45c-ab94-41df-9b15-7987b4c39061\", \"f3d24617-d0ab-45fe-b13a-7c89cc8ba876\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/products/get-product-list",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"get-product-list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reduce quantity",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"id\": \"1a7ec121-3f63-4c44-b626-82fce979410f\",\n        \"quantity\": 10\n    },\n    {\n        \"id\": \"3224e45c-ab94-41de-9b15-7987b4c39061\",\n        \"quantity\": 10\n    },\n    {\n        \"id\": \"f3d24617-d0ab-45fe-b13a-7c89cc8ba876\",\n        \"quantity\": 10\n    }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/products/reduce-quantity",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"reduce-quantity"
 									]
 								}
 							},
@@ -273,13 +336,13 @@
 					"name": "address",
 					"item": [
 						{
-							"name": "add address",
+							"name": "create address",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"line\":\"address two\",\n    \"country\": \"India\",\n    \"state\": \"Karnataka\",\n    \"city\": \"Belagavi\",\n    \"pincode\": \"590008\",\n    \"isDefault\": false\n}",
+									"raw": "{\n    \"line\":\"1\",\n    \"country\": \"1\",\n    \"state\": \"1\",\n    \"city\": \"3\",\n    \"pincode\": \"3\",\n    \"isDefault\": false\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -287,7 +350,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses/add?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7",
+									"raw": "localhost:8222/api/v1/addresses?userId=efcfc3ec-2738-42e8-b1ae-17e2b972872f",
 									"host": [
 										"localhost"
 									],
@@ -295,13 +358,12 @@
 									"path": [
 										"api",
 										"v1",
-										"addresses",
-										"add"
+										"addresses"
 									],
 									"query": [
 										{
 											"key": "userId",
-											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+											"value": "efcfc3ec-2738-42e8-b1ae-17e2b972872f"
 										}
 									]
 								}
@@ -309,12 +371,12 @@
 							"response": []
 						},
 						{
-							"name": "get addresses",
+							"name": "get address by user",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses/get?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7",
+									"raw": "localhost:8222/api/v1/addresses?userId=efcfc3ec-2738-42e8-b1ae-17e2b972872f",
 									"host": [
 										"localhost"
 									],
@@ -322,13 +384,12 @@
 									"path": [
 										"api",
 										"v1",
-										"addresses",
-										"get"
+										"addresses"
 									],
 									"query": [
 										{
 											"key": "userId",
-											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+											"value": "efcfc3ec-2738-42e8-b1ae-17e2b972872f"
 										}
 									]
 								}
@@ -341,7 +402,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses/delete?addressId=49c4e160-9091-4a67-a93e-e3caa2a301c1",
+									"raw": "localhost:8222/api/v1/addresses?addressId=611c39ec-f079-4ab4-bb75-bf239dc453f2",
 									"host": [
 										"localhost"
 									],
@@ -349,13 +410,12 @@
 									"path": [
 										"api",
 										"v1",
-										"addresses",
-										"delete"
+										"addresses"
 									],
 									"query": [
 										{
 											"key": "addressId",
-											"value": "49c4e160-9091-4a67-a93e-e3caa2a301c1"
+											"value": "611c39ec-f079-4ab4-bb75-bf239dc453f2"
 										}
 									]
 								}
@@ -377,7 +437,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses/update?addressId=49c4e160-9091-4a67-a93e-e3caa2a301c1",
+									"raw": "localhost:8222/api/v1/addresses?addressId=ae81526b-2aeb-4b6e-b41b-27d0888f8078",
 									"host": [
 										"localhost"
 									],
@@ -385,13 +445,12 @@
 									"path": [
 										"api",
 										"v1",
-										"addresses",
-										"update"
+										"addresses"
 									],
 									"query": [
 										{
 											"key": "addressId",
-											"value": "49c4e160-9091-4a67-a93e-e3caa2a301c1"
+											"value": "ae81526b-2aeb-4b6e-b41b-27d0888f8078"
 										}
 									]
 								}
@@ -399,12 +458,12 @@
 							"response": []
 						},
 						{
-							"name": "upadte default address",
+							"name": "update default address",
 							"request": {
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses/set-default?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7&addressId=eb9cbbc3-6d75-4f8e-8706-85f1313b46ff",
+									"raw": "localhost:8222/api/v1/addresses/set-default?userId=e3551456-9eaa-460e-8fa6-a6a18a11a72a&addressId=ae81526b-2aeb-4b6e-b41b-27d0888f8078",
 									"host": [
 										"localhost"
 									],
@@ -418,11 +477,11 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+											"value": "e3551456-9eaa-460e-8fa6-a6a18a11a72a"
 										},
 										{
 											"key": "addressId",
-											"value": "eb9cbbc3-6d75-4f8e-8706-85f1313b46ff"
+											"value": "ae81526b-2aeb-4b6e-b41b-27d0888f8078"
 										}
 									]
 								}
@@ -441,7 +500,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"demo\",\n    \"username\": \"demo\",\n    \"password\": \"password\",\n    \"email\": \"demo@doamin.com\",\n    \"roleId\": \"12f74f1a-9328-4ed7-8c91-839ea0ed8ce7\"\n}\n",
+									"raw": "{\n    \"fullname\": \"test\",\n    \"username\": \"test\",\n    \"password\": \"password\",\n    \"email\": \"test@doamin.com\",\n    \"roleId\": \"5ad7d775-30ae-4cd6-9b9b-9e6c76165c90\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -449,7 +508,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/users/create",
+									"raw": "localhost:8222/api/v1/users",
 									"host": [
 										"localhost"
 									],
@@ -457,8 +516,7 @@
 									"path": [
 										"api",
 										"v1",
-										"users",
-										"create"
+										"users"
 									]
 								}
 							},
@@ -470,7 +528,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/users/get?userId=8a253ad1-ce20-408e-a851-d7cd4a1aa8f7",
+									"raw": "localhost:8222/api/v1/users?userId=33167a6f-1c2b-4ebf-b54c-708408a39cc7",
 									"host": [
 										"localhost"
 									],
@@ -478,13 +536,12 @@
 									"path": [
 										"api",
 										"v1",
-										"users",
-										"get"
+										"users"
 									],
 									"query": [
 										{
 											"key": "userId",
-											"value": "8a253ad1-ce20-408e-a851-d7cd4a1aa8f7"
+											"value": "33167a6f-1c2b-4ebf-b54c-708408a39cc7"
 										}
 									]
 								}
@@ -497,7 +554,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/users/delete?userId=0a250be6-870b-43cf-b254-216cc273b59b",
+									"raw": "localhost:8222/api/v1/users?userId=9b43165c-4a17-4f12-a84e-f0c3f5e72005",
 									"host": [
 										"localhost"
 									],
@@ -505,13 +562,12 @@
 									"path": [
 										"api",
 										"v1",
-										"users",
-										"delete"
+										"users"
 									],
 									"query": [
 										{
 											"key": "userId",
-											"value": "0a250be6-870b-43cf-b254-216cc273b59b"
+											"value": "9b43165c-4a17-4f12-a84e-f0c3f5e72005"
 										}
 									]
 								}
@@ -533,7 +589,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/users/update?userId=0a250be6-870b-43cf-b254-216cc273b59b",
+									"raw": "localhost:8222/api/v1/users?userId=33167a6f-1c2b-4ebf-b54c-708408a39cc7",
 									"host": [
 										"localhost"
 									],
@@ -541,13 +597,12 @@
 									"path": [
 										"api",
 										"v1",
-										"users",
-										"update"
+										"users"
 									],
 									"query": [
 										{
 											"key": "userId",
-											"value": "0a250be6-870b-43cf-b254-216cc273b59b"
+											"value": "33167a6f-1c2b-4ebf-b54c-708408a39cc7"
 										}
 									]
 								}
@@ -570,7 +625,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"updated\",\n    \"password\": \"updated\"\n}",
+									"raw": "{\n    \"username\": \"test\",\n    \"password\": \"password\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -605,7 +660,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"customer\"\n}",
+									"raw": "{\n    \"type\": \"demo\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -613,7 +668,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/roles/create",
+									"raw": "localhost:8222/api/v1/roles",
 									"host": [
 										"localhost"
 									],
@@ -621,8 +676,7 @@
 									"path": [
 										"api",
 										"v1",
-										"roles",
-										"create"
+										"roles"
 									]
 								}
 							},
@@ -634,7 +688,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/roles/role-type?roleId=1971703e-c7ac-4cff-ba28-29b7709d8a61",
+									"raw": "localhost:8222/api/v1/roles?roleId=e3396f12-6e6d-450e-ab4c-9dc1a93a8493",
 									"host": [
 										"localhost"
 									],
@@ -642,13 +696,12 @@
 									"path": [
 										"api",
 										"v1",
-										"roles",
-										"role-type"
+										"roles"
 									],
 									"query": [
 										{
 											"key": "roleId",
-											"value": "1971703e-c7ac-4cff-ba28-29b7709d8a61"
+											"value": "e3396f12-6e6d-450e-ab4c-9dc1a93a8493"
 										}
 									]
 								}
@@ -662,7 +715,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"superuser\"\n}",
+									"raw": "{\n    \"type\": \"updated\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -670,7 +723,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/roles/update?roleId=f4f3c6d0-1040-4847-9ab7-3ca97665a720",
+									"raw": "localhost:8222/api/v1/roles?roleId=e3396f12-6e6d-450e-ab4c-9dc1a93a8493",
 									"host": [
 										"localhost"
 									],
@@ -678,13 +731,12 @@
 									"path": [
 										"api",
 										"v1",
-										"roles",
-										"update"
+										"roles"
 									],
 									"query": [
 										{
 											"key": "roleId",
-											"value": "f4f3c6d0-1040-4847-9ab7-3ca97665a720"
+											"value": "e3396f12-6e6d-450e-ab4c-9dc1a93a8493"
 										}
 									]
 								}
@@ -697,7 +749,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/roles/delete?roleId=1971703e-c7ac-4cff-ba28-29b7709d8a61",
+									"raw": "localhost:8222/api/v1/roles?roleId=1a925efc-c7c2-4c42-9e4e-3317567ade64",
 									"host": [
 										"localhost"
 									],
@@ -705,13 +757,12 @@
 									"path": [
 										"api",
 										"v1",
-										"roles",
-										"delete"
+										"roles"
 									],
 									"query": [
 										{
 											"key": "roleId",
-											"value": "1971703e-c7ac-4cff-ba28-29b7709d8a61"
+											"value": "1a925efc-c7c2-4c42-9e4e-3317567ade64"
 										}
 									]
 								}
@@ -734,7 +785,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/orders/get?orderId=83506ab3-f4df-4779-a82f-af26f4b336d0",
+									"raw": "localhost:8222/api/v1/orders/get?orderId=297a3a95-4fc5-45cc-b33c-bf7dc3528696",
 									"host": [
 										"localhost"
 									],
@@ -748,7 +799,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "83506ab3-f4df-4779-a82f-af26f4b336d0"
+											"value": "297a3a95-4fc5-45cc-b33c-bf7dc3528696"
 										}
 									]
 								}
@@ -762,7 +813,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"quantity\": 8\n            }\n        ]\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"quantity\": 4\n            }\n        ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -780,6 +831,80 @@
 										"v1",
 										"orders",
 										"create"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "payment",
+					"item": [
+						{
+							"name": "get payment",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 42.184,\n    \"status\": \"fAiled\",\n    \"orderId\": \"eff5d234-7669-4bfb-820b-5651f8dfc6af\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/payments/get?paymentId=5cf04965-7fc5-4f28-9c30-9cf18b39dd72",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"payments",
+										"get"
+									],
+									"query": [
+										{
+											"key": "paymentId",
+											"value": "5cf04965-7fc5-4f28-9c30-9cf18b39dd72"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "make-payment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 42.184,\n    \"status\": \"processing\",\n    \"orderId\": \"297a3a95-4fc5-45cc-b33c-bf7dc3528696\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8002/api/v1/payments/make-payment",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"api",
+										"v1",
+										"payments",
+										"make-payment"
 									]
 								}
 							},

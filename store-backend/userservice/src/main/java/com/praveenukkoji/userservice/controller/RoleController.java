@@ -1,6 +1,6 @@
 package com.praveenukkoji.userservice.controller;
 
-import com.praveenukkoji.userservice.dto.error.ErrorResponse;
+import com.praveenukkoji.userservice.dto.error.ValidationResponse;
 import com.praveenukkoji.userservice.dto.request.role.CreateRoleRequest;
 import com.praveenukkoji.userservice.dto.request.role.UpdateRoleRequest;
 import com.praveenukkoji.userservice.exception.role.RoleCreateException;
@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,59 +24,70 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @PostMapping(path = "/create")
+    @PostMapping(path = "")
     public ResponseEntity<?> createRole(@RequestBody @Valid CreateRoleRequest createRoleRequest)
             throws RoleCreateException {
         return ResponseEntity.status(201).body(roleService.createRole(createRoleRequest));
     }
 
-    @GetMapping(path = "/role-type")
-    public ResponseEntity<?> getRoleType(
+    @GetMapping(path = "")
+    public ResponseEntity<?> getRole(
             @RequestParam(defaultValue = "", name = "roleId") String roleId
     ) throws RoleNotFoundException {
-
         if (Objects.equals(roleId, "")) {
-            ErrorResponse errorResponse = ErrorResponse.builder()
-                    .message("role id is empty")
+            Map<String, String> error = new HashMap<>();
+            error.put("roleId", "role id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
                     .build();
-            return ResponseEntity.status(400).body(errorResponse);
+
+            return ResponseEntity.status(400).body(response);
         }
 
         UUID id = UUID.fromString(roleId);
-        return ResponseEntity.status(200).body(roleService.getRoleType(id));
+        return ResponseEntity.status(200).body(roleService.getRole(id));
 
     }
 
-    @PatchMapping(path = "/update")
+    @PatchMapping(path = "")
     public ResponseEntity<?> updateRole(
             @RequestParam(defaultValue = "", name = "roleId") String roleId,
             @RequestBody @Valid UpdateRoleRequest updateRoleRequest
     ) throws RoleNotFoundException, RoleUpdateException {
-
         if (Objects.equals(roleId, "")) {
-            ErrorResponse errorResponse = ErrorResponse.builder()
-                    .message("role id is empty")
+            Map<String, String> error = new HashMap<>();
+            error.put("roleId", "role id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
                     .build();
-            return ResponseEntity.status(400).body(errorResponse);
+
+            return ResponseEntity.status(400).body(response);
         }
 
         UUID id = UUID.fromString(roleId);
         return ResponseEntity.status(200).body(roleService.updateRole(id, updateRoleRequest));
     }
 
-    @DeleteMapping(path = "/delete")
+    @DeleteMapping(path = "")
     public ResponseEntity<?> deleteRole(
             @RequestParam(defaultValue = "", name = "roleId") String roleId
     ) throws RoleNotFoundException {
-
         if (Objects.equals(roleId, "")) {
-            ErrorResponse errorResponse = ErrorResponse.builder()
-                    .message("role id is empty")
+            Map<String, String> error = new HashMap<>();
+            error.put("roleId", "role id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
                     .build();
-            return ResponseEntity.status(400).body(errorResponse);
+
+            return ResponseEntity.status(400).body(response);
         }
 
         UUID id = UUID.fromString(roleId);
-        return ResponseEntity.status(200).body(roleService.deleteRole(id));
+        roleService.deleteRole(id);
+
+        return ResponseEntity.status(204).body("");
     }
 }
