@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Data
@@ -43,7 +43,7 @@ public class Category {
 
     private UUID modifiedBy;
 
-    @OneToMany(fetch = EAGER, mappedBy = "category")
+    @OneToMany(fetch = LAZY, mappedBy = "category")
     @JsonIgnore
     private List<Product> products;
 }

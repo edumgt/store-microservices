@@ -3,9 +3,9 @@ package com.praveenukkoji.productservice.service;
 import com.praveenukkoji.productservice.dto.request.category.CreateCategoryRequest;
 import com.praveenukkoji.productservice.dto.request.category.UpdateCategoryRequest;
 import com.praveenukkoji.productservice.dto.response.category.CategoryResponse;
+import com.praveenukkoji.productservice.exception.category.CategoryCreateException;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.category.CategoryUpdateException;
-import com.praveenukkoji.productservice.exception.category.CreateCategoryException;
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +23,7 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public UUID createCategory(CreateCategoryRequest createCategoryRequest)
-            throws CreateCategoryException {
+            throws CategoryCreateException {
 
         Category newCategory = Category.builder()
                 .name(createCategoryRequest.getName())
@@ -33,7 +32,7 @@ public class CategoryService {
         try {
             return categoryRepository.save(newCategory).getId();
         } catch (Exception e) {
-            throw new CreateCategoryException();
+            throw new CategoryCreateException();
         }
     }
 
@@ -60,14 +59,11 @@ public class CategoryService {
 
         if (category.isPresent()) {
 
-            String categoryName = updateCategoryRequest.getName();
-
-            if (!Objects.equals(categoryName, "")) {
-                category.get().setName(categoryName);
-            }
-
             try {
-                return categoryRepository.save(category.get()).getId();
+                Category updatedCategory = category.get();
+                updatedCategory.setName(updateCategoryRequest.getName());
+
+                return categoryRepository.save(updatedCategory).getId();
             } catch (Exception e) {
                 throw new CategoryUpdateException();
             }
@@ -76,18 +72,17 @@ public class CategoryService {
         throw new CategoryNotFoundException();
     }
 
-    public UUID deleteCategory(UUID categoryId)
+    public void deleteCategory(UUID categoryId)
             throws CategoryNotFoundException {
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
             categoryRepository.deleteById(categoryId);
-
-            return categoryId;
+            return;
         }
 
-        throw new CategoryNotFoundException();
+        throw new CategoryNotFoundException("category with id = " + categoryId + " not found");
     }
 }
 
