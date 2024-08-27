@@ -7,7 +7,6 @@ import com.praveenukkoji.productservice.exception.category.CategoryNotFoundExcep
 import com.praveenukkoji.productservice.exception.category.CategoryUpdateException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
-import com.praveenukkoji.productservice.exception.product.ReduceQuantityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -42,17 +41,6 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(404).body(exceptionResponse);
-    }
-
-    @ExceptionHandler(ReduceQuantityException.class)
-    public ResponseEntity<?> handleException(ReduceQuantityException exception) {
-        log.error("ReduceQuantityException - {}", exception.getMessage());
-
-        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
-                .message(exception.getMessage())
-                .build();
-
-        return ResponseEntity.status(400).body(exceptionResponse);
     }
 
     @ExceptionHandler(CategoryCreateException.class)

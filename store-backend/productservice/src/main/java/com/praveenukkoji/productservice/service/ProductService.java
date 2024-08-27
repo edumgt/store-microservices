@@ -3,7 +3,7 @@ package com.praveenukkoji.productservice.service;
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
 import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
-import com.praveenukkoji.productservice.exception.product.CreateProductException;
+import com.praveenukkoji.productservice.exception.product.ProductCreateException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.model.Product;
@@ -28,9 +28,9 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     public UUID createProduct(CreateProductRequest createProductRequest)
-            throws CreateProductException, CategoryNotFoundException {
-
-        Optional<Category> category = categoryRepository.findById(createProductRequest.getCategoryId());
+            throws ProductCreateException, CategoryNotFoundException {
+        UUID categoryId = createProductRequest.getCategoryId();
+        Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
             Product newProduct = Product.builder()
@@ -44,20 +44,18 @@ public class ProductService {
             try {
                 return productRepository.save(newProduct).getId();
             } catch (Exception e) {
-                throw new CreateProductException();
+                throw new ProductCreateException();
             }
         }
 
-        throw new CategoryNotFoundException();
+        throw new CategoryNotFoundException("category with id = " + categoryId + " does not exist");
     }
 
     public ProductResponse getProduct(UUID productId)
             throws ProductNotFoundException {
-
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
-
             return ProductResponse.builder()
                     .id(product.get().getId())
                     .name(product.get().getName())
@@ -68,7 +66,7 @@ public class ProductService {
                     .build();
         }
 
-        throw new ProductNotFoundException();
+        throw new ProductNotFoundException("product with id = " + productId + " does not exist");
     }
 
     public List<ProductResponse> getAllProduct() {
@@ -89,15 +87,13 @@ public class ProductService {
                 .toList();
     }
 
-    public UUID deleteProduct(UUID productId)
+    public void deleteProduct(UUID productId)
             throws ProductNotFoundException {
-
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
             productRepository.deleteById(productId);
-
-            return productId;
+            return;
         }
 
         throw new ProductNotFoundException();

@@ -1,5 +1,6 @@
 package com.praveenukkoji.productservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,5 +45,6 @@ public class Product {
     private UUID modifiedBy;
 
     @ManyToOne(fetch = EAGER)
+    @JsonIgnore
     private Category category;
 }

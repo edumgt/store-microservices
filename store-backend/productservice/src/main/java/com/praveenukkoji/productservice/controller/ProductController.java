@@ -1,9 +1,9 @@
 package com.praveenukkoji.productservice.controller;
 
-import com.praveenukkoji.productservice.dto.error.ErrorResponse;
+import com.praveenukkoji.productservice.dto.error.ValidationResponse;
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
-import com.praveenukkoji.productservice.exception.product.CreateProductException;
+import com.praveenukkoji.productservice.exception.product.ProductCreateException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.service.ProductService;
 import jakarta.validation.Valid;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,49 +23,54 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping(path = "/create")
+    @PostMapping(path = "")
     public ResponseEntity<?> createProduct(@RequestBody @Valid CreateProductRequest createProductRequest)
-            throws CreateProductException, CategoryNotFoundException {
-
+            throws ProductCreateException, CategoryNotFoundException {
         return ResponseEntity.status(201).body(productService.createProduct(createProductRequest));
     }
 
-    @GetMapping(path = "/get")
+    @GetMapping(path = "")
     public ResponseEntity<?> getProduct(
             @RequestParam(defaultValue = "", name = "productId") String productId
     ) throws ProductNotFoundException {
-
         if (Objects.equals(productId, "")) {
-            ErrorResponse errorResponse = ErrorResponse.builder()
-                    .message("product id is empty")
+            Map<String, String> error = new HashMap<>();
+            error.put("productId", "product id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
                     .build();
 
-            return ResponseEntity.status(400).body(errorResponse);
+            return ResponseEntity.status(400).body(response);
         }
 
         UUID id = UUID.fromString(productId);
         return ResponseEntity.status(200).body(productService.getProduct(id));
     }
 
-    @GetMapping(path = "/get/all")
+    @GetMapping(path = "/all")
     public ResponseEntity<?> getAllProduct() {
         return ResponseEntity.status(200).body(productService.getAllProduct());
     }
 
-    @DeleteMapping(path = "/delete")
+    @DeleteMapping(path = "")
     public ResponseEntity<?> deleteProduct(
             @RequestParam(defaultValue = "", name = "productId") String productId
     ) throws ProductNotFoundException {
-
         if (Objects.equals(productId, "")) {
-            ErrorResponse errorResponse = ErrorResponse.builder()
-                    .message("product id is empty")
+            Map<String, String> error = new HashMap<>();
+            error.put("productId", "product id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
                     .build();
 
-            return ResponseEntity.status(400).body(errorResponse);
+            return ResponseEntity.status(400).body(response);
         }
 
         UUID id = UUID.fromString(productId);
-        return ResponseEntity.status(200).body(productService.deleteProduct(id));
+        productService.deleteProduct(id);
+
+        return ResponseEntity.status(204).body("");
     }
 }
