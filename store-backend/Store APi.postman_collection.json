@@ -21,7 +21,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/products/delete?productId=d5e9a743-da50-405c-9bb1-7ee12ef76369",
+									"raw": "localhost:8222/api/v1/products?productId=01c2bac0-a41c-46f8-8a83-ff568609e6cc",
 									"host": [
 										"localhost"
 									],
@@ -29,13 +29,12 @@
 									"path": [
 										"api",
 										"v1",
-										"products",
-										"delete"
+										"products"
 									],
 									"query": [
 										{
 											"key": "productId",
-											"value": "d5e9a743-da50-405c-9bb1-7ee12ef76369"
+											"value": "01c2bac0-a41c-46f8-8a83-ff568609e6cc"
 										}
 									]
 								}
@@ -51,7 +50,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/products/get/all",
+									"raw": "localhost:8222/api/v1/products/all",
 									"host": [
 										"localhost"
 									],
@@ -60,7 +59,6 @@
 										"api",
 										"v1",
 										"products",
-										"get",
 										"all"
 									]
 								}
@@ -76,7 +74,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/products/get?productId=1a7ec121-3f63-4c44-b626-82fce979410f",
+									"raw": "localhost:8222/api/v1/products?productId=01c2bac0-a41c-46f8-8a83-ff568609e6cc",
 									"host": [
 										"localhost"
 									],
@@ -84,13 +82,12 @@
 									"path": [
 										"api",
 										"v1",
-										"products",
-										"get"
+										"products"
 									],
 									"query": [
 										{
 											"key": "productId",
-											"value": "1a7ec121-3f63-4c44-b626-82fce979410f"
+											"value": "01c2bac0-a41c-46f8-8a83-ff568609e6cc"
 										}
 									]
 								}
@@ -107,7 +104,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"463578f8-c90c-405a-8bef-6eaa859d9ce5\"\n}",
+									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"7d370c11-ed84-4d69-9b6e-63dd11672d32\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -115,7 +112,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/products/create",
+									"raw": "localhost:8222/api/v1/products",
 									"host": [
 										"localhost"
 									],
@@ -123,71 +120,7 @@
 									"path": [
 										"api",
 										"v1",
-										"products",
-										"create"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get-product-list",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"productIdList\": [\"1a7ec121-3f63-4c44-b626-82fce979410f\", \"3224e45c-ab94-41df-9b15-7987b4c39061\", \"f3d24617-d0ab-45fe-b13a-7c89cc8ba876\"]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "localhost:8222/api/v1/products/get-product-list",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"get-product-list"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "reduce quantity",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n    {\n        \"id\": \"1a7ec121-3f63-4c44-b626-82fce979410f\",\n        \"quantity\": 10\n    },\n    {\n        \"id\": \"3224e45c-ab94-41de-9b15-7987b4c39061\",\n        \"quantity\": 10\n    },\n    {\n        \"id\": \"f3d24617-d0ab-45fe-b13a-7c89cc8ba876\",\n        \"quantity\": 10\n    }\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "localhost:8222/api/v1/products/reduce-quantity",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"reduce-quantity"
+										"products"
 									]
 								}
 							},
@@ -207,7 +140,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/categories/delete?categoryId=fbceb0a1-335a-4d40-a120-2a52c6c85cb5",
+									"raw": "localhost:8222/api/v1/categories?categoryId=c24315bc-f0a7-4884-9cd4-ae4bd7f583d3",
 									"host": [
 										"localhost"
 									],
@@ -215,13 +148,12 @@
 									"path": [
 										"api",
 										"v1",
-										"categories",
-										"delete"
+										"categories"
 									],
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "fbceb0a1-335a-4d40-a120-2a52c6c85cb5"
+											"value": "c24315bc-f0a7-4884-9cd4-ae4bd7f583d3"
 										}
 									]
 								}
@@ -246,7 +178,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/categories/update?categoryId=6dc38a0f-3741-4603-bfc2-7f4598ff04f1",
+									"raw": "localhost:8222/api/v1/categories?categoryId=c24315bc-f0a7-4884-9cd4-ae4bd7f583d3",
 									"host": [
 										"localhost"
 									],
@@ -254,13 +186,12 @@
 									"path": [
 										"api",
 										"v1",
-										"categories",
-										"update"
+										"categories"
 									],
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "6dc38a0f-3741-4603-bfc2-7f4598ff04f1"
+											"value": "c24315bc-f0a7-4884-9cd4-ae4bd7f583d3"
 										}
 									]
 								}
@@ -276,7 +207,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/categories/get/all",
+									"raw": "localhost:8222/api/v1/categories/all",
 									"host": [
 										"localhost"
 									],
@@ -285,7 +216,6 @@
 										"api",
 										"v1",
 										"categories",
-										"get",
 										"all"
 									]
 								}
@@ -310,7 +240,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/categories/create",
+									"raw": "localhost:8222/api/v1/categories",
 									"host": [
 										"localhost"
 									],
@@ -318,8 +248,7 @@
 									"path": [
 										"api",
 										"v1",
-										"categories",
-										"create"
+										"categories"
 									]
 								}
 							},
@@ -785,7 +714,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/orders/get?orderId=297a3a95-4fc5-45cc-b33c-bf7dc3528696",
+									"raw": "localhost:8222/api/v1/orders?orderId=19a2a09b-7b9a-49ce-b16d-fb5d3e33fe91",
 									"host": [
 										"localhost"
 									],
@@ -793,13 +722,12 @@
 									"path": [
 										"api",
 										"v1",
-										"orders",
-										"get"
+										"orders"
 									],
 									"query": [
 										{
 											"key": "orderId",
-											"value": "297a3a95-4fc5-45cc-b33c-bf7dc3528696"
+											"value": "19a2a09b-7b9a-49ce-b16d-fb5d3e33fe91"
 										}
 									]
 								}
@@ -813,7 +741,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"quantity\": 4\n            }\n        ]\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"quantity\": 4\n            },\n            {\n                \"id\" : \"297a3a95-4fc5-45cc-b33c-bf7dc3528696\",\n                \"quantity\": 10\n            }\n        ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -821,7 +749,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/orders/create",
+									"raw": "localhost:8222/api/v1/orders",
 									"host": [
 										"localhost"
 									],
@@ -829,8 +757,7 @@
 									"path": [
 										"api",
 										"v1",
-										"orders",
-										"create"
+										"orders"
 									]
 								}
 							},
@@ -859,7 +786,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/payments/get?paymentId=5cf04965-7fc5-4f28-9c30-9cf18b39dd72",
+									"raw": "localhost:8222/api/v1/payments?paymentId=4979eefa-5cdb-4e2f-9726-7e4030e83526",
 									"host": [
 										"localhost"
 									],
@@ -867,13 +794,12 @@
 									"path": [
 										"api",
 										"v1",
-										"payments",
-										"get"
+										"payments"
 									],
 									"query": [
 										{
 											"key": "paymentId",
-											"value": "5cf04965-7fc5-4f28-9c30-9cf18b39dd72"
+											"value": "4979eefa-5cdb-4e2f-9726-7e4030e83526"
 										}
 									]
 								}
@@ -881,13 +807,13 @@
 							"response": []
 						},
 						{
-							"name": "make-payment",
+							"name": "make payment",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"amount\": 42.184,\n    \"status\": \"processing\",\n    \"orderId\": \"297a3a95-4fc5-45cc-b33c-bf7dc3528696\"\n}",
+									"raw": "{\n    \"amount\": 150.00,\n    \"status\": \"success\",\n    \"orderId\": \"5302908e-f2fd-43fd-be02-e256f08438a5\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -895,7 +821,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8002/api/v1/payments/make-payment",
+									"raw": "localhost:8002/api/v1/payments",
 									"host": [
 										"localhost"
 									],
@@ -903,8 +829,7 @@
 									"path": [
 										"api",
 										"v1",
-										"payments",
-										"make-payment"
+										"payments"
 									]
 								}
 							},
