@@ -1,5 +1,7 @@
 package com.praveenukkoji.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.praveenukkoji.orderservice.model.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +28,7 @@ public class Payment {
 
     private Double amount;
 
-    private String status;
+    private PaymentStatus status;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -39,4 +41,8 @@ public class Payment {
     private LocalDateTime modifiedOn;
 
     private UUID modifiedBy;
+
+    @OneToOne
+    @JsonIgnore
+    private Order order;
 }

@@ -1,5 +1,6 @@
 package com.praveenukkoji.orderservice.model;
 
+import com.praveenukkoji.orderservice.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +31,7 @@ public class Order {
     private Integer totalItems;
     private Double amount;
 
-    private String status;
+    private OrderStatus status;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

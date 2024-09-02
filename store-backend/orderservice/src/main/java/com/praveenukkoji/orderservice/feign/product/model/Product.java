@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.feignClient.product.model;
+package com.praveenukkoji.orderservice.feign.product.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,5 +14,6 @@ import java.util.UUID;
 public class Product {
     private UUID productId;
     private Double price;
-    private Integer quantity;
+    private Boolean inStock;
 }
+

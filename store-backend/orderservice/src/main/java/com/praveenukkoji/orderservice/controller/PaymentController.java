@@ -1,6 +1,6 @@
 package com.praveenukkoji.orderservice.controller;
 
-import com.praveenukkoji.orderservice.dto.error.ErrorResponse;
+import com.praveenukkoji.orderservice.dto.error.ValidationResponse;
 import com.praveenukkoji.orderservice.dto.request.payment.MakePaymentRequest;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,24 +23,25 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping(path = "/make-payment")
+    @PostMapping(path = "")
     public ResponseEntity<?> makePayment(@RequestBody @Valid MakePaymentRequest makePaymentRequest)
             throws OrderNotFoundException, CreatePaymentException {
-
         return ResponseEntity.status(201).body(paymentService.makePayment(makePaymentRequest));
     }
 
-    @GetMapping(path = "/get")
+    @GetMapping(path = "")
     public ResponseEntity<?> getPayment(
             @RequestParam(defaultValue = "", name = "paymentId") String paymentId
     ) throws PaymentNotFoundException {
-
         if (Objects.equals(paymentId, "")) {
-            ErrorResponse errorResponse = ErrorResponse.builder()
-                    .message("payment id is empty")
+            Map<String, String> error = new HashMap<>();
+            error.put("paymentId", "payment id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
                     .build();
 
-            return ResponseEntity.status(400).body(errorResponse);
+            return ResponseEntity.status(400).body(response);
         }
 
         UUID id = UUID.fromString(paymentId);

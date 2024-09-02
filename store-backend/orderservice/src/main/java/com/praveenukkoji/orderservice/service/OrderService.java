@@ -5,97 +5,72 @@ import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.dto.response.order.OrderResponse;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
-import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
-import com.praveenukkoji.orderservice.exception.product.ProductDoesNotExist;
-import com.praveenukkoji.orderservice.exception.product.QuantityNotAvailable;
-import com.praveenukkoji.orderservice.feignClient.product.model.Product;
+import com.praveenukkoji.orderservice.exception.product.ProductNotFoundException;
+import com.praveenukkoji.orderservice.exception.product.ProductNotInStock;
+import com.praveenukkoji.orderservice.feign.product.model.Product;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.OrderItem;
-import com.praveenukkoji.orderservice.model.Payment;
+import com.praveenukkoji.orderservice.model.enums.OrderStatus;
 import com.praveenukkoji.orderservice.repository.OrderRepository;
-import com.praveenukkoji.orderservice.repository.PaymentRepository;
-import com.praveenukkoji.orderservice.utility.Utility;
+import com.praveenukkoji.orderservice.utility.OrderUtility;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class OrderService {
 
-    @Autowired
-    private Utility utility;
+    private final OrderUtility orderUtility;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private PaymentRepository paymentRepository;
-
-    @Transactional
     public UUID createOrder(CreateOrderRequest createOrderRequest)
-            throws CreateOrderException, QuantityNotAvailable, ProductDoesNotExist {
+            throws CreateOrderException, ProductNotInStock, ProductNotFoundException {
 
-        // calculating total items count
-        int totalItems = createOrderRequest.getItemList().stream()
+        List<Item> itemList = createOrderRequest.getItemList();
+        List<UUID> itemIds = itemList.stream().map(Item::getId).toList();
+
+        // getting product's from product-service
+        // TODO:
+        List<Product> productList = orderUtility.getProducts(itemIds);
+
+        // validating if all product in stock
+        for (Product product : productList) {
+            if (!product.getInStock()) {
+                throw new ProductNotInStock("product with id = " + product.getProductId() + " is not in stock");
+            }
+        }
+
+        // CREATING NEW-ORDER
+
+        // calculating total-items
+        int totalItems = itemList.stream()
                 .mapToInt(Item::getQuantity).sum();
 
         // calculating order amount
-        double orderAmount = utility.getOrderAmount(createOrderRequest);
+        // TODO:
+        double amount = orderUtility.getOrderAmount(itemList, productList);
 
         // creating order
         Order newOrder = Order.builder()
                 .totalItems(totalItems)
-                .amount(orderAmount)
-                .status("CREATED")
+                .amount(amount)
+                .status(OrderStatus.CREATED)
                 .build();
 
-        // creating list of order items list
-        List<OrderItem> orderItemList = new ArrayList<>();
+        // CREATING ORDER-ITEM-LIST
 
-        List<Item> itemList = createOrderRequest.getItemList();
-
-        // getting item from product service
-        List<Product> productList = utility.getProducts(itemList);
-
-
-        for (Item item : itemList) {
-            UUID itemId = item.getId();
-            int itemQty = item.getQuantity();
-
-            Optional<Product> matchingProduct = productList.stream()
-                    .filter(product -> product.getProductId().equals(itemId))
-                    .findFirst();
-
-            if (matchingProduct.isPresent()) {
-                if (matchingProduct.get().getQuantity() >= itemQty) {
-                    orderItemList.add(
-                            OrderItem.builder()
-                                    .productId(itemId)
-                                    .quantity(itemQty)
-                                    .price(matchingProduct.get().getPrice())
-                                    .order(newOrder)
-                                    .build()
-                    );
-                } else {
-                    throw new QuantityNotAvailable("quantity not available for product id = " + itemId);
-                }
-            } else {
-                throw new ProductDoesNotExist("product with id = " + itemId + " doesn't exist.");
-            }
-        }
+        //TODO:
+        List<OrderItem> orderItemList = orderUtility.getOrderItemList(itemList, productList);
 
         newOrder.setOrderItemList(orderItemList);
 
         try {
-            // TODO: update quantity of products threw product-service
-
             return orderRepository.save(newOrder).getId();
         } catch (Exception e) {
             throw new CreateOrderException();
@@ -103,40 +78,27 @@ public class OrderService {
     }
 
     public OrderResponse getOrder(UUID orderId)
-            throws OrderNotFoundException, PaymentNotFoundException {
+            throws OrderNotFoundException {
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if (order.isPresent()) {
+            String orderStatus = String.valueOf(order.get().getStatus());
 
-            OrderResponse response = OrderResponse.builder()
+            return OrderResponse.builder()
                     .id(order.get().getId())
                     .totalItems(order.get().getTotalItems())
                     .amount(order.get().getAmount())
-                    .status(order.get().getStatus())
+                    .status(orderStatus)
                     .createdOn(order.get().getCreatedOn())
                     .createdBy(order.get().getCreatedBy())
                     .modifiedOn(order.get().getModifiedOn())
                     .modifiedBy(order.get().getModifiedBy())
                     .orderItemList(order.get().getOrderItemList())
+                    .payment(order.get().getPayment())
                     .build();
-
-            if (order.get().getPayment() != null) {
-
-                UUID paymentId = order.get().getPayment().getId();
-                Optional<Payment> payment = paymentRepository.findById(paymentId);
-
-                if (payment.isPresent()) {
-                    response.setPayment(payment.get());
-                } else {
-                    throw new PaymentNotFoundException();
-                }
-            }
-
-            return response;
-
-        } else {
-            throw new OrderNotFoundException();
         }
+
+        throw new OrderNotFoundException();
     }
 }

@@ -4,4 +4,8 @@ public class CreatePaymentException extends Exception {
     public CreatePaymentException() {
         super("unable to create payment");
     }
+
+    public CreatePaymentException(String message) {
+        super(message);
+    }
 }

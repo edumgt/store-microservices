@@ -21,6 +21,6 @@ public class MakePaymentRequest {
     @NotEmpty(message = "status is empty")
     private String status;
 
-    @NotNull(message = "order is is null")
+    @NotNull(message = "order id is null")
     private UUID orderId;
 }

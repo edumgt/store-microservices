@@ -5,12 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ExceptionResponse {
-    private Set<String> validationErrors;
+    private String message;
 }
