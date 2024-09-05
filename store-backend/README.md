@@ -1,122 +1,60 @@
-<h1 align="center" id="title">Store Microservices</h1>
+<h1>Store Microservices</h1>
 
-<p id="description">Simple Store API Microservice using Spring Boot.</p>
+<p>Simple Store API using Spring Boot (microservice).</p>
 
-<h2>Features</h2>
+## Technologies Used
 
-Here're some of the project's best features:
++ Java 21
++ Apache Maven
++ Spring Boot
++ PosgreSQL
++ Docker
 
-- 1
-- .....
+## Features
 
-<h2>Built with</h2>
++ .....
++ .....
 
-Technologies used in the project:
+## Model diagram
 
-- Java 21
-- Apache Maven 3.9.6
-- Spring Boot 3.3.0
+![Store API Models.png](Store%20API%20Models.png)
 
-<h2>Model diagram</h2>
+## Architecture diagram
 
-![model e-r diagram](https://github.com/praveenukkoji/store-microservices/blob/main/Store%20API%20Models.png)
+![Architecture Diagram.png](Architecture%20Diagram.png)
 
-<h2>Architecture diagram</h2>
+## Setup Steps
 
-![architecture diagram](https://github.com/praveenukkoji/store-microservices/blob/main/Architecture%20Diagram.png)
++ .....
++ .....
 
 ## Microservices
 
     Server's :
-        1. eureka-server (port : 8761)
-        2. admin-server (port : 9090)
-        3. config-server (port : 8888)
+        1. eureka-server          (port : 8761)
+        2. config-server          (port : 8888)
 
     Service's :
-        1. gatewayservice (port : 8222)
-        2. userservice (port : 8000)
-        3. productservice (port : 8001)
-        4. orderservice (port : 8002)
-
-## Things TODO
-
-- 1
-- .....
+        1. gatewayservice         (port : 8222)
+        2. userservice            (port : 8000)
+        3. productservice         (port : 8001)
+        4. orderservice           (port : 8002)
 
 ## Future Things
 
-1. add payment service:
-    - handle payment requests
+1. add payment-service:
+    + handle payment requests
 
-2. add notificationservice:
-    - send notification when order placed successfully
-    - using apache kafka
+2. add notification-service:
+    + send notification when order placed successfully
+    + using apache kafka
 
-3. create update request for all services.
-4. ELK Stack implementation.
+3. ELK Stack implementation.
 
-## API Calls
+## API Call's
 
-### Product Service
++ you can refer postman_file : [Store APi.postman_collection.json](Store%20APi.postman_collection.json)
 
-```http
-  POST /api/v1/products/create
-```
+## License
 
-- creates product.
-
-```http
-  GET /api/v1/products/get/{productId}
-```
-
-- retrieves the details for passed productId.
-
-```http
-  GET /api/v1/products/get/all
-```
-
-- retrieves the details of all products.
-
-```http
-  DELETE /api/v1/products/delete/{productId}
-```
-
-- deletes the product having productId same as passed productId.
-
-### Order Service
-
-```http
-  POST /api/v1/orders/create
-```
-
-- creates order with products belonging to order.
-
-```http
-  GET /api/v1/orders/get/{orderId}
-```
-
-- retrieves the order details for passed orderId.
-
-### User Service
-
-```http
-  POST /api/v1/users/create
-```
-
-- creates user.
-
-```http
-  GET /api/v1/users/get/{userId}
-```
-
-- retrieves the user details for passed userId.
-
-```http
-  DELETE /api/v1/users/delete/{userId}
-```
-
-- deletes the user having userId same as passed userId.
-
-<h2>License:</h2>
-
-This project is licensed under the PraveenUkkoji Org.
+This project is licensed under the PraveenUkkoji's Org.
