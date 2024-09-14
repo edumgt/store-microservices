@@ -38,8 +38,4 @@ public class Role {
     private LocalDateTime modifiedOn;
 
     private UUID modifiedBy;
-
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
-//    @JsonIgnore
-//    private List<User> user;
 }

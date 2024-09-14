@@ -26,6 +26,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // User
     @ExceptionHandler(UserCreateException.class)
     public ResponseEntity<?> handleException(UserCreateException exception) {
         log.error("UserCreateException - {}", exception.getMessage());
@@ -59,6 +60,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(exceptionResponse);
     }
 
+    // Address
     @ExceptionHandler(AddressCreateException.class)
     public ResponseEntity<?> handleException(AddressCreateException exception) {
         log.error("AddressCreateException - {}", exception.getMessage());
@@ -103,6 +105,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400).body(exceptionResponse);
     }
 
+    // Role
     @ExceptionHandler(RoleCreateException.class)
     public ResponseEntity<?> handleException(RoleCreateException exception) {
         log.error("RoleCreateException - {}", exception.getMessage());
@@ -136,6 +139,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(exceptionResponse);
     }
 
+    // Argument Validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
