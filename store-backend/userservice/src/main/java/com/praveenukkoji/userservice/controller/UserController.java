@@ -2,7 +2,6 @@ package com.praveenukkoji.userservice.controller;
 
 import com.praveenukkoji.userservice.dto.error.ValidationResponse;
 import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
-import com.praveenukkoji.userservice.dto.request.user.LoginUserRequest;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.user.UserCreateException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
@@ -90,12 +89,5 @@ public class UserController {
         userService.deleteUser(id);
 
         return ResponseEntity.status(204).body("");
-    }
-
-    @PostMapping(path = "/login")
-    public ResponseEntity<?> loginUser(
-            @RequestBody @Valid LoginUserRequest loginUserRequest
-    ) throws UserNotFoundException {
-        return ResponseEntity.status(200).body(userService.loginUser(loginUserRequest));
     }
 }

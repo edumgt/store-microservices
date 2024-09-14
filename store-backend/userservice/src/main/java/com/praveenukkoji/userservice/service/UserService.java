@@ -1,7 +1,6 @@
 package com.praveenukkoji.userservice.service;
 
 import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
-import com.praveenukkoji.userservice.dto.request.user.LoginUserRequest;
 import com.praveenukkoji.userservice.dto.response.user.UserResponse;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.user.UserCreateException;
@@ -30,7 +29,7 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
-    
+
     public UUID createUser(CreateUserRequest createUserRequest)
             throws UserCreateException, RoleNotFoundException {
         Optional<Role> role = roleRepository.findById(createUserRequest.getRoleId());
@@ -124,20 +123,6 @@ public class UserService {
         if (user.isPresent()) {
             userRepository.deleteById(userId);
             return;
-        }
-
-        throw new UserNotFoundException();
-    }
-
-    public UUID loginUser(LoginUserRequest loginUserRequest)
-            throws UserNotFoundException {
-        String username = loginUserRequest.getUsername();
-        String password = loginUserRequest.getPassword();
-
-        Optional<UUID> userId = userRepository.findByUsernameAndPassword(username, password);
-
-        if (userId.isPresent()) {
-            return userId.get();
         }
 
         throw new UserNotFoundException();

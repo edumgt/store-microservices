@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 
 @Data
 @AllArgsConstructor
@@ -51,9 +51,9 @@ public class User {
 
     private UUID modifiedBy;
 
-    @ManyToOne(fetch = EAGER)
+    @ManyToOne(fetch = LAZY)
     private Role role;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = EAGER, mappedBy = "user", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
     private List<Address> addressList;
 }
