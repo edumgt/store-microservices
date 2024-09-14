@@ -138,6 +138,33 @@ public class AddressService {
         throw new AddressNotFoundException();
     }
 
+    public void deleteAddress(UUID addressId)
+            throws AddressNotFoundException, UserNotFoundException, DeleteAddressException {
+
+        Optional<Address> address = addressRepository.findById(addressId);
+
+        if (address.isPresent()) {
+
+            // if address is default cannot delete it
+            if (address.get().getIsDefault()) {
+                throw new DeleteAddressException("cannot delete default address");
+            }
+
+            UUID userId = address.get().getUser().getId();
+            Optional<User> user = userRepository.findById(userId);
+
+            if (user.isPresent()) {
+                user.get().getAddressList().removeIf(a -> a.getId() == addressId);
+                userRepository.save(user.get());
+                return;
+            } else {
+                throw new UserNotFoundException();
+            }
+        }
+
+        throw new AddressNotFoundException("address with id = " + addressId + " not found");
+    }
+
     @Transactional
     public UUID setAddressDefault(UUID userId, UUID addressId)
             throws UserNotFoundException, AddressNotFoundException, AddressUpdateException {
@@ -168,31 +195,5 @@ public class AddressService {
         }
 
         throw new UserNotFoundException();
-    }
-
-    public void deleteAddress(UUID addressId)
-            throws AddressNotFoundException, UserNotFoundException, DeleteAddressException {
-
-        Optional<Address> address = addressRepository.findById(addressId);
-
-        // if address is default cannot delete it
-        if (address.isPresent()) {
-            if (address.get().getIsDefault()) {
-                throw new DeleteAddressException("cannot delete default address");
-            }
-
-            UUID userId = address.get().getUser().getId();
-            Optional<User> user = userRepository.findById(userId);
-
-            if (user.isPresent()) {
-                user.get().getAddressList().removeIf(a -> a.getId() == addressId);
-                userRepository.save(user.get());
-                return;
-            } else {
-                throw new UserNotFoundException();
-            }
-        }
-
-        throw new AddressNotFoundException("address with id = " + addressId + " not found");
     }
 }

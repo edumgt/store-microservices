@@ -84,6 +84,27 @@ public class AddressController {
         return ResponseEntity.status(200).body(addressService.updateAddress(id, updates));
     }
 
+    @DeleteMapping(path = "")
+    public ResponseEntity<?> deleteAddress(
+            @RequestParam(defaultValue = "", name = "addressId") String addressId
+    ) throws AddressNotFoundException, UserNotFoundException, DeleteAddressException {
+        if (Objects.equals(addressId, "")) {
+            Map<String, String> error = new HashMap<>();
+            error.put("addressId", "address id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        UUID id = UUID.fromString(addressId);
+        addressService.deleteAddress(id);
+
+        return ResponseEntity.status(204).body("");
+    }
+
     @PatchMapping(path = "/set-default")
     public ResponseEntity<?> setAddressDefault(
             @RequestParam(defaultValue = "", name = "userId") String userId,
@@ -114,26 +135,5 @@ public class AddressController {
         UUID uId = UUID.fromString(userId);
         UUID aId = UUID.fromString(addressId);
         return ResponseEntity.status(200).body(addressService.setAddressDefault(uId, aId));
-    }
-
-    @DeleteMapping(path = "")
-    public ResponseEntity<?> deleteAddress(
-            @RequestParam(defaultValue = "", name = "addressId") String addressId
-    ) throws AddressNotFoundException, UserNotFoundException, DeleteAddressException {
-        if (Objects.equals(addressId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("addressId", "address id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(addressId);
-        addressService.deleteAddress(id);
-
-        return ResponseEntity.status(204).body("");
     }
 }
