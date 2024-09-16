@@ -52,7 +52,11 @@ public class ProductController {
     }
 
     // update
-    // TODO: create endpoint for product update
+    /*
+        TODO:
+        1. create endpoint for product update,
+        2. create separate endpoint for price and quantity
+    */
 
     // delete
     @DeleteMapping(path = "")
