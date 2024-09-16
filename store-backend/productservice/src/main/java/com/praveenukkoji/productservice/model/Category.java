@@ -24,7 +24,7 @@ import static jakarta.persistence.FetchType.EAGER;
 @Builder
 @Table(name = "_category")
 @EntityListeners(AuditingEntityListener.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)s
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category {
     @Id
     @GeneratedValue
