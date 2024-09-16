@@ -1,6 +1,7 @@
 package com.praveenukkoji.productservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.FetchType.EAGER;
 
 @Entity
 @Data
@@ -23,6 +24,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Builder
 @Table(name = "_category")
 @EntityListeners(AuditingEntityListener.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)s
 public class Category {
     @Id
     @GeneratedValue
@@ -43,7 +45,7 @@ public class Category {
 
     private UUID modifiedBy;
 
-    @OneToMany(fetch = LAZY, mappedBy = "category")
+    @OneToMany(fetch = EAGER, mappedBy = "category")
     @JsonIgnore
     private List<Product> products;
 }
