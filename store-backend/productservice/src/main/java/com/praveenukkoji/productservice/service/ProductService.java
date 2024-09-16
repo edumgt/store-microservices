@@ -4,31 +4,31 @@ import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest
 import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
+import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.model.Product;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
 import com.praveenukkoji.productservice.repository.ProductRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Slf4j
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
+    // create
     public UUID createProduct(CreateProductRequest createProductRequest)
-            throws ProductCreateException, CategoryNotFoundException {
+            throws CategoryNotFoundException, ProductCreateException {
+
         UUID categoryId = createProductRequest.getCategoryId();
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -44,15 +44,16 @@ public class ProductService {
             try {
                 return productRepository.save(newProduct).getId();
             } catch (Exception e) {
-                throw new ProductCreateException();
+                throw new ProductCreateException(e.getMessage());
             }
         }
 
-        throw new CategoryNotFoundException("category with id = " + categoryId + " does not exist");
+        throw new CategoryNotFoundException("category with id = " + categoryId + " not found");
     }
 
-    public ProductResponse getProduct(UUID productId)
-            throws ProductNotFoundException {
+    // retrieve
+    public ProductResponse getProduct(UUID productId) throws ProductNotFoundException {
+
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
@@ -62,13 +63,31 @@ public class ProductService {
                     .description(product.get().getDescription())
                     .price(product.get().getPrice())
                     .quantity(product.get().getQuantity())
-                    .category((product.get().getCategory()))
+                    .category(product.get().getCategory())
                     .build();
         }
 
-        throw new ProductNotFoundException("product with id = " + productId + " does not exist");
+        throw new ProductNotFoundException("product with id = " + productId + " not found");
     }
 
+    // delete
+    public void deleteProduct(UUID productId) throws ProductNotFoundException, ProductDeleteException {
+
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            try {
+                productRepository.deleteById(productId);
+                return;
+            } catch (Exception e) {
+                throw new ProductDeleteException(e.getMessage());
+            }
+        }
+
+        throw new ProductNotFoundException("product with id = " + productId + " not found");
+    }
+
+    // get all
     public List<ProductResponse> getAllProduct() {
 
         List<Product> productList = productRepository.findAll();
@@ -81,21 +100,9 @@ public class ProductService {
                             .description(product.getDescription())
                             .price(product.getPrice())
                             .quantity(product.getQuantity())
-                            .category((product.getCategory()))
+                            .category(product.getCategory())
                             .build();
                 })
                 .toList();
-    }
-
-    public void deleteProduct(UUID productId)
-            throws ProductNotFoundException {
-        Optional<Product> product = productRepository.findById(productId);
-
-        if (product.isPresent()) {
-            productRepository.deleteById(productId);
-            return;
-        }
-
-        throw new ProductNotFoundException();
     }
 }

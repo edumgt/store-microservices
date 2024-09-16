@@ -1,6 +1,7 @@
 package com.praveenukkoji.productservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ import static jakarta.persistence.FetchType.EAGER;
 @Builder
 @Table(name = "_product")
 @EntityListeners(AuditingEntityListener.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product {
     @Id
     @GeneratedValue

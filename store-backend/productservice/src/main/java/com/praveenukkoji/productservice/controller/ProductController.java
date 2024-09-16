@@ -4,10 +4,11 @@ import com.praveenukkoji.productservice.dto.error.ValidationResponse;
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
+import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,19 +17,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/api/v1/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
+    // create
     @PostMapping(path = "")
     public ResponseEntity<?> createProduct(@RequestBody @Valid CreateProductRequest createProductRequest)
-            throws ProductCreateException, CategoryNotFoundException {
+            throws CategoryNotFoundException, ProductCreateException {
         return ResponseEntity.status(201).body(productService.createProduct(createProductRequest));
     }
 
+    // retrieve
     @GetMapping(path = "")
     public ResponseEntity<?> getProduct(
             @RequestParam(defaultValue = "", name = "productId") String productId
@@ -48,15 +51,14 @@ public class ProductController {
         return ResponseEntity.status(200).body(productService.getProduct(id));
     }
 
-    @GetMapping(path = "/all")
-    public ResponseEntity<?> getAllProduct() {
-        return ResponseEntity.status(200).body(productService.getAllProduct());
-    }
+    // update
+    // TODO: create endpoint for product update
 
+    // delete
     @DeleteMapping(path = "")
     public ResponseEntity<?> deleteProduct(
             @RequestParam(defaultValue = "", name = "productId") String productId
-    ) throws ProductNotFoundException {
+    ) throws ProductNotFoundException, ProductDeleteException {
         if (Objects.equals(productId, "")) {
             Map<String, String> error = new HashMap<>();
             error.put("productId", "product id is empty");
@@ -72,5 +74,11 @@ public class ProductController {
         productService.deleteProduct(id);
 
         return ResponseEntity.status(204).body("");
+    }
+
+    // get all
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> getAllProduct() {
+        return ResponseEntity.status(200).body(productService.getAllProduct());
     }
 }
