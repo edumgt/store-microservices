@@ -10,6 +10,7 @@ import com.praveenukkoji.productservice.exception.category.CategoryUpdateExcepti
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +19,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
     // create
-    public UUID createCategory(CreateCategoryRequest createCategoryRequest) throws CategoryCreateException {
+    public UUID createCategory(CreateCategoryRequest createCategoryRequest)
+            throws CategoryCreateException {
 
         Category newCategory = Category.builder()
                 .name(createCategoryRequest.getName())
@@ -32,13 +35,16 @@ public class CategoryService {
 
         try {
             return categoryRepository.save(newCategory).getId();
+        } catch (DataIntegrityViolationException e) {
+            throw new CategoryCreateException(e.getMostSpecificCause().getMessage());
         } catch (Exception e) {
             throw new CategoryCreateException(e.getMessage());
         }
     }
 
     // retrieve
-    public CategoryResponse getCategory(UUID categoryId) throws CategoryNotFoundException {
+    public CategoryResponse getCategory(UUID categoryId)
+            throws CategoryNotFoundException {
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -54,7 +60,6 @@ public class CategoryService {
     }
 
     // update
-    @Transactional
     public UUID updateCategory(UUID categoryId, UpdateCategoryRequest updateCategoryRequest)
             throws CategoryNotFoundException, CategoryUpdateException {
 
@@ -62,9 +67,9 @@ public class CategoryService {
 
         if (category.isPresent()) {
             Category updatedCategory = category.get();
+            updatedCategory.setName(updateCategoryRequest.getName());
 
             try {
-                updatedCategory.setName(updateCategoryRequest.getName());
                 return categoryRepository.save(updatedCategory).getId();
             } catch (Exception e) {
                 throw new CategoryUpdateException(e.getMessage());
@@ -75,7 +80,8 @@ public class CategoryService {
     }
 
     // delete
-    public void deleteCategory(UUID categoryId) throws CategoryNotFoundException, CategoryDeleteException {
+    public void deleteCategory(UUID categoryId)
+            throws CategoryNotFoundException, CategoryDeleteException {
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 

@@ -1,6 +1,7 @@
 package com.praveenukkoji.productservice.service;
 
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
+import com.praveenukkoji.productservice.dto.response.category.CategoryResponse;
 import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
@@ -12,12 +13,14 @@ import com.praveenukkoji.productservice.repository.CategoryRepository;
 import com.praveenukkoji.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ProductService {
 
@@ -57,13 +60,19 @@ public class ProductService {
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
+            Category productCategory = product.get().getCategory();
+            CategoryResponse category = CategoryResponse.builder()
+                    .id(productCategory.getId())
+                    .name(productCategory.getName())
+                    .build();
+
             return ProductResponse.builder()
                     .id(product.get().getId())
                     .name(product.get().getName())
                     .description(product.get().getDescription())
                     .price(product.get().getPrice())
                     .quantity(product.get().getQuantity())
-                    .category(product.get().getCategory())
+                    .category(category)
                     .build();
         }
 
@@ -94,13 +103,19 @@ public class ProductService {
 
         return productList.stream()
                 .map(product -> {
+                    Category productCategory = product.getCategory();
+                    CategoryResponse category = CategoryResponse.builder()
+                            .id(productCategory.getId())
+                            .name(productCategory.getName())
+                            .build();
+                    
                     return ProductResponse.builder()
                             .id(product.getId())
                             .name(product.getName())
                             .description(product.getDescription())
                             .price(product.getPrice())
                             .quantity(product.getQuantity())
-                            .category(product.getCategory())
+                            .category(category)
                             .build();
                 })
                 .toList();

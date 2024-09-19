@@ -55,7 +55,8 @@ public class ProductController {
     /*
         TODO:
         1. create endpoint for product update,
-        2. create separate endpoint for price and quantity
+        2. create separate endpoint for price update
+        3. create separate endpoint for quantity update
     */
 
     // delete

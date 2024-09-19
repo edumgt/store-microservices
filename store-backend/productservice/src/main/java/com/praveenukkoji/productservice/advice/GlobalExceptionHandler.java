@@ -7,7 +7,9 @@ import com.praveenukkoji.productservice.exception.category.CategoryDeleteExcepti
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.category.CategoryUpdateException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
+import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
+import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductCreateException.class)
     public ResponseEntity<?> handleException(ProductCreateException exception) {
         log.error("ProductCreateException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(ProductUpdateException.class)
+    public ResponseEntity<?> handleException(ProductUpdateException exception) {
+        log.error("ProductUpdateException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(ProductDeleteException.class)
+    public ResponseEntity<?> handleException(ProductDeleteException exception) {
+        log.error("ProductDeleteException - {}", exception.getMessage());
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                 .message(exception.getMessage())
