@@ -144,6 +144,6 @@ public class GlobalExceptionHandler {
                 .message("" + exception.getMostSpecificCause())
                 .build();
 
-        return ResponseEntity.status(404).body(exceptionResponse);
+        return ResponseEntity.status(400).body(exceptionResponse);
     }
 }
