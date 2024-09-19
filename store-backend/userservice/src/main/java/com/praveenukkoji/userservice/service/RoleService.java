@@ -4,37 +4,46 @@ import com.praveenukkoji.userservice.dto.request.role.CreateRoleRequest;
 import com.praveenukkoji.userservice.dto.request.role.UpdateRoleRequest;
 import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
 import com.praveenukkoji.userservice.exception.role.RoleCreateException;
+import com.praveenukkoji.userservice.exception.role.RoleDeleteException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.role.RoleUpdateException;
 import com.praveenukkoji.userservice.model.Role;
 import com.praveenukkoji.userservice.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
+@Transactional
 @Service
 public class RoleService {
 
-    @Autowired
-    private RoleRepository roleRepository;
-    
+    private final RoleRepository roleRepository;
+
+    // create
     public UUID createRole(CreateRoleRequest createRoleRequest)
             throws RoleCreateException {
 
+        String roleType = createRoleRequest.getType().toUpperCase();
+
         Role newRole = Role.builder()
-                .type(createRoleRequest.getType().toUpperCase())
+                .type(roleType)
                 .build();
 
         try {
             return roleRepository.save(newRole).getId();
+        } catch (DataIntegrityViolationException e) {
+            throw new RoleCreateException(e.getMostSpecificCause().getMessage());
         } catch (Exception e) {
-            throw new RoleCreateException();
+            throw new RoleCreateException(e.getMessage());
         }
     }
 
+    // retrieve
     public RoleResponse getRole(UUID roleId)
             throws RoleNotFoundException {
 
@@ -49,7 +58,7 @@ public class RoleService {
         throw new RoleNotFoundException("role with id = " + roleId + " not found");
     }
 
-    @Transactional
+    // update
     public UUID updateRole(UUID roleId, UpdateRoleRequest updateRoleRequest)
             throws RoleNotFoundException, RoleUpdateException {
 
@@ -62,21 +71,26 @@ public class RoleService {
 
                 return roleRepository.save(updatedRole).getId();
             } catch (Exception e) {
-                throw new RoleUpdateException("unable to update role with id = " + roleId);
+                throw new RoleUpdateException(e.getMessage());
             }
         }
 
         throw new RoleNotFoundException("role with id = " + roleId + " not found");
     }
 
+    // delete
     public void deleteRole(UUID roleId)
-            throws RoleNotFoundException {
+            throws RoleNotFoundException, RoleDeleteException {
 
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {
-            roleRepository.deleteById(roleId);
-            return;
+            try {
+                roleRepository.deleteById(roleId);
+                return;
+            } catch (Exception e) {
+                throw new RoleDeleteException(e.getMessage());
+            }
         }
 
         throw new RoleNotFoundException("role with id = " + roleId + " not found");

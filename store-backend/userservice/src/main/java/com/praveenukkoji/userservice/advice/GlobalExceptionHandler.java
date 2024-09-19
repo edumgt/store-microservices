@@ -3,16 +3,19 @@ package com.praveenukkoji.userservice.advice;
 import com.praveenukkoji.userservice.dto.error.ExceptionResponse;
 import com.praveenukkoji.userservice.dto.error.ValidationResponse;
 import com.praveenukkoji.userservice.exception.address.AddressCreateException;
+import com.praveenukkoji.userservice.exception.address.AddressDeleteException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
-import com.praveenukkoji.userservice.exception.address.DeleteAddressException;
 import com.praveenukkoji.userservice.exception.role.RoleCreateException;
+import com.praveenukkoji.userservice.exception.role.RoleDeleteException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.role.RoleUpdateException;
 import com.praveenukkoji.userservice.exception.user.UserCreateException;
+import com.praveenukkoji.userservice.exception.user.UserDeleteException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.exception.user.UserUpdateException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,7 +29,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // User
+    // user
     @ExceptionHandler(UserCreateException.class)
     public ResponseEntity<?> handleException(UserCreateException exception) {
         log.error("UserCreateException - {}", exception.getMessage());
@@ -60,7 +63,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(exceptionResponse);
     }
 
-    // Address
+    @ExceptionHandler(UserDeleteException.class)
+    public ResponseEntity<?> handleException(UserDeleteException exception) {
+        log.error("UserDeleteException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    // address
     @ExceptionHandler(AddressCreateException.class)
     public ResponseEntity<?> handleException(AddressCreateException exception) {
         log.error("AddressCreateException - {}", exception.getMessage());
@@ -94,9 +108,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(exceptionResponse);
     }
 
-    @ExceptionHandler(DeleteAddressException.class)
-    public ResponseEntity<?> handleException(DeleteAddressException exception) {
-        log.error("DeleteAddressException - {}", exception.getMessage());
+    @ExceptionHandler(AddressDeleteException.class)
+    public ResponseEntity<?> handleException(AddressDeleteException exception) {
+        log.error("AddressDeleteException - {}", exception.getMessage());
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                 .message(exception.getMessage())
@@ -105,7 +119,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400).body(exceptionResponse);
     }
 
-    // Role
+    // role
     @ExceptionHandler(RoleCreateException.class)
     public ResponseEntity<?> handleException(RoleCreateException exception) {
         log.error("RoleCreateException - {}", exception.getMessage());
@@ -139,7 +153,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(exceptionResponse);
     }
 
-    // Argument Validation
+    @ExceptionHandler(RoleDeleteException.class)
+    public ResponseEntity<?> handleException(RoleDeleteException exception) {
+        log.error("RoleDeleteException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    // argument validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
@@ -159,4 +184,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400).body(validationResponse);
     }
 
+    // sql exception
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleException(DataIntegrityViolationException exception) {
+        log.error("DataIntegrityViolationException - {}", "" + exception.getMostSpecificCause());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message("" + exception.getMostSpecificCause())
+                .build();
+
+        return ResponseEntity.status(404).body(exceptionResponse);
+    }
 }

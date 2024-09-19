@@ -1,17 +1,19 @@
 package com.praveenukkoji.userservice.service;
 
 import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
+import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
 import com.praveenukkoji.userservice.dto.response.user.UserResponse;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.user.UserCreateException;
+import com.praveenukkoji.userservice.exception.user.UserDeleteException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.exception.user.UserUpdateException;
 import com.praveenukkoji.userservice.model.Role;
 import com.praveenukkoji.userservice.model.User;
 import com.praveenukkoji.userservice.repository.RoleRepository;
 import com.praveenukkoji.userservice.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,19 +22,21 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-@Slf4j
+@RequiredArgsConstructor
+@Transactional
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
+    // create
     public UUID createUser(CreateUserRequest createUserRequest)
-            throws UserCreateException, RoleNotFoundException {
-        Optional<Role> role = roleRepository.findById(createUserRequest.getRoleId());
+            throws RoleNotFoundException, UserCreateException {
+
+        UUID roleId = createUserRequest.getRoleId();
+        Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {
             User newUser = User.builder()
@@ -46,35 +50,44 @@ public class UserService {
 
             try {
                 return userRepository.save(newUser).getId();
+            } catch (DataIntegrityViolationException e) {
+                throw new UserCreateException(e.getMostSpecificCause().getMessage());
             } catch (Exception e) {
-                throw new UserCreateException();
+                throw new UserCreateException(e.getMessage());
             }
         }
 
-        throw new RoleNotFoundException();
+        throw new RoleNotFoundException("role with id = " + roleId + " not found");
     }
 
-    public UserResponse getUser(UUID userId)
-            throws UserNotFoundException {
+    // retrieve
+    public UserResponse getUser(UUID userId) throws UserNotFoundException {
+
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
+            Role userRole = user.get().getRole();
+            RoleResponse role = RoleResponse.builder()
+                    .id(userRole.getId())
+                    .type(userRole.getType())
+                    .build();
+
             return UserResponse.builder()
                     .id(user.get().getId())
                     .fullname(user.get().getFullname())
                     .username(user.get().getUsername())
                     .email(user.get().getEmail())
-                    .role(user.get().getRole())
-                    .addressList(user.get().getAddressList())
+                    .role(role)
                     .build();
         }
 
-        throw new UserNotFoundException();
+        throw new UserNotFoundException("user with id = " + userId + " not found");
     }
 
-    @Transactional
+    //update
+    // TODO: change Map<String, String> to Class of UpdateUserRequest
     public UUID updateUser(UUID userId, Map<String, String> updates)
-            throws UserNotFoundException, UserUpdateException {
+            throws UserUpdateException, UserNotFoundException {
 
         Optional<User> user = userRepository.findById(userId);
 
@@ -98,33 +111,33 @@ public class UserService {
                             updatedUser.setEmail(entry.getValue());
                         }
                         break;
-                    case "password":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedUser.setPassword(entry.getValue());
-                        }
-                        break;
                 }
             }
 
             try {
                 return userRepository.save(updatedUser).getId();
             } catch (Exception e) {
-                throw new UserUpdateException();
+                throw new UserUpdateException(e.getMessage());
             }
         }
 
-        throw new UserNotFoundException();
+        throw new UserNotFoundException("user with id = " + userId + " not found");
     }
 
+    // delete
     public void deleteUser(UUID userId)
-            throws UserNotFoundException {
+            throws UserNotFoundException, UserDeleteException {
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
-            userRepository.deleteById(userId);
-            return;
+            try {
+                userRepository.deleteById(userId);
+                return;
+            } catch (Exception e) {
+                throw new UserDeleteException(e.getMessage());
+            }
         }
 
-        throw new UserNotFoundException();
+        throw new UserNotFoundException("user with id = " + userId + " not found");
     }
 }

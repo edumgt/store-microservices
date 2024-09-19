@@ -3,31 +3,38 @@ package com.praveenukkoji.userservice.service;
 import com.praveenukkoji.userservice.dto.request.address.CreateAddressRequest;
 import com.praveenukkoji.userservice.dto.response.address.AddressResponse;
 import com.praveenukkoji.userservice.exception.address.AddressCreateException;
+import com.praveenukkoji.userservice.exception.address.AddressDeleteException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
-import com.praveenukkoji.userservice.exception.address.DeleteAddressException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.model.Address;
 import com.praveenukkoji.userservice.model.User;
 import com.praveenukkoji.userservice.repository.AddressRepository;
 import com.praveenukkoji.userservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
+@RequiredArgsConstructor
+@Transactional
 @Service
 public class AddressService {
-    @Autowired
-    private AddressRepository addressRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final AddressRepository addressRepository;
 
-    public UUID createAddress(UUID userId, CreateAddressRequest createAddressRequest)
+    private final UserRepository userRepository;
+
+    // create
+    // TODO: implement isDefault address logic
+    public UUID createAddress(CreateAddressRequest createAddressRequest)
             throws UserNotFoundException, AddressCreateException {
 
+        UUID userId = createAddressRequest.getUserId();
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
@@ -37,65 +44,51 @@ public class AddressService {
                     .state(createAddressRequest.getState())
                     .city(createAddressRequest.getCity())
                     .pincode(createAddressRequest.getPincode())
-                    .isDefault(createAddressRequest.getIsDefault())
+                    .isDefault(false)
                     .user(user.get())
                     .build();
 
             try {
-
-                // only one address should be default
-                if (user.get().getAddressList().isEmpty()) {
-                    newAddress.setIsDefault(true);
-                } else if (newAddress.getIsDefault()) {
-                    List<Address> addressList = user.get().getAddressList().stream()
-                            .peek(entity -> entity.setIsDefault(false))
-                            .toList();
-
-                    addressRepository.saveAll(addressList);
-                }
-
                 return addressRepository.save(newAddress).getId();
             } catch (Exception e) {
-                throw new AddressCreateException();
+                throw new AddressCreateException(e.getMessage());
             }
         }
 
-        throw new UserNotFoundException();
+        throw new UserNotFoundException("user with id = " + userId + " not found");
     }
 
-    public List<AddressResponse> getAddressByUser(UUID userId)
-            throws UserNotFoundException {
-        Optional<User> user = userRepository.findById(userId);
+    // retrieve
+    public AddressResponse getAddress(UUID addressId)
+            throws AddressNotFoundException {
 
-        if (user.isPresent()) {
-            List<Address> addressList = user.get().getAddressList();
+        Optional<Address> address = addressRepository.findById(addressId);
 
-            return addressList.stream()
-                    .map(address -> AddressResponse.builder()
-                            .id(address.getId())
-                            .line(address.getLine())
-                            .country(address.getCountry())
-                            .state(address.getState())
-                            .city(address.getCity())
-                            .pincode(address.getPincode())
-                            .isDefault(address.getIsDefault())
-                            .build()
-                    )
-                    .toList();
+        if (address.isPresent()) {
+
+            return AddressResponse.builder()
+                    .id(address.get().getId())
+                    .line(address.get().getLine())
+                    .country(address.get().getCountry())
+                    .state(address.get().getState())
+                    .city(address.get().getCity())
+                    .pincode(address.get().getPincode())
+                    .isDefault(address.get().getIsDefault())
+                    .build();
         }
 
-        throw new UserNotFoundException();
+        throw new AddressNotFoundException("address with id = " + addressId + " not found");
 
     }
 
-    @Transactional
+    // update
+    // TODO: change Map<String, String> to Class of UpdateAddressRequest
     public UUID updateAddress(UUID addressId, Map<String, String> updates)
             throws AddressNotFoundException, AddressUpdateException {
 
         Optional<Address> address = addressRepository.findById(addressId);
 
         if (address.isPresent()) {
-
             Address updatedAddress = address.get();
 
             for (Map.Entry<String, String> entry : updates.entrySet()) {
@@ -131,15 +124,16 @@ public class AddressService {
             try {
                 return addressRepository.save(updatedAddress).getId();
             } catch (Exception e) {
-                throw new AddressUpdateException();
+                throw new AddressUpdateException(e.getMessage());
             }
         }
 
-        throw new AddressNotFoundException();
+        throw new AddressNotFoundException("address with id = " + addressId + " not found");
     }
 
+    // delete
     public void deleteAddress(UUID addressId)
-            throws AddressNotFoundException, UserNotFoundException, DeleteAddressException {
+            throws AddressNotFoundException, AddressDeleteException {
 
         Optional<Address> address = addressRepository.findById(addressId);
 
@@ -147,53 +141,17 @@ public class AddressService {
 
             // if address is default cannot delete it
             if (address.get().getIsDefault()) {
-                throw new DeleteAddressException("cannot delete default address");
+                throw new AddressDeleteException("cannot delete default address");
             }
 
-            UUID userId = address.get().getUser().getId();
-            Optional<User> user = userRepository.findById(userId);
-
-            if (user.isPresent()) {
-                user.get().getAddressList().removeIf(a -> a.getId() == addressId);
-                userRepository.save(user.get());
+            try {
+                addressRepository.deleteById(addressId);
                 return;
-            } else {
-                throw new UserNotFoundException();
+            } catch (Exception e) {
+                throw new AddressDeleteException(e.getMessage());
             }
         }
 
         throw new AddressNotFoundException("address with id = " + addressId + " not found");
-    }
-
-    @Transactional
-    public UUID setAddressDefault(UUID userId, UUID addressId)
-            throws UserNotFoundException, AddressNotFoundException, AddressUpdateException {
-
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()) {
-
-            Optional<Address> address = addressRepository.findById(addressId);
-
-            if (address.isPresent()) {
-
-                List<Address> addressList = user.get().getAddressList();
-
-                for (Address entity : addressList) {
-                    entity.setIsDefault(entity.getId().equals(addressId));
-                }
-
-                try {
-                    addressRepository.saveAll(addressList);
-                    return addressId;
-                } catch (Exception e) {
-                    throw new AddressUpdateException();
-                }
-            }
-
-            throw new AddressNotFoundException();
-        }
-
-        throw new UserNotFoundException();
     }
 }
