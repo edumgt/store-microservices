@@ -14,6 +14,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static jakarta.persistence.FetchType.EAGER;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -42,7 +44,7 @@ public class Payment {
 
     private UUID modifiedBy;
 
-    @OneToOne
+    @OneToOne(fetch = EAGER)
     @JsonIgnore
     private Order order;
 }

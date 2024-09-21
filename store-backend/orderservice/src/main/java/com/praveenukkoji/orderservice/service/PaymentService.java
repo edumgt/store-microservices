@@ -7,28 +7,32 @@ import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.Payment;
+import com.praveenukkoji.orderservice.model.enums.OrderStatus;
 import com.praveenukkoji.orderservice.model.enums.PaymentStatus;
 import com.praveenukkoji.orderservice.repository.OrderRepository;
 import com.praveenukkoji.orderservice.repository.PaymentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
+@Transactional
 @Service
 public class PaymentService {
 
-    @Autowired
-    private PaymentRepository paymentRepository;
+    private final PaymentRepository paymentRepository;
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
+    // make payment
     public UUID makePayment(MakePaymentRequest makePaymentRequest)
             throws OrderNotFoundException, CreatePaymentException {
 
-        Optional<Order> order = orderRepository.findById(makePaymentRequest.getOrderId());
+        UUID orderId = makePaymentRequest.getOrderId();
+        Optional<Order> order = orderRepository.findById(orderId);
 
         if (order.isPresent()) {
 
@@ -40,6 +44,7 @@ public class PaymentService {
             switch (makePaymentRequest.getStatus().toUpperCase()) {
                 case "SUCCESS":
                     newPayment.setStatus(PaymentStatus.SUCCESS);
+                    newPayment.getOrder().setStatus(OrderStatus.PLACED);
                     break;
                 case "FAILED":
                     newPayment.setStatus(PaymentStatus.FAILED);
@@ -50,21 +55,16 @@ public class PaymentService {
             }
 
             try {
-                Payment payment = paymentRepository.saveAndFlush(newPayment);
-
-                order.get().setPayment(payment);
-
-                orderRepository.save(order.get());
-
-                return payment.getId();
+                return paymentRepository.save(newPayment).getId();
             } catch (Exception e) {
-                throw new CreatePaymentException();
+                throw new CreatePaymentException(e.getMessage());
             }
         }
 
-        throw new OrderNotFoundException();
+        throw new OrderNotFoundException("order with id = " + orderId + " not found");
     }
 
+    // retrieve
     public PaymentResponse getPayment(UUID paymentId)
             throws PaymentNotFoundException {
         Optional<Payment> payment = paymentRepository.findById(paymentId);
@@ -75,9 +75,10 @@ public class PaymentService {
                     .id(payment.get().getId())
                     .amount(payment.get().getAmount())
                     .status(String.valueOf(payment.get().getStatus()))
+                    .orderId(payment.get().getOrder().getId())
                     .build();
         }
 
-        throw new PaymentNotFoundException();
+        throw new PaymentNotFoundException("payment with id = " + paymentId + " not found");
     }
 }

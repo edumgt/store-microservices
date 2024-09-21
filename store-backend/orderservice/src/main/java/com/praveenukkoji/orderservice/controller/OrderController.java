@@ -4,11 +4,9 @@ import com.praveenukkoji.orderservice.dto.error.ValidationResponse;
 import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
-import com.praveenukkoji.orderservice.exception.product.ProductNotFoundException;
-import com.praveenukkoji.orderservice.exception.product.ProductNotInStock;
 import com.praveenukkoji.orderservice.service.OrderService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +15,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/orders")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
+    // create
     @PostMapping(path = "")
-    public ResponseEntity<?> createOrder(
-            @RequestBody @Valid CreateOrderRequest createOrderRequest
-    ) throws CreateOrderException, ProductNotInStock, ProductNotFoundException {
+    public ResponseEntity<?> createOrder(@RequestBody @Valid CreateOrderRequest createOrderRequest)
+            throws CreateOrderException {
         return ResponseEntity.status(201).body(orderService.createOrder(createOrderRequest));
     }
 
+    // retrieve
     @GetMapping(path = "")
     public ResponseEntity<?> getOrder(
             @RequestParam(defaultValue = "", name = "orderId") String orderId

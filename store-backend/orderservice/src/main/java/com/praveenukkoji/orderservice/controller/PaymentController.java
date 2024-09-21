@@ -7,7 +7,7 @@ import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import com.praveenukkoji.orderservice.service.PaymentService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,19 +16,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/api/v1/payments")
 public class PaymentController {
 
-    @Autowired
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
 
+    // create
     @PostMapping(path = "")
     public ResponseEntity<?> makePayment(@RequestBody @Valid MakePaymentRequest makePaymentRequest)
             throws OrderNotFoundException, CreatePaymentException {
         return ResponseEntity.status(201).body(paymentService.makePayment(makePaymentRequest));
     }
 
+    // retrieve
     @GetMapping(path = "")
     public ResponseEntity<?> getPayment(
             @RequestParam(defaultValue = "", name = "paymentId") String paymentId

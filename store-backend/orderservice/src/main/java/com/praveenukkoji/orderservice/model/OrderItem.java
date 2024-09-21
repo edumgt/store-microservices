@@ -10,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
 
+import static jakarta.persistence.FetchType.EAGER;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -26,7 +28,7 @@ public class OrderItem {
     private Integer quantity;
     private Double price;
 
-    @ManyToOne
+    @ManyToOne(fetch = EAGER)
     @JsonIgnore
     private Order order;
 }

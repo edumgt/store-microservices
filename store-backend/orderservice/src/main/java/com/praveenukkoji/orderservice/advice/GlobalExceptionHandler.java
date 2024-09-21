@@ -6,8 +6,8 @@ import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
-import com.praveenukkoji.orderservice.exception.product.ProductNotInStock;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,6 +21,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // order
     @ExceptionHandler(CreateOrderException.class)
     public ResponseEntity<?> handleException(CreateOrderException exception) {
         log.error("CreateOrderException - {}", exception.getMessage());
@@ -43,6 +44,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(exceptionResponse);
     }
 
+    // payment
     @ExceptionHandler(CreatePaymentException.class)
     public ResponseEntity<?> handleException(CreatePaymentException exception) {
         log.error("CreatePaymentException - {}", exception.getMessage());
@@ -65,17 +67,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(exceptionResponse);
     }
 
-    @ExceptionHandler(ProductNotInStock.class)
-    public ResponseEntity<?> handleException(ProductNotInStock exception) {
-        log.error("ProductNotInStock - {}", exception.getMessage());
-
-        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
-                .message(exception.getMessage())
-                .build();
-
-        return ResponseEntity.status(200).body(exceptionResponse);
-    }
-
+    // argument validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
@@ -93,5 +85,17 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(400).body(validationResponse);
+    }
+
+    // sql exception
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleException(DataIntegrityViolationException exception) {
+        log.error("DataIntegrityViolationException - {}", "" + exception.getMostSpecificCause());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message("" + exception.getMostSpecificCause())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
     }
 }

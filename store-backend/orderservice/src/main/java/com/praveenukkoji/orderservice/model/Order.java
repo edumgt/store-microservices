@@ -1,5 +1,6 @@
 package com.praveenukkoji.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.praveenukkoji.orderservice.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,7 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, fetch = EAGER, mappedBy = "order")
     private List<OrderItem> orderItemList;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = EAGER)
+    @OneToOne(fetch = EAGER, mappedBy = "order")
+    @JsonIgnore
     private Payment payment;
 }

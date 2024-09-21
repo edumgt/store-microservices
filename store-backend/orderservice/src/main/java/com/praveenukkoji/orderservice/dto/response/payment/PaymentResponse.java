@@ -15,4 +15,5 @@ public class PaymentResponse {
     private UUID id;
     private Double amount;
     private String status;
+    private UUID orderId;
 }
