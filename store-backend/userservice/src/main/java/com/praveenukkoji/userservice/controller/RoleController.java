@@ -94,4 +94,10 @@ public class RoleController {
 
         return ResponseEntity.status(204).body("");
     }
+
+    // get all
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> getAllRole() {
+        return ResponseEntity.status(200).body(roleService.getAllRole());
+    }
 }

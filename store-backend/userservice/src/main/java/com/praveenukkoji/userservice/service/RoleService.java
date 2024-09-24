@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -94,5 +95,17 @@ public class RoleService {
         }
 
         throw new RoleNotFoundException("role with id = " + roleId + " not found");
+    }
+
+    // get all
+    public List<RoleResponse> getAllRole() {
+        List<Role> roleList = roleRepository.findAll();
+
+        return roleList.stream().map(role -> {
+            return RoleResponse.builder()
+                    .id(role.getId())
+                    .type(role.getType())
+                    .build();
+        }).toList();
     }
 }
