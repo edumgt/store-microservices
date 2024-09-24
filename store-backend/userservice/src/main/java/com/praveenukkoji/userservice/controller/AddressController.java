@@ -94,4 +94,24 @@ public class AddressController {
 
         return ResponseEntity.status(204).body("");
     }
+
+    // get address by user
+    @GetMapping("/get-by-user")
+    public ResponseEntity<?> getAddressByUser(
+            @RequestParam(defaultValue = "", name = "userId") String userId
+    ) throws UserNotFoundException {
+        if (Objects.equals(userId, "")) {
+            Map<String, String> error = new HashMap<>();
+            error.put("userId", "user id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(200).body(addressService.getAddressByUser(id));
+    }
 }

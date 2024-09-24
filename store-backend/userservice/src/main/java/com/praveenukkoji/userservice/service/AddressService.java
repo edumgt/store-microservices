@@ -15,10 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -153,5 +150,28 @@ public class AddressService {
         }
 
         throw new AddressNotFoundException("address with id = " + addressId + " not found");
+    }
+
+    // get address by user
+    public List<AddressResponse> getAddressByUser(UUID userId) throws UserNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            List<Address> addressList = addressRepository.findAllByUser(user.get());
+
+            return addressList.stream().map(address -> {
+                return AddressResponse.builder()
+                        .id(address.getId())
+                        .line(address.getLine())
+                        .country(address.getCountry())
+                        .state(address.getState())
+                        .city(address.getCity())
+                        .pincode(address.getPincode())
+                        .isDefault(address.getIsDefault())
+                        .build();
+            }).toList();
+        }
+
+        throw new UserNotFoundException("user with id = " + userId + " not found");
     }
 }
