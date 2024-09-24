@@ -86,4 +86,23 @@ public class ProductController {
     public ResponseEntity<?> getAllProduct() {
         return ResponseEntity.status(200).body(productService.getAllProduct());
     }
+
+    //get by category name
+    @GetMapping("/get-by-category")
+    public ResponseEntity<?> getProductByCategory(
+            @RequestParam(defaultValue = "", name = "category") String category
+    ) throws CategoryNotFoundException {
+        if (Objects.equals(category, "")) {
+            Map<String, String> error = new HashMap<>();
+            error.put("category", "category name is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        return ResponseEntity.status(200).body(productService.getProductByCategory(category));
+    }
 }

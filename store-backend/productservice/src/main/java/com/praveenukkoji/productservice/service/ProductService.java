@@ -108,7 +108,7 @@ public class ProductService {
                             .id(productCategory.getId())
                             .name(productCategory.getName())
                             .build();
-                    
+
                     return ProductResponse.builder()
                             .id(product.getId())
                             .name(product.getName())
@@ -119,5 +119,33 @@ public class ProductService {
                             .build();
                 })
                 .toList();
+    }
+
+    // get by category name
+    public List<ProductResponse> getProductByCategory(String categoryName)
+            throws CategoryNotFoundException {
+        Optional<Category> category = categoryRepository.findByCategoryName(categoryName);
+
+        if (category.isPresent()) {
+            List<Product> productList = productRepository.findAllByCategoryName(category.get());
+
+            CategoryResponse productCategory = CategoryResponse.builder()
+                    .id(category.get().getId())
+                    .name(category.get().getName())
+                    .build();
+
+            return productList.stream().map(product -> {
+                return ProductResponse.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .quantity(product.getQuantity())
+                        .category(productCategory)
+                        .build();
+            }).toList();
+        }
+
+        throw new CategoryNotFoundException(categoryName + " category not found");
     }
 }
