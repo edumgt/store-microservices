@@ -1,5 +1,6 @@
 package com.praveenukkoji.userservice.service;
 
+import com.praveenukkoji.userservice.dto.request.user.ChangePasswordRequest;
 import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
 import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
 import com.praveenukkoji.userservice.dto.response.user.UserResponse;
@@ -39,10 +40,16 @@ public class UserService {
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {
+            String password = createUserRequest.getPassword();
+            
+            if (password.length() < 8) {
+                throw new UserCreateException("Password must be at least 8 characters");
+            }
+
             User newUser = User.builder()
                     .fullname(createUserRequest.getFullname())
                     .username(createUserRequest.getUsername())
-                    .password(createUserRequest.getPassword())
+                    .password(password)
                     .email(createUserRequest.getEmail())
                     .isActive(true)
                     .role(role.get())
@@ -135,6 +142,32 @@ public class UserService {
                 return;
             } catch (Exception e) {
                 throw new UserDeleteException(e.getMessage());
+            }
+        }
+
+        throw new UserNotFoundException("user with id = " + userId + " not found");
+    }
+
+    // change password
+    public UUID changePassword(UUID userId, ChangePasswordRequest changePasswordRequest)
+            throws UserNotFoundException, UserUpdateException {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            User updatedUser = user.get();
+
+            String newPassword = changePasswordRequest.getPassword();
+
+            if (newPassword.length() < 8) {
+                throw new UserUpdateException("password should be at least 8 characters");
+            }
+
+            updatedUser.setPassword(newPassword);
+
+            try {
+                return userRepository.save(updatedUser).getId();
+            } catch (Exception e) {
+                throw new UserUpdateException(e.getMessage());
             }
         }
 

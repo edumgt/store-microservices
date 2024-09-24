@@ -1,6 +1,7 @@
 package com.praveenukkoji.userservice.controller;
 
 import com.praveenukkoji.userservice.dto.error.ValidationResponse;
+import com.praveenukkoji.userservice.dto.request.user.ChangePasswordRequest;
 import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.user.UserCreateException;
@@ -94,5 +95,26 @@ public class UserController {
         userService.deleteUser(id);
 
         return ResponseEntity.status(204).body("");
+    }
+
+    // change password
+    @PatchMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+            @RequestParam(defaultValue = "", name = "userId") String userId,
+            @RequestBody @Valid ChangePasswordRequest changePasswordRequest
+    ) throws UserNotFoundException, UserUpdateException {
+        if (Objects.equals(userId, "")) {
+            Map<String, String> error = new HashMap<>();
+            error.put("userId", "user id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(200).body(userService.changePassword(id, changePasswordRequest));
     }
 }
