@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "afb4c2f3-f1cc-414a-afa1-08c7f42e6c5d",
-		"name": "Store APi",
+		"name": "Store API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "6898919"
 	},
@@ -10,22 +10,52 @@
 			"name": "product-service",
 			"item": [
 				{
-					"name": "product",
+					"name": "product - done",
 					"item": [
 						{
-							"name": "delete product",
+							"name": "create product",
 							"request": {
 								"auth": {
 									"type": "noauth"
 								},
-								"method": "DELETE",
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"dd308942-4f36-4fd8-99dd-2fe5d31ebaf9\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{product_service}}/api/v1/products",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/products?productId=01c2bac0-a41c-46f8-8a83-ff568609e6cc",
+									"raw": "{{product_service}}/api/v1/products?productId=249fe87e-2128-4f77-b28c-e7ec52ba7fd3",
 									"host": [
-										"localhost"
+										"{{product_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -34,7 +64,36 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "01c2bac0-a41c-46f8-8a83-ff568609e6cc"
+											"value": "249fe87e-2128-4f77-b28c-e7ec52ba7fd3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get by category",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{product_service}}/api/v1/products/get-by-category?category=Tools",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"get-by-category"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "Tools"
 										}
 									]
 								}
@@ -50,11 +109,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/products/all",
+									"raw": "{{product_service}}/api/v1/products/all",
 									"host": [
-										"localhost"
+										"{{product_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -66,19 +124,18 @@
 							"response": []
 						},
 						{
-							"name": "get product",
+							"name": "delete product",
 							"request": {
 								"auth": {
 									"type": "noauth"
 								},
-								"method": "GET",
+								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/products?productId=01c2bac0-a41c-46f8-8a83-ff568609e6cc",
+									"raw": "{{product_service}}/api/v1/products?productId=c31cef65-bae3-43d3-b211-15014affab86",
 									"host": [
-										"localhost"
+										"{{product_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -87,40 +144,8 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "01c2bac0-a41c-46f8-8a83-ff568609e6cc"
+											"value": "c31cef65-bae3-43d3-b211-15014affab86"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "create product",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"7d370c11-ed84-4d69-9b6e-63dd11672d32\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "localhost:8222/api/v1/products",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"products"
 									]
 								}
 							},
@@ -129,22 +154,52 @@
 					]
 				},
 				{
-					"name": "category",
+					"name": "category - done",
 					"item": [
 						{
-							"name": "delete category",
+							"name": "create category",
 							"request": {
 								"auth": {
 									"type": "noauth"
 								},
-								"method": "DELETE",
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{$randomDepartment}}\"\n    // \"name\": \"Games\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{product_service}}/api/v1/categories",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get category",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/categories?categoryId=c24315bc-f0a7-4884-9cd4-ae4bd7f583d3",
+									"raw": "{{product_service}}/api/v1/categories?categoryId=dd308942-4f36-4fd8-99dd-2fe5d31ebaf9",
 									"host": [
-										"localhost"
+										"{{product_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -153,8 +208,31 @@
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "c24315bc-f0a7-4884-9cd4-ae4bd7f583d3"
+											"value": "dd308942-4f36-4fd8-99dd-2fe5d31ebaf9"
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all category",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{product_service}}/api/v1/categories/all",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"categories",
+										"all"
 									]
 								}
 							},
@@ -178,11 +256,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/categories?categoryId=c24315bc-f0a7-4884-9cd4-ae4bd7f583d3",
+									"raw": "{{product_service}}/api/v1/categories?categoryId=b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496",
 									"host": [
-										"localhost"
+										"{{product_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -191,7 +268,7 @@
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "c24315bc-f0a7-4884-9cd4-ae4bd7f583d3"
+											"value": "b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496"
 										}
 									]
 								}
@@ -199,56 +276,28 @@
 							"response": []
 						},
 						{
-							"name": "get all category",
+							"name": "delete category",
 							"request": {
 								"auth": {
 									"type": "noauth"
 								},
-								"method": "GET",
+								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/categories/all",
+									"raw": "{{product_service}}/api/v1/categories?categoryId=b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496",
 									"host": [
-										"localhost"
+										"{{product_service}}"
 									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"categories",
-										"all"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "create category",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomDepartment}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "localhost:8222/api/v1/categories",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
 										"categories"
+									],
+									"query": [
+										{
+											"key": "categoryId",
+											"value": "b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496"
+										}
 									]
 								}
 							},
@@ -262,7 +311,7 @@
 			"name": "user-service",
 			"item": [
 				{
-					"name": "address",
+					"name": "address - done",
 					"item": [
 						{
 							"name": "create address",
@@ -271,7 +320,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"line\":\"1\",\n    \"country\": \"1\",\n    \"state\": \"1\",\n    \"city\": \"3\",\n    \"pincode\": \"3\",\n    \"isDefault\": false\n}",
+									"raw": "{\n    \"userId\": \"286db276-1d2a-42af-b857-dfb3b28a8e8d\",\n    \"line\":\"2\",\n    \"country\": \"2\",\n    \"state\": \"2\",\n    \"city\": \"2\",\n    \"pincode\": \"2\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -279,11 +328,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses?userId=efcfc3ec-2738-42e8-b1ae-17e2b972872f",
+									"raw": "{{user_service}}/api/v1/addresses?userId=efcfc3ec-2738-42e8-b1ae-17e2b972872f",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -293,6 +341,31 @@
 										{
 											"key": "userId",
 											"value": "efcfc3ec-2738-42e8-b1ae-17e2b972872f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get address",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{user_service}}/api/v1/addresses?addressId=3426364d-dc90-4e45-897f-b1cd6225a5d2",
+									"host": [
+										"{{user_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"addresses"
+									],
+									"query": [
+										{
+											"key": "addressId",
+											"value": "3426364d-dc90-4e45-897f-b1cd6225a5d2"
 										}
 									]
 								}
@@ -305,46 +378,20 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses?userId=efcfc3ec-2738-42e8-b1ae-17e2b972872f",
+									"raw": "{{user_service}}/api/v1/addresses/get-by-user?userId=286db276-1d2a-42af-b857-dfb3b28a8e8d",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
-										"addresses"
+										"addresses",
+										"get-by-user"
 									],
 									"query": [
 										{
 											"key": "userId",
-											"value": "efcfc3ec-2738-42e8-b1ae-17e2b972872f"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete address",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "localhost:8222/api/v1/addresses?addressId=611c39ec-f079-4ab4-bb75-bf239dc453f2",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"addresses"
-									],
-									"query": [
-										{
-											"key": "addressId",
-											"value": "611c39ec-f079-4ab4-bb75-bf239dc453f2"
+											"value": "286db276-1d2a-42af-b857-dfb3b28a8e8d"
 										}
 									]
 								}
@@ -366,11 +413,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses?addressId=ae81526b-2aeb-4b6e-b41b-27d0888f8078",
+									"raw": "{{user_service}}/api/v1/addresses?addressId=3426364d-dc90-4e45-897f-b1cd6225a5d2",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -379,7 +425,7 @@
 									"query": [
 										{
 											"key": "addressId",
-											"value": "ae81526b-2aeb-4b6e-b41b-27d0888f8078"
+											"value": "3426364d-dc90-4e45-897f-b1cd6225a5d2"
 										}
 									]
 								}
@@ -387,30 +433,24 @@
 							"response": []
 						},
 						{
-							"name": "update default address",
+							"name": "delete address",
 							"request": {
-								"method": "PATCH",
+								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/addresses/set-default?userId=e3551456-9eaa-460e-8fa6-a6a18a11a72a&addressId=ae81526b-2aeb-4b6e-b41b-27d0888f8078",
+									"raw": "{{user_service}}/api/v1/addresses?addressId=3426364d-dc90-4e45-897f-b1cd6225a5d2",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
-										"addresses",
-										"set-default"
+										"addresses"
 									],
 									"query": [
 										{
-											"key": "userId",
-											"value": "e3551456-9eaa-460e-8fa6-a6a18a11a72a"
-										},
-										{
 											"key": "addressId",
-											"value": "ae81526b-2aeb-4b6e-b41b-27d0888f8078"
+											"value": "3426364d-dc90-4e45-897f-b1cd6225a5d2"
 										}
 									]
 								}
@@ -420,7 +460,7 @@
 					]
 				},
 				{
-					"name": "user",
+					"name": "user - done",
 					"item": [
 						{
 							"name": "create user",
@@ -429,7 +469,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"test\",\n    \"username\": \"test\",\n    \"password\": \"password\",\n    \"email\": \"test@doamin.com\",\n    \"roleId\": \"5ad7d775-30ae-4cd6-9b9b-9e6c76165c90\"\n}\n",
+									"raw": "{\n    \"fullname\": \"test2\",\n    \"username\": \"test2\",\n    \"password\": \"12345678\",\n    \"email\": \"test2@doamin.com\",\n    \"roleId\": \"4f6da910-dee0-4a4d-bdf6-a27f1f4a5ac0\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -437,11 +477,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/users",
+									"raw": "{{user_service}}/api/v1/users",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -457,11 +496,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/users?userId=33167a6f-1c2b-4ebf-b54c-708408a39cc7",
+									"raw": "{{user_service}}/api/v1/users?userId=286db276-1d2a-42af-b857-dfb3b28a8e8d",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -470,33 +508,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "33167a6f-1c2b-4ebf-b54c-708408a39cc7"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete user",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "localhost:8222/api/v1/users?userId=9b43165c-4a17-4f12-a84e-f0c3f5e72005",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"users"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "9b43165c-4a17-4f12-a84e-f0c3f5e72005"
+											"value": "286db276-1d2a-42af-b857-dfb3b28a8e8d"
 										}
 									]
 								}
@@ -510,7 +522,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"updated\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\",\n    \"password\" :\"updated\"\n}",
+									"raw": "{\n    \"fullname\": \"updated1\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -518,11 +530,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/users?userId=33167a6f-1c2b-4ebf-b54c-708408a39cc7",
+									"raw": "{{user_service}}/api/v1/users?userId=13458132-59c0-4629-b801-60c65dbcac5f",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -531,7 +542,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "33167a6f-1c2b-4ebf-b54c-708408a39cc7"
+											"value": "13458132-59c0-4629-b801-60c65dbcac5f"
 										}
 									]
 								}
@@ -539,22 +550,38 @@
 							"response": []
 						},
 						{
-							"name": "login",
-							"protocolProfileBehavior": {
-								"disabledSystemHeaders": {
-									"host": true,
-									"user-agent": true,
-									"accept": true,
-									"accept-encoding": true,
-									"connection": true
+							"name": "delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{user_service}}/api/v1/users?userId=13458132-59c0-4629-b801-60c65dbcac5f",
+									"host": [
+										"{{user_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "13458132-59c0-4629-b801-60c65dbcac5f"
+										}
+									]
 								}
 							},
+							"response": []
+						},
+						{
+							"name": "change password",
 							"request": {
-								"method": "POST",
+								"method": "PATCH",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"test\",\n    \"password\": \"password\"\n}",
+									"raw": "{\n    \"password\" : \"12345678\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -562,16 +589,21 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/users/login",
+									"raw": "{{user_service}}/api/v1/users/change-password?userId=026dcf02-1d64-4f60-b6c7-e5976361b450",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
 										"users",
-										"login"
+										"change-password"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "026dcf02-1d64-4f60-b6c7-e5976361b450"
+										}
 									]
 								}
 							},
@@ -580,7 +612,7 @@
 					]
 				},
 				{
-					"name": "role",
+					"name": "role - done",
 					"item": [
 						{
 							"name": "create role",
@@ -589,7 +621,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"demo\"\n}",
+									"raw": "{\n    \"type\": \"customer\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -597,11 +629,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/roles",
+									"raw": "{{user_service}}/api/v1/roles",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -612,16 +643,15 @@
 							"response": []
 						},
 						{
-							"name": "get role type",
+							"name": "get role",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/roles?roleId=e3396f12-6e6d-450e-ab4c-9dc1a93a8493",
+									"raw": "{{user_service}}/api/v1/roles?roleId=866adb70-1127-497c-a167-b47f72d8a503",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -630,7 +660,7 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "e3396f12-6e6d-450e-ab4c-9dc1a93a8493"
+											"value": "866adb70-1127-497c-a167-b47f72d8a503"
 										}
 									]
 								}
@@ -652,11 +682,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8222/api/v1/roles?roleId=e3396f12-6e6d-450e-ab4c-9dc1a93a8493",
+									"raw": "{{user_service}}/api/v1/roles?roleId=866adb70-1127-497c-a167-b47f72d8a503",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -665,7 +694,7 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "e3396f12-6e6d-450e-ab4c-9dc1a93a8493"
+											"value": "866adb70-1127-497c-a167-b47f72d8a503"
 										}
 									]
 								}
@@ -678,11 +707,10 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/roles?roleId=1a925efc-c7c2-4c42-9e4e-3317567ade64",
+									"raw": "{{user_service}}/api/v1/roles?roleId=a516194c-eab4-4c62-b3a1-4f87c4bb0fb7",
 									"host": [
-										"localhost"
+										"{{user_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -691,8 +719,28 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "1a925efc-c7c2-4c42-9e4e-3317567ade64"
+											"value": "a516194c-eab4-4c62-b3a1-4f87c4bb0fb7"
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all role",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{user_service}}/api/v1/roles/all",
+									"host": [
+										"{{user_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"roles",
+										"all"
 									]
 								}
 							},
@@ -706,19 +754,46 @@
 			"name": "order-service",
 			"item": [
 				{
-					"name": "order",
+					"name": "order - done",
 					"item": [
+						{
+							"name": "create order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"d6636b9f-4c1d-4d5f-bd62-2fd6ef4f9beb\",\n                \"quantity\": 4\n            }\n        ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{order_service}}/api/v1/orders",
+									"host": [
+										"{{order_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
 						{
 							"name": "get order",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8222/api/v1/orders?orderId=19a2a09b-7b9a-49ce-b16d-fb5d3e33fe91",
+									"raw": "{{order_service}}/api/v1/orders?orderId=c4873f54-4064-4757-a5fc-128ab7d6211c",
 									"host": [
-										"localhost"
+										"{{order_service}}"
 									],
-									"port": "8222",
 									"path": [
 										"api",
 										"v1",
@@ -727,37 +802,8 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "19a2a09b-7b9a-49ce-b16d-fb5d3e33fe91"
+											"value": "c4873f54-4064-4757-a5fc-128ab7d6211c"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "create order",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"3cfb3ce1-6a24-4324-87dd-24231250c503\",\n                \"quantity\": 4\n            },\n            {\n                \"id\" : \"297a3a95-4fc5-45cc-b33c-bf7dc3528696\",\n                \"quantity\": 10\n            }\n        ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "localhost:8222/api/v1/orders",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"orders"
 									]
 								}
 							},
@@ -766,46 +812,8 @@
 					]
 				},
 				{
-					"name": "payment",
+					"name": "payment - done",
 					"item": [
-						{
-							"name": "get payment",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\": 42.184,\n    \"status\": \"fAiled\",\n    \"orderId\": \"eff5d234-7669-4bfb-820b-5651f8dfc6af\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "localhost:8222/api/v1/payments?paymentId=4979eefa-5cdb-4e2f-9726-7e4030e83526",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"api",
-										"v1",
-										"payments"
-									],
-									"query": [
-										{
-											"key": "paymentId",
-											"value": "4979eefa-5cdb-4e2f-9726-7e4030e83526"
-										}
-									]
-								}
-							},
-							"response": []
-						},
 						{
 							"name": "make payment",
 							"request": {
@@ -813,7 +821,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"amount\": 150.00,\n    \"status\": \"success\",\n    \"orderId\": \"5302908e-f2fd-43fd-be02-e256f08438a5\"\n}",
+									"raw": "{\n    \"amount\": 40.00,\n    \"status\": \"success\",\n    \"orderId\": \"c4873f54-4064-4757-a5fc-128ab7d6211c\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -830,6 +838,31 @@
 										"api",
 										"v1",
 										"payments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get payment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{order_service}}/api/v1/payments?paymentId=793aa172-f9f0-4834-bc24-bd4956c0cd5a",
+									"host": [
+										"{{order_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payments"
+									],
+									"query": [
+										{
+											"key": "paymentId",
+											"value": "793aa172-f9f0-4834-bc24-bd4956c0cd5a"
+										}
 									]
 								}
 							},
