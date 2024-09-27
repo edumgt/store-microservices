@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
     postgres:
         container_name: db
@@ -19,8 +17,10 @@ services:
 
 networks:
     store-backend:
+        name: store-backend
         driver: bridge
 
 volumes:
     postgres:
+        name: postgres-data
         driver: local
