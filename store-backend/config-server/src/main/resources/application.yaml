@@ -1,16 +1,15 @@
-logging:
-    pattern:
-        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'
+server:
+    port: 8888
 spring:
+    application:
+        name: config-server
     cloud:
         config:
             server:
                 native:
                     search-locations: classpath:/configurations
-    application:
-        name: config-server
     profiles:
         active: native
-server:
-    port: '8888'
-
+logging:
+    pattern:
+        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'
