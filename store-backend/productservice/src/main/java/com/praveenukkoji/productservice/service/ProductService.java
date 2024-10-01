@@ -7,6 +7,7 @@ import com.praveenukkoji.productservice.exception.category.CategoryNotFoundExcep
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
+import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.model.Product;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
@@ -147,5 +148,47 @@ public class ProductService {
         }
 
         throw new CategoryNotFoundException(categoryName + " category not found");
+    }
+
+    // increase stock
+    public UUID increaseStock(UUID productId, Integer increaseStock)
+            throws ProductNotFoundException, ProductUpdateException {
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            Product productToIncrease = product.get();
+            productToIncrease.setQuantity(productToIncrease.getQuantity() + increaseStock);
+            try {
+                return productRepository.save(productToIncrease).getId();
+            } catch (Exception e) {
+                throw new ProductUpdateException(e.getMessage());
+            }
+        }
+
+        throw new ProductNotFoundException("product with id = " + productId + " not found");
+    }
+
+    // decrease stock
+    public UUID decreaseStock(UUID productId, Integer decreaseStock)
+            throws ProductNotFoundException, ProductUpdateException {
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            Product productToDecrease = product.get();
+            int updatedValueOfStock = productToDecrease.getQuantity() - decreaseStock;
+
+            if (updatedValueOfStock < 0) {
+                throw new ProductUpdateException("remaining stock = " + productToDecrease.getQuantity());
+            }
+
+            productToDecrease.setQuantity(updatedValueOfStock);
+            try {
+                return productRepository.save(productToDecrease).getId();
+            } catch (Exception e) {
+                throw new ProductUpdateException(e.getMessage());
+            }
+        }
+
+        throw new ProductNotFoundException("product with id = " + productId + " not found");
     }
 }
