@@ -41,7 +41,7 @@ public class UserService {
 
         if (role.isPresent()) {
             String password = createUserRequest.getPassword();
-            
+
             if (password.length() < 8) {
                 throw new UserCreateException("Password must be at least 8 characters");
             }
@@ -172,5 +172,20 @@ public class UserService {
         }
 
         throw new UserNotFoundException("user with id = " + userId + " not found");
+    }
+
+    // update active status
+    public UUID updateActiveStatus(UUID userId, boolean status) throws UserUpdateException {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            User updatedUser = user.get();
+
+            updatedUser.setIsActive(status);
+
+            return userRepository.save(updatedUser).getId();
+        }
+
+        throw new UserUpdateException("user with id = " + userId + " not found");
     }
 }
