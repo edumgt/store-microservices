@@ -5,6 +5,7 @@ import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.dto.response.order.OrderResponse;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
+import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
 import com.praveenukkoji.orderservice.feign.product.model.Product;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.OrderItem;
@@ -108,6 +109,35 @@ public class OrderService {
                     .payment(order.get().getPayment())
                     .orderItemList(order.get().getOrderItemList())
                     .build();
+        }
+
+        throw new OrderNotFoundException("order with id = " + orderId + " not found");
+    }
+
+    // change order status
+    public UUID changeOrderStatus(UUID orderId, String orderStatus)
+            throws OrderNotFoundException, OrderStatusUpdateException {
+        Optional<Order> order = orderRepository.findById(orderId);
+
+        if (order.isPresent()) {
+            Order updatedOrder = order.get();
+
+            switch (orderStatus.toUpperCase()) {
+                case "OUTFORDELIVERY":
+                    updatedOrder.setStatus(OrderStatus.OUTFORDELIVERY);
+                    break;
+                case "DELIVERED":
+                    updatedOrder.setStatus(OrderStatus.DELIVERED);
+                    break;
+                default:
+                    throw new OrderStatusUpdateException("unknown status = " + orderStatus);
+            }
+
+            try {
+                return orderRepository.save(updatedOrder).getId();
+            } catch (Exception e) {
+                throw new OrderStatusUpdateException(e.getMessage());
+            }
         }
 
         throw new OrderNotFoundException("order with id = " + orderId + " not found");

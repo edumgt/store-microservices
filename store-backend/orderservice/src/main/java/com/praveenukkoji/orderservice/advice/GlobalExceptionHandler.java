@@ -4,6 +4,7 @@ import com.praveenukkoji.orderservice.dto.error.ExceptionResponse;
 import com.praveenukkoji.orderservice.dto.error.ValidationResponse;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
+import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,17 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(404).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(OrderStatusUpdateException.class)
+    public ResponseEntity<?> handleException(OrderStatusUpdateException exception) {
+        log.error("OrderStatusUpdateException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
     }
 
     // payment
