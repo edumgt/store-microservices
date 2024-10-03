@@ -6,6 +6,7 @@ import com.praveenukkoji.userservice.exception.address.AddressCreateException;
 import com.praveenukkoji.userservice.exception.address.AddressDeleteException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
+import com.praveenukkoji.userservice.exception.auth.UserLoginException;
 import com.praveenukkoji.userservice.exception.role.RoleCreateException;
 import com.praveenukkoji.userservice.exception.role.RoleDeleteException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
@@ -156,6 +157,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RoleDeleteException.class)
     public ResponseEntity<?> handleException(RoleDeleteException exception) {
         log.error("RoleDeleteException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    // auth
+    @ExceptionHandler(UserLoginException.class)
+    public ResponseEntity<?> handleException(UserLoginException exception) {
+        log.error("UserLoginException - {}", exception.getMessage());
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                 .message(exception.getMessage())
