@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,6 +72,7 @@ public class OrderService {
                 .totalItems(totalItems)
                 .amount(amount)
                 .status(OrderStatus.CREATED)
+                .createdBy(createOrderRequest.getCreatedBy())
                 .build();
 
         try {
@@ -141,5 +143,31 @@ public class OrderService {
         }
 
         throw new OrderNotFoundException("order with id = " + orderId + " not found");
+    }
+
+    // retrieve by user
+    public List<OrderResponse> getOrderByUser(UUID userId) {
+        List<Order> orders = orderRepository.findOrderByUserId(userId);
+
+        if (orders.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return orders.stream().map(order -> {
+            String orderStatus = String.valueOf(order.getStatus());
+
+            return OrderResponse.builder()
+                    .id(order.getId())
+                    .totalItems(order.getTotalItems())
+                    .amount(order.getAmount())
+                    .status(orderStatus)
+                    .createdOn(order.getCreatedOn())
+                    .createdBy(order.getCreatedBy())
+                    .modifiedOn(order.getModifiedOn())
+                    .modifiedBy(order.getModifiedBy())
+                    .payment(order.getPayment())
+                    .orderItemList(order.getOrderItemList())
+                    .build();
+        }).toList();
     }
 }

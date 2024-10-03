@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -18,4 +19,5 @@ public class CreateOrderRequest {
     @NotNull(message = "item list is null")
     @NotEmpty(message = "item list is empty")
     private List<@Valid Item> itemList;
+    private UUID createdBy;
 }

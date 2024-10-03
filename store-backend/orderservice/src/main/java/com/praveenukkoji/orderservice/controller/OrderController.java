@@ -81,4 +81,24 @@ public class OrderController {
         UUID id = UUID.fromString(orderId);
         return ResponseEntity.status(200).body(orderService.changeOrderStatus(id, orderStatus));
     }
+
+    // retrieve by user
+    @GetMapping(path = "/get-by-user")
+    public ResponseEntity<?> getOrderByUser(
+            @RequestParam(defaultValue = "", name = "userId") String userId
+    ) throws OrderNotFoundException {
+        if (Objects.equals(userId, "")) {
+            Map<String, String> error = new HashMap<>();
+            error.put("userId", "user id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        UUID id = UUID.fromString(userId);
+        return ResponseEntity.status(200).body(orderService.getOrderByUser(id));
+    }
 }

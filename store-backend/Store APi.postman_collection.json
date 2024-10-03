@@ -675,7 +675,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/users/active-status?userId=8b8959bb-8a3e-4365-b116-27713cce32f8&activeStatus=true",
+									"raw": "{{user_service}}/api/v1/users/active-status?userId=8b8959bb-8a3e-4365-b116-27713cce32f8&activeStatus=false",
 									"host": [
 										"{{user_service}}"
 									],
@@ -692,7 +692,7 @@
 										},
 										{
 											"key": "activeStatus",
-											"value": "true"
+											"value": "false"
 										}
 									]
 								}
@@ -887,7 +887,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"d6636b9f-4c1d-4d5f-bd62-2fd6ef4f9beb\",\n                \"quantity\": 4\n            }\n        ]\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"d6636b9f-4c1d-4d5f-bd62-2fd6ef4f9beb\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -914,7 +914,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders?orderId=3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16",
+									"raw": "{{order_service}}/api/v1/orders?orderId=0c2d9cf8-eeb4-42c1-a61d-39ef848daabe",
 									"host": [
 										"{{order_service}}"
 									],
@@ -926,7 +926,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16"
+											"value": "0c2d9cf8-eeb4-42c1-a61d-39ef848daabe"
 										}
 									]
 								}
@@ -957,6 +957,32 @@
 										{
 											"key": "orderStatus",
 											"value": "oUTFORDeliVery"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get by user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{order_service}}/api/v1/orders/get-by-user?userId=8b8959bb-8a3e-4365-b116-27713cce32f3",
+									"host": [
+										"{{order_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"get-by-user"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "8b8959bb-8a3e-4365-b116-27713cce32f3"
 										}
 									]
 								}
