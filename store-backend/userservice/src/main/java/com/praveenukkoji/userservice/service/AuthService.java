@@ -26,8 +26,11 @@ public class AuthService {
         Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
 
         if (user.isPresent()) {
+            if (!user.get().getIsActive()) {
+                throw new UserLoginException("account with username = " + username + " is de-activated contact admin");
+            }
             String token = user.get().getId().toString();
-            
+
             return UserLoginResponse.builder()
                     .token(token).build();
         }
