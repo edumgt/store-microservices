@@ -52,7 +52,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products?productId=249fe87e-2128-4f77-b28c-e7ec52ba7fd3",
+									"raw": "{{product_service}}/api/v1/products?productId=63885095-0b85-4763-8f3d-5c4d55a43f2d",
 									"host": [
 										"{{product_service}}"
 									],
@@ -64,7 +64,7 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "249fe87e-2128-4f77-b28c-e7ec52ba7fd3"
+											"value": "63885095-0b85-4763-8f3d-5c4d55a43f2d"
 										}
 									]
 								}
@@ -80,7 +80,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products/get-by-category?category=Tools",
+									"raw": "{{product_service}}/api/v1/products/get-by-category?category=Computers",
 									"host": [
 										"{{product_service}}"
 									],
@@ -93,7 +93,7 @@
 									"query": [
 										{
 											"key": "category",
-											"value": "Tools"
+											"value": "Computers"
 										}
 									]
 								}
@@ -145,6 +145,66 @@
 										{
 											"key": "productId",
 											"value": "c31cef65-bae3-43d3-b211-15014affab86"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "increase stock",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{product_service}}/api/v1/products/increase-stock?productId=63885095-0b85-4763-8f3d-5c4d55a43f2d&increaseStock=0",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"increase-stock"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "63885095-0b85-4763-8f3d-5c4d55a43f2d"
+										},
+										{
+											"key": "increaseStock",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "decrease stock",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{product_service}}/api/v1/products/decrease-stock?productId=63885095-0b85-4763-8f3d-5c4d55a43f2d&decreaseStock=-1",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"decrease-stock"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "63885095-0b85-4763-8f3d-5c4d55a43f2d"
+										},
+										{
+											"key": "decreaseStock",
+											"value": "-1"
 										}
 									]
 								}
@@ -608,6 +668,36 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "update active status",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{user_service}}/api/v1/users/active-status?userId=8b8959bb-8a3e-4365-b116-27713cce32f8&activeStatus=true",
+									"host": [
+										"{{user_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"active-status"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "8b8959bb-8a3e-4365-b116-27713cce32f8"
+										},
+										{
+											"key": "activeStatus",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -747,6 +837,40 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "auth - done",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"test2\",\n    \"password\": \"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{user_service}}/api/v1/auth/login",
+									"host": [
+										"{{user_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -790,7 +914,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders?orderId=c4873f54-4064-4757-a5fc-128ab7d6211c",
+									"raw": "{{order_service}}/api/v1/orders?orderId=3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16",
 									"host": [
 										"{{order_service}}"
 									],
@@ -802,7 +926,37 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "c4873f54-4064-4757-a5fc-128ab7d6211c"
+											"value": "3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update order status",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16&orderStatus=oUTFORDeliVery",
+									"host": [
+										"{{order_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"order-status"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16"
+										},
+										{
+											"key": "orderStatus",
+											"value": "oUTFORDeliVery"
 										}
 									]
 								}
