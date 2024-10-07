@@ -13,6 +13,7 @@ import com.praveenukkoji.productservice.model.Product;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
 import com.praveenukkoji.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class ProductService {
 
@@ -32,6 +34,8 @@ public class ProductService {
     // create
     public UUID createProduct(CreateProductRequest createProductRequest)
             throws CategoryNotFoundException, ProductCreateException {
+
+        log.info("Creating product {}", createProductRequest);
 
         UUID categoryId = createProductRequest.getCategoryId();
         Optional<Category> category = categoryRepository.findById(categoryId);
@@ -58,6 +62,8 @@ public class ProductService {
     // retrieve
     public ProductResponse getProduct(UUID productId) throws ProductNotFoundException {
 
+        log.info("Getting product {}", productId);
+
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
@@ -83,6 +89,8 @@ public class ProductService {
     // delete
     public void deleteProduct(UUID productId) throws ProductNotFoundException, ProductDeleteException {
 
+        log.info("Deleting product {}", productId);
+
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
@@ -99,6 +107,8 @@ public class ProductService {
 
     // get all
     public List<ProductResponse> getAllProduct() {
+
+        log.info("Getting all products");
 
         List<Product> productList = productRepository.findAll();
 
@@ -125,6 +135,9 @@ public class ProductService {
     // get by category name
     public List<ProductResponse> getProductByCategory(String categoryName)
             throws CategoryNotFoundException {
+
+        log.info("Getting all products by category {}", categoryName);
+
         Optional<Category> category = categoryRepository.findByCategoryName(categoryName);
 
         if (category.isPresent()) {
@@ -153,6 +166,9 @@ public class ProductService {
     // increase stock
     public UUID increaseStock(UUID productId, Integer increaseStock)
             throws ProductNotFoundException, ProductUpdateException {
+
+        log.info("Increasing stock by: {}", increaseStock);
+
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
@@ -171,6 +187,9 @@ public class ProductService {
     // decrease stock
     public UUID decreaseStock(UUID productId, Integer decreaseStock)
             throws ProductNotFoundException, ProductUpdateException {
+
+        log.info("Decreasing stock by: {}", decreaseStock);
+        
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {

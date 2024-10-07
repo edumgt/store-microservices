@@ -22,7 +22,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"dd308942-4f36-4fd8-99dd-2fe5d31ebaf9\"\n}",
+									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"c45dfe7d-11dc-414d-a078-cdb3de7cdf17\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -52,7 +52,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products?productId=63885095-0b85-4763-8f3d-5c4d55a43f2d",
+									"raw": "{{product_service}}/api/v1/products?productId=9d088571-a556-4cf5-955d-18b15f12ddcb",
 									"host": [
 										"{{product_service}}"
 									],
@@ -64,7 +64,7 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "63885095-0b85-4763-8f3d-5c4d55a43f2d"
+											"value": "9d088571-a556-4cf5-955d-18b15f12ddcb"
 										}
 									]
 								}
@@ -80,7 +80,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products/get-by-category?category=Computers",
+									"raw": "{{product_service}}/api/v1/products/get-by-category?category=Books",
 									"host": [
 										"{{product_service}}"
 									],
@@ -93,7 +93,7 @@
 									"query": [
 										{
 											"key": "category",
-											"value": "Computers"
+											"value": "Books"
 										}
 									]
 								}
@@ -132,7 +132,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products?productId=c31cef65-bae3-43d3-b211-15014affab86",
+									"raw": "{{product_service}}/api/v1/products?productId=9d088571-a556-4cf5-955d-18b15f12ddcb",
 									"host": [
 										"{{product_service}}"
 									],
@@ -144,7 +144,7 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "c31cef65-bae3-43d3-b211-15014affab86"
+											"value": "9d088571-a556-4cf5-955d-18b15f12ddcb"
 										}
 									]
 								}
@@ -157,7 +157,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products/increase-stock?productId=63885095-0b85-4763-8f3d-5c4d55a43f2d&increaseStock=0",
+									"raw": "{{product_service}}/api/v1/products/increase-stock?productId=4e6ed3bc-fdc2-4163-8ec2-99f60a88d566&increaseStock=10",
 									"host": [
 										"{{product_service}}"
 									],
@@ -170,11 +170,11 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "63885095-0b85-4763-8f3d-5c4d55a43f2d"
+											"value": "4e6ed3bc-fdc2-4163-8ec2-99f60a88d566"
 										},
 										{
 											"key": "increaseStock",
-											"value": "0"
+											"value": "10"
 										}
 									]
 								}
@@ -187,7 +187,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products/decrease-stock?productId=63885095-0b85-4763-8f3d-5c4d55a43f2d&decreaseStock=-1",
+									"raw": "{{product_service}}/api/v1/products/decrease-stock?productId=4e6ed3bc-fdc2-4163-8ec2-99f60a88d566&decreaseStock=10",
 									"host": [
 										"{{product_service}}"
 									],
@@ -200,11 +200,11 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "63885095-0b85-4763-8f3d-5c4d55a43f2d"
+											"value": "4e6ed3bc-fdc2-4163-8ec2-99f60a88d566"
 										},
 										{
 											"key": "decreaseStock",
-											"value": "-1"
+											"value": "10"
 										}
 									]
 								}
@@ -256,7 +256,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId=dd308942-4f36-4fd8-99dd-2fe5d31ebaf9",
+									"raw": "{{product_service}}/api/v1/categories?categoryId=7f15123c-ed95-4809-a4b7-4db086f2aac3",
 									"host": [
 										"{{product_service}}"
 									],
@@ -268,7 +268,7 @@
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "dd308942-4f36-4fd8-99dd-2fe5d31ebaf9"
+											"value": "7f15123c-ed95-4809-a4b7-4db086f2aac3"
 										}
 									]
 								}
@@ -316,7 +316,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId=b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496",
+									"raw": "{{product_service}}/api/v1/categories?categoryId=7f15123c-ed95-4809-a4b7-4db086f2aac3",
 									"host": [
 										"{{product_service}}"
 									],
@@ -328,7 +328,7 @@
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496"
+											"value": "7f15123c-ed95-4809-a4b7-4db086f2aac3"
 										}
 									]
 								}
@@ -344,7 +344,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId=b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496",
+									"raw": "{{product_service}}/api/v1/categories?categoryId=7f15123c-ed95-4809-a4b7-4db086f2aac3",
 									"host": [
 										"{{product_service}}"
 									],
@@ -356,7 +356,7 @@
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "b7d6fe0a-16b8-4717-9ea7-0d1a15a3b496"
+											"value": "7f15123c-ed95-4809-a4b7-4db086f2aac3"
 										}
 									]
 								}
@@ -380,7 +380,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"userId\": \"286db276-1d2a-42af-b857-dfb3b28a8e8d\",\n    \"line\":\"2\",\n    \"country\": \"2\",\n    \"state\": \"2\",\n    \"city\": \"2\",\n    \"pincode\": \"2\"\n}",
+									"raw": "{\n    \"userId\": \"9031530a-ab3c-4f33-93fe-82066560273d\",\n    \"line\":\"2\",\n    \"country\": \"2\",\n    \"state\": \"2\",\n    \"city\": \"2\",\n    \"pincode\": \"2\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -413,7 +413,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId=3426364d-dc90-4e45-897f-b1cd6225a5d2",
+									"raw": "{{user_service}}/api/v1/addresses?addressId=9b592883-8179-41ce-9f35-af3b09698025",
 									"host": [
 										"{{user_service}}"
 									],
@@ -425,7 +425,7 @@
 									"query": [
 										{
 											"key": "addressId",
-											"value": "3426364d-dc90-4e45-897f-b1cd6225a5d2"
+											"value": "9b592883-8179-41ce-9f35-af3b09698025"
 										}
 									]
 								}
@@ -438,7 +438,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/addresses/get-by-user?userId=286db276-1d2a-42af-b857-dfb3b28a8e8d",
+									"raw": "{{user_service}}/api/v1/addresses/get-by-user?userId=9031530a-ab3c-4f33-93fe-82066560273d",
 									"host": [
 										"{{user_service}}"
 									],
@@ -451,7 +451,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "286db276-1d2a-42af-b857-dfb3b28a8e8d"
+											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
 										}
 									]
 								}
@@ -473,7 +473,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId=3426364d-dc90-4e45-897f-b1cd6225a5d2",
+									"raw": "{{user_service}}/api/v1/addresses?addressId=e668d358-e661-4035-8e0d-25ea1d5cfa6c",
 									"host": [
 										"{{user_service}}"
 									],
@@ -485,7 +485,7 @@
 									"query": [
 										{
 											"key": "addressId",
-											"value": "3426364d-dc90-4e45-897f-b1cd6225a5d2"
+											"value": "e668d358-e661-4035-8e0d-25ea1d5cfa6c"
 										}
 									]
 								}
@@ -498,7 +498,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId=3426364d-dc90-4e45-897f-b1cd6225a5d2",
+									"raw": "{{user_service}}/api/v1/addresses?addressId=e668d358-e661-4035-8e0d-25ea1d5cfa6c",
 									"host": [
 										"{{user_service}}"
 									],
@@ -510,7 +510,7 @@
 									"query": [
 										{
 											"key": "addressId",
-											"value": "3426364d-dc90-4e45-897f-b1cd6225a5d2"
+											"value": "e668d358-e661-4035-8e0d-25ea1d5cfa6c"
 										}
 									]
 								}
@@ -529,7 +529,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"test2\",\n    \"username\": \"test2\",\n    \"password\": \"12345678\",\n    \"email\": \"test2@doamin.com\",\n    \"roleId\": \"4f6da910-dee0-4a4d-bdf6-a27f1f4a5ac0\"\n}\n",
+									"raw": "{\n    \"fullname\": \"test2\",\n    \"username\": \"test2\",\n    \"password\": \"12345678\",\n    \"email\": \"test2@doamin.com\",\n    \"roleId\": \"9a85e78f-b5ef-4422-9a5d-36248b612551\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -556,7 +556,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/users?userId=286db276-1d2a-42af-b857-dfb3b28a8e8d",
+									"raw": "{{user_service}}/api/v1/users?userId=9031530a-ab3c-4f33-93fe-82066560273d",
 									"host": [
 										"{{user_service}}"
 									],
@@ -568,7 +568,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "286db276-1d2a-42af-b857-dfb3b28a8e8d"
+											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
 										}
 									]
 								}
@@ -590,7 +590,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/users?userId=13458132-59c0-4629-b801-60c65dbcac5f",
+									"raw": "{{user_service}}/api/v1/users?userId=9031530a-ab3c-4f33-93fe-82066560273d",
 									"host": [
 										"{{user_service}}"
 									],
@@ -602,7 +602,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "13458132-59c0-4629-b801-60c65dbcac5f"
+											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
 										}
 									]
 								}
@@ -615,7 +615,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/users?userId=13458132-59c0-4629-b801-60c65dbcac5f",
+									"raw": "{{user_service}}/api/v1/users?userId=b962232b-ce0b-4363-baac-cea1a11c079c",
 									"host": [
 										"{{user_service}}"
 									],
@@ -627,7 +627,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "13458132-59c0-4629-b801-60c65dbcac5f"
+											"value": "b962232b-ce0b-4363-baac-cea1a11c079c"
 										}
 									]
 								}
@@ -649,7 +649,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/users/change-password?userId=026dcf02-1d64-4f60-b6c7-e5976361b450",
+									"raw": "{{user_service}}/api/v1/users/change-password?userId=9031530a-ab3c-4f33-93fe-82066560273d",
 									"host": [
 										"{{user_service}}"
 									],
@@ -662,7 +662,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "026dcf02-1d64-4f60-b6c7-e5976361b450"
+											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
 										}
 									]
 								}
@@ -675,7 +675,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/users/active-status?userId=8b8959bb-8a3e-4365-b116-27713cce32f8&activeStatus=false",
+									"raw": "{{user_service}}/api/v1/users/active-status?userId=9031530a-ab3c-4f33-93fe-82066560273d&activeStatus=true",
 									"host": [
 										"{{user_service}}"
 									],
@@ -688,11 +688,11 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "8b8959bb-8a3e-4365-b116-27713cce32f8"
+											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
 										},
 										{
 											"key": "activeStatus",
-											"value": "false"
+											"value": "true"
 										}
 									]
 								}
@@ -711,7 +711,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"customer\"\n}",
+									"raw": "{\n    \"type\": \"demo\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -738,7 +738,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId=866adb70-1127-497c-a167-b47f72d8a503",
+									"raw": "{{user_service}}/api/v1/roles?roleId=3842a17f-50aa-4c1a-9cae-d18f0abceb66",
 									"host": [
 										"{{user_service}}"
 									],
@@ -750,7 +750,7 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "866adb70-1127-497c-a167-b47f72d8a503"
+											"value": "3842a17f-50aa-4c1a-9cae-d18f0abceb66"
 										}
 									]
 								}
@@ -772,7 +772,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId=866adb70-1127-497c-a167-b47f72d8a503",
+									"raw": "{{user_service}}/api/v1/roles?roleId=3842a17f-50aa-4c1a-9cae-d18f0abceb66",
 									"host": [
 										"{{user_service}}"
 									],
@@ -784,7 +784,7 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "866adb70-1127-497c-a167-b47f72d8a503"
+											"value": "3842a17f-50aa-4c1a-9cae-d18f0abceb66"
 										}
 									]
 								}
@@ -797,7 +797,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId=a516194c-eab4-4c62-b3a1-4f87c4bb0fb7",
+									"raw": "{{user_service}}/api/v1/roles?roleId=3842a17f-50aa-4c1a-9cae-d18f0abceb66",
 									"host": [
 										"{{user_service}}"
 									],
@@ -809,7 +809,7 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "a516194c-eab4-4c62-b3a1-4f87c4bb0fb7"
+											"value": "3842a17f-50aa-4c1a-9cae-d18f0abceb66"
 										}
 									]
 								}
@@ -848,7 +848,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"test2\",\n    \"password\": \"12345678\"\n}",
+									"raw": "{\n    \"username\": \"updated\",\n    \"password\": \"12345678\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -887,7 +887,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"d6636b9f-4c1d-4d5f-bd62-2fd6ef4f9beb\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"d6636b9f-4c1d-4d5f-bd62-2fd6ef4f9beb\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -914,7 +914,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders?orderId=0c2d9cf8-eeb4-42c1-a61d-39ef848daabe",
+									"raw": "{{order_service}}/api/v1/orders?orderId=de32bc4a-d898-45f9-9a0b-6e592a2e0849",
 									"host": [
 										"{{order_service}}"
 									],
@@ -926,7 +926,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "0c2d9cf8-eeb4-42c1-a61d-39ef848daabe"
+											"value": "de32bc4a-d898-45f9-9a0b-6e592a2e0849"
 										}
 									]
 								}
@@ -939,7 +939,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16&orderStatus=oUTFORDeliVery",
+									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=de32bc4a-d898-45f9-9a0b-6e592a2e0849&orderStatus=oUTFORDeliVery",
 									"host": [
 										"{{order_service}}"
 									],
@@ -952,7 +952,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "3de8c4a8-ca06-4ccd-bae7-d9d826fa2f16"
+											"value": "de32bc4a-d898-45f9-9a0b-6e592a2e0849"
 										},
 										{
 											"key": "orderStatus",
@@ -1001,7 +1001,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"amount\": 40.00,\n    \"status\": \"success\",\n    \"orderId\": \"c4873f54-4064-4757-a5fc-128ab7d6211c\"\n}",
+									"raw": "{\n    \"amount\": 40.00,\n    \"status\": \"success\",\n    \"orderId\": \"de32bc4a-d898-45f9-9a0b-6e592a2e0849\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1029,7 +1029,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/payments?paymentId=793aa172-f9f0-4834-bc24-bd4956c0cd5a",
+									"raw": "{{order_service}}/api/v1/payments?paymentId=eea41ab6-bb9a-4364-8175-79104f8be953",
 									"host": [
 										"{{order_service}}"
 									],
@@ -1041,7 +1041,7 @@
 									"query": [
 										{
 											"key": "paymentId",
-											"value": "793aa172-f9f0-4834-bc24-bd4956c0cd5a"
+											"value": "eea41ab6-bb9a-4364-8175-79104f8be953"
 										}
 									]
 								}

@@ -29,6 +29,3 @@ eureka:
     client:
         serviceUrl:
             defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
-logging:
-    pattern:
-        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'

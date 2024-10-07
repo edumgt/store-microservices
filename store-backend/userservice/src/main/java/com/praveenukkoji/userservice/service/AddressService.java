@@ -12,6 +12,7 @@ import com.praveenukkoji.userservice.model.User;
 import com.praveenukkoji.userservice.repository.AddressRepository;
 import com.praveenukkoji.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class AddressService {
 
@@ -30,6 +32,8 @@ public class AddressService {
     // TODO: implement isDefault address logic
     public UUID createAddress(CreateAddressRequest createAddressRequest)
             throws UserNotFoundException, AddressCreateException {
+
+        log.info("Creating address: {}", createAddressRequest);
 
         UUID userId = createAddressRequest.getUserId();
         Optional<User> user = userRepository.findById(userId);
@@ -59,6 +63,8 @@ public class AddressService {
     public AddressResponse getAddress(UUID addressId)
             throws AddressNotFoundException {
 
+        log.info("Getting address: {}", addressId);
+
         Optional<Address> address = addressRepository.findById(addressId);
 
         if (address.isPresent()) {
@@ -82,6 +88,8 @@ public class AddressService {
     // TODO: change Map<String, String> to Class of UpdateAddressRequest
     public UUID updateAddress(UUID addressId, Map<String, String> updates)
             throws AddressNotFoundException, AddressUpdateException {
+
+        log.info("Updating address: {}", updates);
 
         Optional<Address> address = addressRepository.findById(addressId);
 
@@ -132,6 +140,8 @@ public class AddressService {
     public void deleteAddress(UUID addressId)
             throws AddressNotFoundException, AddressDeleteException {
 
+        log.info("Deleting address: {}", addressId);
+
         Optional<Address> address = addressRepository.findById(addressId);
 
         if (address.isPresent()) {
@@ -154,6 +164,9 @@ public class AddressService {
 
     // get address by user
     public List<AddressResponse> getAddressByUser(UUID userId) throws UserNotFoundException {
+
+        log.info("Getting addresses by user: {}", userId);
+        
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {

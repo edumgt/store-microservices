@@ -7,9 +7,9 @@ spring:
         database: postgresql
         hibernate:
             ddl-auto: update
-        show-sql: true
+        show-sql: false
         properties:
-            hibernate.format_sql: true
+            hibernate.format_sql: false
     datasource:
         password: ${DATABASE_PASSWORD}
         driver-class-name: org.postgresql.Driver
@@ -19,6 +19,3 @@ eureka:
     client:
         serviceUrl:
             defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
-logging:
-    pattern:
-        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'

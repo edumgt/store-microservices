@@ -4,15 +4,20 @@ import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.feign.product.model.Product;
 import com.praveenukkoji.orderservice.model.OrderItem;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class OrderUtility {
 
     // get products
     public List<Product> getProducts(List<UUID> productIds) {
+
+        log.info("Get products");
+
         Random random = new Random();
         boolean inStock = random.nextBoolean();
 
@@ -28,6 +33,9 @@ public class OrderUtility {
     // get order amount
     public Double getOrderAmount(List<Item> itemList, List<Product> productList)
             throws CreateOrderException {
+
+        log.info("Get order amount");
+
         double orderAmount = 0.0;
 
         // calculating order amount
@@ -54,6 +62,8 @@ public class OrderUtility {
     public List<OrderItem> getOrderItemList(List<Item> itemList, List<Product> productList)
             throws CreateOrderException {
 
+        log.info("Get order item list");
+        
         List<OrderItem> orderItemsList = new ArrayList<>();
 
         // create order item list

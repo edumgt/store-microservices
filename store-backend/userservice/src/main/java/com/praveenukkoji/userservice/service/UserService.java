@@ -14,6 +14,7 @@ import com.praveenukkoji.userservice.model.User;
 import com.praveenukkoji.userservice.repository.RoleRepository;
 import com.praveenukkoji.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class UserService {
 
@@ -35,6 +37,8 @@ public class UserService {
     // create
     public UUID createUser(CreateUserRequest createUserRequest)
             throws RoleNotFoundException, UserCreateException {
+
+        log.info("Creating user: {}", createUserRequest);
 
         UUID roleId = createUserRequest.getRoleId();
         Optional<Role> role = roleRepository.findById(roleId);
@@ -70,6 +74,8 @@ public class UserService {
     // retrieve
     public UserResponse getUser(UUID userId) throws UserNotFoundException {
 
+        log.info("Retrieving user: {}", userId);
+
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
@@ -95,6 +101,8 @@ public class UserService {
     // TODO: change Map<String, String> to Class of UpdateUserRequest
     public UUID updateUser(UUID userId, Map<String, String> updates)
             throws UserUpdateException, UserNotFoundException {
+
+        log.info("Updating user: {}", userId);
 
         Optional<User> user = userRepository.findById(userId);
 
@@ -134,6 +142,9 @@ public class UserService {
     // delete
     public void deleteUser(UUID userId)
             throws UserNotFoundException, UserDeleteException {
+
+        log.info("Deleting user: {}", userId);
+
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
@@ -151,6 +162,9 @@ public class UserService {
     // change password
     public UUID changePassword(UUID userId, ChangePasswordRequest changePasswordRequest)
             throws UserNotFoundException, UserUpdateException {
+
+        log.info("Changing password for user: {}", userId);
+
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
@@ -176,6 +190,9 @@ public class UserService {
 
     // update active status
     public UUID updateActiveStatus(UUID userId, boolean status) throws UserUpdateException {
+
+        log.info("Updating active status for user: {}", userId);
+        
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {

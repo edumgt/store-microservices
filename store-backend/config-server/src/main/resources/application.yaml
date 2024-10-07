@@ -10,6 +10,3 @@ spring:
                     search-locations: classpath:/configurations
     profiles:
         active: native
-logging:
-    pattern:
-        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'

@@ -6,6 +6,7 @@ import com.praveenukkoji.userservice.exception.auth.UserLoginException;
 import com.praveenukkoji.userservice.model.User;
 import com.praveenukkoji.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class AuthService {
     private final UserRepository userRepository;
@@ -20,6 +22,9 @@ public class AuthService {
     // login
     public UserLoginResponse login(UserLoginRequest userLoginRequest)
             throws UserLoginException {
+
+        log.info("Login request: {}", userLoginRequest);
+        
         String username = userLoginRequest.getUsername();
         String password = userLoginRequest.getPassword();
 

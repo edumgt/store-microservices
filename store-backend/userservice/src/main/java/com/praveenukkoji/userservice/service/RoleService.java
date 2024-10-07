@@ -10,6 +10,7 @@ import com.praveenukkoji.userservice.exception.role.RoleUpdateException;
 import com.praveenukkoji.userservice.model.Role;
 import com.praveenukkoji.userservice.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class RoleService {
 
@@ -28,6 +30,8 @@ public class RoleService {
     // create
     public UUID createRole(CreateRoleRequest createRoleRequest)
             throws RoleCreateException {
+
+        log.info("Creating new role: {}", createRoleRequest);
 
         String roleType = createRoleRequest.getType().toUpperCase();
 
@@ -48,6 +52,8 @@ public class RoleService {
     public RoleResponse getRole(UUID roleId)
             throws RoleNotFoundException {
 
+        log.info("Retrieving role: {}", roleId);
+
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent())
@@ -62,6 +68,8 @@ public class RoleService {
     // update
     public UUID updateRole(UUID roleId, UpdateRoleRequest updateRoleRequest)
             throws RoleNotFoundException, RoleUpdateException {
+
+        log.info("Updating role: {}", updateRoleRequest);
 
         Optional<Role> role = roleRepository.findById(roleId);
 
@@ -83,6 +91,8 @@ public class RoleService {
     public void deleteRole(UUID roleId)
             throws RoleNotFoundException, RoleDeleteException {
 
+        log.info("Deleting role: {}", roleId);
+
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {
@@ -99,6 +109,9 @@ public class RoleService {
 
     // get all
     public List<RoleResponse> getAllRole() {
+
+        log.info("Retrieving all roles");
+        
         List<Role> roleList = roleRepository.findAll();
 
         return roleList.stream().map(role -> {

@@ -13,6 +13,7 @@ import com.praveenukkoji.orderservice.model.enums.OrderStatus;
 import com.praveenukkoji.orderservice.repository.OrderRepository;
 import com.praveenukkoji.orderservice.utility.OrderUtility;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class OrderService {
 
@@ -60,6 +62,8 @@ public class OrderService {
 
         // ----> CREATING NEW-ORDER
 
+        log.info("Creating order {}", createOrderRequest);
+
         // calculating total items
         int totalItems = itemList.stream()
                 .mapToInt(Item::getQuantity).sum();
@@ -77,6 +81,9 @@ public class OrderService {
                 .build();
 
         try {
+
+            log.info("Creating order item's");
+
             // CREATING ORDER-ITEM-LIST
 
             // order items list
@@ -94,6 +101,8 @@ public class OrderService {
 
     // retrieve
     public OrderResponse getOrder(UUID orderId) throws OrderNotFoundException {
+
+        log.info("Get order {}", orderId);
 
         Optional<Order> order = orderRepository.findById(orderId);
 
@@ -121,6 +130,9 @@ public class OrderService {
     // change order status
     public UUID changeOrderStatus(UUID orderId, String orderStatus)
             throws OrderNotFoundException, OrderStatusUpdateException {
+
+        log.info("Change order status {}", orderId);
+
         Optional<Order> order = orderRepository.findById(orderId);
 
         if (order.isPresent()) {
@@ -149,6 +161,9 @@ public class OrderService {
 
     // retrieve by user
     public List<OrderResponse> getOrderByUser(UUID userId) {
+
+        log.info("Get orders by user {}", userId);
+
         List<Order> orders = orderRepository.findOrderByUserId(userId);
 
         if (orders.isEmpty()) {

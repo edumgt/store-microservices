@@ -12,6 +12,7 @@ import com.praveenukkoji.orderservice.model.enums.PaymentStatus;
 import com.praveenukkoji.orderservice.repository.OrderRepository;
 import com.praveenukkoji.orderservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class PaymentService {
 
@@ -30,6 +32,8 @@ public class PaymentService {
     // make payment
     public UUID makePayment(MakePaymentRequest makePaymentRequest)
             throws OrderNotFoundException, CreatePaymentException {
+
+        log.info("Make payment request: {}", makePaymentRequest);
 
         UUID orderId = makePaymentRequest.getOrderId();
         Optional<Order> order = orderRepository.findById(orderId);
@@ -67,6 +71,9 @@ public class PaymentService {
     // retrieve
     public PaymentResponse getPayment(UUID paymentId)
             throws PaymentNotFoundException {
+
+        log.info("Get payment request: {}", paymentId);
+        
         Optional<Payment> payment = paymentRepository.findById(paymentId);
 
         if (payment.isPresent()) {

@@ -10,6 +10,7 @@ import com.praveenukkoji.productservice.exception.category.CategoryUpdateExcepti
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 @Service
 public class CategoryService {
 
@@ -28,6 +30,8 @@ public class CategoryService {
     // create
     public UUID createCategory(CreateCategoryRequest createCategoryRequest)
             throws CategoryCreateException {
+
+        log.info("Creating new category: {}", createCategoryRequest);
 
         Category newCategory = Category.builder()
                 .name(createCategoryRequest.getName())
@@ -46,6 +50,8 @@ public class CategoryService {
     public CategoryResponse getCategory(UUID categoryId)
             throws CategoryNotFoundException {
 
+        log.info("Retrieving category: {}", categoryId);
+
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
@@ -62,6 +68,8 @@ public class CategoryService {
     // update
     public UUID updateCategory(UUID categoryId, UpdateCategoryRequest updateCategoryRequest)
             throws CategoryNotFoundException, CategoryUpdateException {
+
+        log.info("Updating category: {}", updateCategoryRequest);
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -83,6 +91,8 @@ public class CategoryService {
     public void deleteCategory(UUID categoryId)
             throws CategoryNotFoundException, CategoryDeleteException {
 
+        log.info("Deleting category: {}", categoryId);
+
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
@@ -99,6 +109,8 @@ public class CategoryService {
 
     // get all
     public List<CategoryResponse> getAllCategory() {
+
+        log.info("Retrieving all categories");
 
         List<Category> categoryList = categoryRepository.findAll();
 
