@@ -73,6 +73,7 @@ public class OrderService {
                 .amount(amount)
                 .status(OrderStatus.CREATED)
                 .createdBy(createOrderRequest.getCreatedBy())
+                .addressId(createOrderRequest.getAddressId())
                 .build();
 
         try {
@@ -104,6 +105,7 @@ public class OrderService {
                     .totalItems(order.get().getTotalItems())
                     .amount(order.get().getAmount())
                     .status(orderStatus)
+                    .addressId(order.get().getAddressId())
                     .createdOn(order.get().getCreatedOn())
                     .createdBy(order.get().getCreatedBy())
                     .modifiedOn(order.get().getModifiedOn())
@@ -161,6 +163,7 @@ public class OrderService {
                     .totalItems(order.getTotalItems())
                     .amount(order.getAmount())
                     .status(orderStatus)
+                    .addressId(order.getAddressId())
                     .createdOn(order.getCreatedOn())
                     .createdBy(order.getCreatedBy())
                     .modifiedOn(order.getModifiedOn())

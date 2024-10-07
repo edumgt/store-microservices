@@ -969,7 +969,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders/get-by-user?userId=8b8959bb-8a3e-4365-b116-27713cce32f3",
+									"raw": "{{order_service}}/api/v1/orders/get-by-user?userId=8b8959bb-8a3e-4365-b116-27713cce32f1",
 									"host": [
 										"{{order_service}}"
 									],
@@ -982,7 +982,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "8b8959bb-8a3e-4365-b116-27713cce32f3"
+											"value": "8b8959bb-8a3e-4365-b116-27713cce32f1"
 										}
 									]
 								}

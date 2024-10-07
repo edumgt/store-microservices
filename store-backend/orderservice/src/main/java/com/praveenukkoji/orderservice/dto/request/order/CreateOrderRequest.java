@@ -19,5 +19,10 @@ public class CreateOrderRequest {
     @NotNull(message = "item list is null")
     @NotEmpty(message = "item list is empty")
     private List<@Valid Item> itemList;
+
+    @NotNull(message = "createdBy is null")
     private UUID createdBy;
+
+    @NotNull(message = "addressId is null")
+    private UUID addressId;
 }

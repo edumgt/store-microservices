@@ -20,6 +20,7 @@ public class OrderResponse {
     private Integer totalItems;
     private Double amount;
     private String status;
+    private UUID addressId;
     private LocalDateTime createdOn;
     private UUID createdBy;
     private LocalDateTime modifiedOn;

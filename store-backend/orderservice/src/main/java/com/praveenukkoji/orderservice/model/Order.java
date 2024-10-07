@@ -34,6 +34,9 @@ public class Order {
 
     private OrderStatus status;
 
+    @Column(nullable = false)
+    private UUID addressId;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdOn;
