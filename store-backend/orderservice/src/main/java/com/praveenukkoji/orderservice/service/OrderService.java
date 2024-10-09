@@ -3,6 +3,7 @@ package com.praveenukkoji.orderservice.service;
 import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
 import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.dto.response.order.OrderResponse;
+import com.praveenukkoji.orderservice.event.OrderCreatedEvent;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
@@ -14,6 +15,7 @@ import com.praveenukkoji.orderservice.repository.OrderRepository;
 import com.praveenukkoji.orderservice.utility.OrderUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,8 @@ public class OrderService {
 
     private final OrderUtility orderUtility;
     private final OrderRepository orderRepository;
+
+    private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
 
     // create
     public UUID createOrder(CreateOrderRequest createOrderRequest)
@@ -93,7 +97,12 @@ public class OrderService {
             // assigning order item's to order
             newOrder.setOrderItemList(orderItemList);
 
-            return orderRepository.save(newOrder).getId();
+            UUID orderId = orderRepository.save(newOrder).getId();
+
+            // kafka sending order created notification for orderId
+            kafkaTemplate.send("orderTopic", new OrderCreatedEvent(orderId));
+
+            return orderId;
         } catch (Exception e) {
             throw new CreateOrderException(e.getMessage());
         }

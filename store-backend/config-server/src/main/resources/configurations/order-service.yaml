@@ -15,7 +15,21 @@ spring:
         driver-class-name: org.postgresql.Driver
         username: ${DATABASE_USERNAME}
         url: ${DATABASE_URL}/${DATABASE_NAME}
+    kafka:
+        bootstrap-servers: ${KAFKA_SERVER_HOSTNAME}:${KAFKA_SERVER_PORT}
+        template:
+            default-topic: orderTopic
+        producer:
+            group-id: orderEventId
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+            properties:
+                spring:
+                    json:
+                        type:
+                            mapping: event:com.praveenukkoji.orderservice.event.OrderCreatedEvent
 eureka:
     client:
         serviceUrl:
             defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
+

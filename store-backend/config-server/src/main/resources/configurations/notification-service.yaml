@@ -1,0 +1,23 @@
+server:
+    port: 8003
+spring:
+    application:
+        name: notification-service
+    kafka:
+        bootstrap-servers: ${KAFKA_SERVER_HOSTNAME}:${KAFKA_SERVER_PORT}
+        template:
+            default-topic: orderTopic
+        consumer:
+            group-id: orderEventId
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            properties:
+                spring:
+                    json:
+                        type:
+                            mapping: event:com.praveenukkoji.notificationservice.event.OrderCreatedEvent
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
+
