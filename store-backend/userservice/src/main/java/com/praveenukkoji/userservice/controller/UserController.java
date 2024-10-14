@@ -4,10 +4,7 @@ import com.praveenukkoji.userservice.dto.error.ValidationResponse;
 import com.praveenukkoji.userservice.dto.request.user.ChangePasswordRequest;
 import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
-import com.praveenukkoji.userservice.exception.user.UserCreateException;
-import com.praveenukkoji.userservice.exception.user.UserDeleteException;
-import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
-import com.praveenukkoji.userservice.exception.user.UserUpdateException;
+import com.praveenukkoji.userservice.exception.user.*;
 import com.praveenukkoji.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +27,7 @@ public class UserController {
     @PostMapping(path = "")
     public ResponseEntity<?> createUser(
             @RequestBody @Valid CreateUserRequest createUserRequest
-    ) throws RoleNotFoundException, UserCreateException {
+    ) throws RoleNotFoundException, UserCreateException, PasswordEncryptionException {
         return ResponseEntity.status(201).body(userService.createUser(createUserRequest));
     }
 

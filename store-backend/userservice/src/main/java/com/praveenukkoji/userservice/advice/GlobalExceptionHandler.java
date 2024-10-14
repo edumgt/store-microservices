@@ -11,10 +11,7 @@ import com.praveenukkoji.userservice.exception.role.RoleCreateException;
 import com.praveenukkoji.userservice.exception.role.RoleDeleteException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.role.RoleUpdateException;
-import com.praveenukkoji.userservice.exception.user.UserCreateException;
-import com.praveenukkoji.userservice.exception.user.UserDeleteException;
-import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
-import com.praveenukkoji.userservice.exception.user.UserUpdateException;
+import com.praveenukkoji.userservice.exception.user.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +64,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserDeleteException.class)
     public ResponseEntity<?> handleException(UserDeleteException exception) {
         log.error("UserDeleteException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(PasswordEncryptionException.class)
+    public ResponseEntity<?> handleException(PasswordEncryptionException exception) {
+        log.error("PasswordEncryptionException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(PasswordDecryptionException.class)
+    public ResponseEntity<?> handleException(PasswordDecryptionException exception) {
+        log.error("PasswordDecryptionException - {}", exception.getMessage());
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                 .message(exception.getMessage())

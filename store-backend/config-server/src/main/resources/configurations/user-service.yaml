@@ -19,3 +19,8 @@ eureka:
     client:
         serviceUrl:
             defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
+password:
+    encryption:
+        key: ${PASSWORD_ENCRYPTION_KEY}
+    decryption:
+        key: ${PASSWORD_DECRYPTION_KEY}

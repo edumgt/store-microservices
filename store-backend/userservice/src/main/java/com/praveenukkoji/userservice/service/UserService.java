@@ -5,14 +5,12 @@ import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
 import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
 import com.praveenukkoji.userservice.dto.response.user.UserResponse;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
-import com.praveenukkoji.userservice.exception.user.UserCreateException;
-import com.praveenukkoji.userservice.exception.user.UserDeleteException;
-import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
-import com.praveenukkoji.userservice.exception.user.UserUpdateException;
+import com.praveenukkoji.userservice.exception.user.*;
 import com.praveenukkoji.userservice.model.Role;
 import com.praveenukkoji.userservice.model.User;
 import com.praveenukkoji.userservice.repository.RoleRepository;
 import com.praveenukkoji.userservice.repository.UserRepository;
+import com.praveenukkoji.userservice.utility.UserUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -34,9 +32,11 @@ public class UserService {
 
     private final RoleRepository roleRepository;
 
+    private final UserUtility userUtility;
+
     // create
     public UUID createUser(CreateUserRequest createUserRequest)
-            throws RoleNotFoundException, UserCreateException {
+            throws RoleNotFoundException, UserCreateException, PasswordEncryptionException {
 
         log.info("Creating user: {}", createUserRequest);
 
@@ -50,10 +50,12 @@ public class UserService {
                 throw new UserCreateException("Password must be at least 8 characters");
             }
 
+            String encryptedPassword = userUtility.getEncryptedPassword(password);
+
             User newUser = User.builder()
                     .fullname(createUserRequest.getFullname())
                     .username(createUserRequest.getUsername())
-                    .password(password)
+                    .password(encryptedPassword)
                     .email(createUserRequest.getEmail())
                     .isActive(true)
                     .role(role.get())
@@ -192,7 +194,7 @@ public class UserService {
     public UUID updateActiveStatus(UUID userId, boolean status) throws UserUpdateException {
 
         log.info("Updating active status for user: {}", userId);
-        
+
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {

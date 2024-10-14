@@ -2,6 +2,7 @@ package com.praveenukkoji.userservice.controller;
 
 import com.praveenukkoji.userservice.dto.request.auth.UserLoginRequest;
 import com.praveenukkoji.userservice.exception.auth.UserLoginException;
+import com.praveenukkoji.userservice.exception.user.PasswordDecryptionException;
 import com.praveenukkoji.userservice.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody @Valid UserLoginRequest userLoginRequest
-    ) throws UserLoginException {
+    ) throws UserLoginException, PasswordDecryptionException {
         return ResponseEntity.status(200).body(authService.login(userLoginRequest));
     }
 }

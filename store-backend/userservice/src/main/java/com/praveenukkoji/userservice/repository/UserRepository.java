@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     // auth login endpoint
     @Query("""
-            SELECT u FROM User u WHERE u.username = :username AND u.password = :password
+            SELECT u FROM User u WHERE u.username = :username
             """)
-    Optional<User> findByUsernameAndPassword(String username, String password);
+    Optional<User> findByUsername(String username);
 }
