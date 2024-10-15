@@ -22,7 +22,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"c45dfe7d-11dc-414d-a078-cdb3de7cdf17\"\n}",
+									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    // \"quantity\": {{$randomInt}},\n    \"quantity\": 1,\n    \"categoryId\": \"6958bde9-07fc-448a-9104-914396de60ae\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -157,7 +157,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products/increase-stock?productId=4e6ed3bc-fdc2-4163-8ec2-99f60a88d566&increaseStock=10",
+									"raw": "{{product_service}}/api/v1/products/increase-stock?productId=65fd6d6b-01ab-45a7-b859-17b51a4a896a&increaseStock=10",
 									"host": [
 										"{{product_service}}"
 									],
@@ -170,7 +170,7 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "4e6ed3bc-fdc2-4163-8ec2-99f60a88d566"
+											"value": "65fd6d6b-01ab-45a7-b859-17b51a4a896a"
 										},
 										{
 											"key": "increaseStock",
@@ -206,6 +206,35 @@
 											"key": "decreaseStock",
 											"value": "10"
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product detail",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"productId\": \"65fd6d6b-01ab-45a7-b859-17b51a4a896a\",\n        \"quantity\": 0\n    },\n    {\n        \"productId\": \"586fbe81-702f-4d89-a7ad-cfd73aeba483\",\n        \"quantity\": 1\n    }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{product_service}}/api/v1/products/product-detail",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"product-detail"
 									]
 								}
 							},
@@ -529,7 +558,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"test2\",\n    \"username\": \"test2\",\n    \"password\": \"12345678\",\n    \"email\": \"test2@doamin.com\",\n    \"roleId\": \"9a85e78f-b5ef-4422-9a5d-36248b612551\"\n}\n",
+									"raw": "{\n    \"fullname\": \"test2\",\n    \"username\": \"test2\",\n    \"password\": \"12345678\",\n    \"email\": \"test2@doamin.com\",\n    \"roleId\": \"a35dc4d5-2619-4090-81b3-4bde11091122\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -848,7 +877,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"updated\",\n    \"password\": \"12345678\"\n}",
+									"raw": "{\n    \"username\": \"test2\",\n    \"password\": \"12345678\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -887,7 +916,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"d6636b9f-4c1d-4d5f-bd62-2fd6ef4f9beb\",\n                \"quantity\": 4\n            },\n            {\n                \"id\": \"d6636b9f-4c1d-4d5f-bd62-2fd6ef4f9beb\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"65fd6d6b-01ab-45a7-b859-17b51a4a896a\",\n                \"quantity\": 10\n            },\n            {\n                \"id\": \"586fbe81-702f-4d89-a7ad-cfd73aeba483\",\n                \"quantity\": 5\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -914,7 +943,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders?orderId=868284f7-f176-4989-8800-b7de60ed420c",
+									"raw": "{{order_service}}/api/v1/orders?orderId=1e7c2395-e551-4c4a-9376-987d2f7f1560",
 									"host": [
 										"{{order_service}}"
 									],
@@ -926,7 +955,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "868284f7-f176-4989-8800-b7de60ed420c"
+											"value": "1e7c2395-e551-4c4a-9376-987d2f7f1560"
 										}
 									]
 								}
@@ -939,7 +968,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=de32bc4a-d898-45f9-9a0b-6e592a2e0849&orderStatus=oUTFORDeliVery",
+									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=072cb0c1-932e-42d5-a69c-966a25487b10&orderStatus=canCeLeD",
 									"host": [
 										"{{order_service}}"
 									],
@@ -952,11 +981,11 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "de32bc4a-d898-45f9-9a0b-6e592a2e0849"
+											"value": "072cb0c1-932e-42d5-a69c-966a25487b10"
 										},
 										{
 											"key": "orderStatus",
-											"value": "oUTFORDeliVery"
+											"value": "canCeLeD"
 										}
 									]
 								}
@@ -1001,7 +1030,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"amount\": 40.00,\n    \"status\": \"success\",\n    \"orderId\": \"de32bc4a-d898-45f9-9a0b-6e592a2e0849\"\n}",
+									"raw": "{\n    \"amount\": 40.00,\n    \"status\": \"processing\",\n    \"orderId\": \"072cb0c1-932e-42d5-a69c-966a25487b10\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1009,11 +1038,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8002/api/v1/payments",
+									"raw": "{{order_service}}/api/v1/payments",
 									"host": [
-										"localhost"
+										"{{order_service}}"
 									],
-									"port": "8002",
 									"path": [
 										"api",
 										"v1",
@@ -1029,7 +1057,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/payments?paymentId=eea41ab6-bb9a-4364-8175-79104f8be953",
+									"raw": "{{order_service}}/api/v1/payments?paymentId=86f498a6-e1db-4723-99b4-21871852731b",
 									"host": [
 										"{{order_service}}"
 									],
@@ -1041,7 +1069,7 @@
 									"query": [
 										{
 											"key": "paymentId",
-											"value": "eea41ab6-bb9a-4364-8175-79104f8be953"
+											"value": "86f498a6-e1db-4723-99b4-21871852731b"
 										}
 									]
 								}
