@@ -8,6 +8,8 @@ import com.praveenukkoji.productservice.exception.product.ProductCreateException
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
+import com.praveenukkoji.productservice.external.product.request.ProductDetailRequest;
+import com.praveenukkoji.productservice.external.product.response.ProductDetailResponse;
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.model.Product;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -189,7 +192,7 @@ public class ProductService {
             throws ProductNotFoundException, ProductUpdateException {
 
         log.info("Decreasing stock by: {}", decreaseStock);
-        
+
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
@@ -209,5 +212,51 @@ public class ProductService {
         }
 
         throw new ProductNotFoundException("product with id = " + productId + " not found");
+    }
+
+    //fetch product details
+    public List<ProductDetailResponse> getProductDetails(List<ProductDetailRequest> productDetailRequest) {
+
+        log.info("Getting product details");
+
+        List<ProductDetailResponse> productDetailResponse = new ArrayList<>();
+
+        List<UUID> productIds = productDetailRequest.stream().map(ProductDetailRequest::getProductId).toList();
+
+        List<Product> productList = productRepository.findAllById(productIds);
+
+        if (!productList.isEmpty()) {
+            productDetailRequest.forEach(requestedProduct -> {
+                Optional<Product> matchingProduct = productList.stream()
+                        .filter(product -> product.getId().equals(requestedProduct.getProductId()))
+                        .findFirst();
+
+                if (matchingProduct.isPresent()) {
+                    productDetailResponse.add(ProductDetailResponse.builder()
+                            .productId(requestedProduct.getProductId())
+                            .price(matchingProduct.get().getPrice())
+                            .inStock(matchingProduct.get().getQuantity() >= requestedProduct.getQuantity())
+                            .build()
+                    );
+                } else {
+                    productDetailResponse.add(ProductDetailResponse.builder()
+                            .productId(requestedProduct.getProductId())
+                            .price(0.0)
+                            .inStock(false)
+                            .build()
+                    );
+                }
+            });
+        } else {
+            productDetailRequest.forEach(requestedProduct -> {
+                productDetailResponse.add(ProductDetailResponse.builder()
+                        .productId(requestedProduct.getProductId())
+                        .price(0.0)
+                        .inStock(false)
+                        .build());
+            });
+        }
+
+        return productDetailResponse;
     }
 }

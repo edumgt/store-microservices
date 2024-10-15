@@ -7,16 +7,15 @@ import com.praveenukkoji.productservice.exception.product.ProductCreateException
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
+import com.praveenukkoji.productservice.external.product.request.ProductDetailRequest;
+import com.praveenukkoji.productservice.external.product.response.ProductDetailResponse;
 import com.praveenukkoji.productservice.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -191,5 +190,12 @@ public class ProductController {
 
         UUID id = UUID.fromString(productId);
         return ResponseEntity.status(200).body(productService.decreaseStock(id, decreaseStock));
+    }
+
+    // fetch product details
+    @PostMapping(value = "/product-detail")
+    public ResponseEntity<List<ProductDetailResponse>> getProductDetails(
+            @RequestBody List<ProductDetailRequest> productDetailRequest) {
+        return ResponseEntity.status(200).body(productService.getProductDetails(productDetailRequest));
     }
 }
