@@ -149,10 +149,13 @@ public class OrderService {
 
             switch (orderStatus.toUpperCase()) {
                 case "OUTFORDELIVERY":
-                    updatedOrder.setStatus(OrderStatus.OUTFORDELIVERY);
+                    updatedOrder.setStatus(OrderStatus.OUT_FOR_DELIVERY);
                     break;
                 case "DELIVERED":
                     updatedOrder.setStatus(OrderStatus.DELIVERED);
+                    break;
+                case "CANCELED":
+                    updatedOrder.setStatus(OrderStatus.CANCELED);
                     break;
                 default:
                     throw new OrderStatusUpdateException("unknown status = " + orderStatus);

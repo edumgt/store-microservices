@@ -5,6 +5,7 @@ import com.praveenukkoji.orderservice.dto.request.payment.MakePaymentRequest;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
+import com.praveenukkoji.orderservice.exception.payment.PaymentStatusUpdateException;
 import com.praveenukkoji.orderservice.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class PaymentController {
     // create
     @PostMapping(path = "")
     public ResponseEntity<?> makePayment(@RequestBody @Valid MakePaymentRequest makePaymentRequest)
-            throws OrderNotFoundException, CreatePaymentException {
+            throws OrderNotFoundException, CreatePaymentException, PaymentStatusUpdateException {
         return ResponseEntity.status(201).body(paymentService.makePayment(makePaymentRequest));
     }
 
