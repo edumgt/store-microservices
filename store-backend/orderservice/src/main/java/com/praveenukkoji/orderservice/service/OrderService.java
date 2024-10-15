@@ -7,7 +7,9 @@ import com.praveenukkoji.orderservice.event.OrderCreatedEvent;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
-import com.praveenukkoji.orderservice.feign.product.model.Product;
+import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
+import com.praveenukkoji.orderservice.external.product.model.request.ProductDetailRequest;
+import com.praveenukkoji.orderservice.external.product.model.response.ProductDetailResponse;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.OrderItem;
 import com.praveenukkoji.orderservice.model.enums.OrderStatus;
@@ -37,25 +39,27 @@ public class OrderService {
 
     // create
     public UUID createOrder(CreateOrderRequest createOrderRequest)
-            throws CreateOrderException {
+            throws CreateOrderException, ProductServiceException {
 
         // item list
         List<Item> itemList = createOrderRequest.getItemList();
 
-        // item id list
-        List<UUID> itemIds = itemList.stream().map(Item::getId).toList();
+        List<ProductDetailRequest> productDetailRequest = itemList.stream().map(item -> ProductDetailRequest.builder()
+                .productId(item.getId())
+                .quantity(item.getQuantity())
+                .build()
+        ).toList();
 
-        // get product from product service
-        // id -> isInStock
-        List<Product> productList = orderUtility.getProducts(itemIds);
+        // get product from product-service
+        List<ProductDetailResponse> productDetailResponseList = orderUtility.getProductDetail(productDetailRequest);
 
         // check if all products are in stock
         boolean isInStock = true;
         StringBuilder productIdsNotInStock = new StringBuilder();
-        for (Product product : productList) {
-            if (!product.getInStock()) {
+        for (ProductDetailResponse productDetailResponse : productDetailResponseList) {
+            if (!productDetailResponse.getInStock()) {
                 isInStock = false;
-                productIdsNotInStock.append(product.getProductId()).append(", ");
+                productIdsNotInStock.append(productDetailResponse.getProductId()).append(", ");
             }
         }
 
@@ -73,7 +77,7 @@ public class OrderService {
                 .mapToInt(Item::getQuantity).sum();
 
         // calculating order amount
-        double amount = orderUtility.getOrderAmount(itemList, productList);
+        double amount = orderUtility.getOrderAmount(itemList, productDetailResponseList);
 
         // creating order
         Order newOrder = Order.builder()
@@ -91,11 +95,15 @@ public class OrderService {
             // CREATING ORDER-ITEM-LIST
 
             // order items list
-            List<OrderItem> orderItemList = orderUtility.getOrderItemList(itemList, productList);
+            List<OrderItem> orderItemList = orderUtility.getOrderItemList(itemList, productDetailResponseList);
             orderItemList.forEach(orderItem -> orderItem.setOrder(newOrder));
 
             // assigning order item's to order
             newOrder.setOrderItemList(orderItemList);
+
+            // TODO: decreasing stock call not working
+            // decrease product stock
+            // orderUtility.decreaseProductStock("65fd6d6b-01ab-45a7-b859-17b51a4a896a", 10);
 
             UUID orderId = orderRepository.save(newOrder).getId();
 

@@ -8,6 +8,7 @@ import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentStatusUpdateException;
+import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -83,6 +84,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PaymentStatusUpdateException.class)
     public ResponseEntity<?> handleException(PaymentStatusUpdateException exception) {
         log.error("PaymentStatusUpdateException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(400).body(exceptionResponse);
+    }
+
+    // product-service
+    @ExceptionHandler(ProductServiceException.class)
+    public ResponseEntity<?> handleException(ProductServiceException exception) {
+        log.error("ProductServiceException - {}", exception.getMessage());
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                 .message(exception.getMessage())

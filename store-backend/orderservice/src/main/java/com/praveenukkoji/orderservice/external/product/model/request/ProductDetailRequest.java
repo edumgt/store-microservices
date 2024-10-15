@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.feign.product.model;
+package com.praveenukkoji.orderservice.external.product.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class ProductDetailRequest {
     private UUID productId;
-    private Double price;
-    private Boolean inStock;
+    private Integer quantity;
 }
-

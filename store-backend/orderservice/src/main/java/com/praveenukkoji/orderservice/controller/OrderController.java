@@ -5,6 +5,7 @@ import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
+import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
 import com.praveenukkoji.orderservice.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class OrderController {
     // create
     @PostMapping(path = "")
     public ResponseEntity<?> createOrder(@RequestBody @Valid CreateOrderRequest createOrderRequest)
-            throws CreateOrderException {
+            throws CreateOrderException, ProductServiceException {
         return ResponseEntity.status(201).body(orderService.createOrder(createOrderRequest));
     }
 

@@ -2,36 +2,58 @@ package com.praveenukkoji.orderservice.utility;
 
 import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
-import com.praveenukkoji.orderservice.feign.product.model.Product;
+import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
+import com.praveenukkoji.orderservice.external.product.feignClient.ProductClient;
+import com.praveenukkoji.orderservice.external.product.model.request.ProductDetailRequest;
+import com.praveenukkoji.orderservice.external.product.model.response.ProductDetailResponse;
 import com.praveenukkoji.orderservice.model.OrderItem;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class OrderUtility {
 
-    // get products
-    public List<Product> getProducts(List<UUID> productIds) {
+    private final ProductClient productClient;
 
-        log.info("Get products");
+    // get product detail
+    public List<ProductDetailResponse> getProductDetail(List<ProductDetailRequest> productDetailRequest)
+            throws ProductServiceException {
 
-        Random random = new Random();
-        boolean inStock = random.nextBoolean();
+        log.info("fetching product details from product-service");
 
-        return productIds.stream()
-                .map(productId -> Product.builder()
-                        .productId(productId)
-                        .price(10.00)
-                        .inStock(inStock)
-                        .build())
-                .toList();
+        if (productDetailRequest.isEmpty()) {
+            throw new ProductServiceException("product detail request is null or empty");
+        }
+
+        // Using FeignClient
+        ResponseEntity<List<ProductDetailResponse>> productDetailsResponse;
+
+        try {
+            productDetailsResponse = productClient.getProductDetails(productDetailRequest);
+        } catch (Exception e) {
+            throw new ProductServiceException(e.getMessage());
+        }
+
+        List<ProductDetailResponse> productList = productDetailsResponse.getBody();
+
+        if (productDetailsResponse.getStatusCode().value() != 200) {
+            throw new ProductServiceException("some error occurred while fetching product details");
+        }
+
+        return productList;
     }
 
     // get order amount
-    public Double getOrderAmount(List<Item> itemList, List<Product> productList)
+    public Double getOrderAmount(List<Item> itemList, List<ProductDetailResponse> productDetailResponseList)
             throws CreateOrderException {
 
         log.info("Get order amount");
@@ -43,8 +65,8 @@ public class OrderUtility {
             UUID itemId = item.getId();
             int quantity = item.getQuantity();
 
-            Optional<Product> matchingProduct = productList.stream()
-                    .filter(product -> product.getProductId().equals(itemId))
+            Optional<ProductDetailResponse> matchingProduct = productDetailResponseList.stream()
+                    .filter(productDetailResponse -> productDetailResponse.getProductId().equals(itemId))
                     .findFirst();
 
             if (matchingProduct.isPresent()) {
@@ -59,11 +81,11 @@ public class OrderUtility {
     }
 
     // get order item list
-    public List<OrderItem> getOrderItemList(List<Item> itemList, List<Product> productList)
+    public List<OrderItem> getOrderItemList(List<Item> itemList, List<ProductDetailResponse> productDetailResponseList)
             throws CreateOrderException {
 
         log.info("Get order item list");
-        
+
         List<OrderItem> orderItemsList = new ArrayList<>();
 
         // create order item list
@@ -71,8 +93,8 @@ public class OrderUtility {
             UUID itemId = item.getId();
             int quantity = item.getQuantity();
 
-            Optional<Product> matchingProduct = productList.stream()
-                    .filter(product -> product.getProductId().equals(itemId))
+            Optional<ProductDetailResponse> matchingProduct = productDetailResponseList.stream()
+                    .filter(productDetailResponse -> productDetailResponse.getProductId().equals(itemId))
                     .findFirst();
 
             if (matchingProduct.isPresent()) {
@@ -87,5 +109,22 @@ public class OrderUtility {
         }
 
         return orderItemsList;
+    }
+
+    // decrease product stock
+    public void decreaseProductStock(String productId, Integer quantity)
+            throws ProductServiceException {
+
+        // Using FeignClient
+        ResponseEntity<UUID> decreaseStockResponse;
+        try {
+            decreaseStockResponse = productClient.decreaseStock(productId, quantity);
+        } catch (Exception e) {
+            throw new ProductServiceException(e.getMessage());
+        }
+
+        if (decreaseStockResponse.getStatusCode().value() != 200) {
+            throw new ProductServiceException("some error occurred while decreasing stock");
+        }
     }
 }
