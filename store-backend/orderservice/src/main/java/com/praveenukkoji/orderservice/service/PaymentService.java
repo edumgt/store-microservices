@@ -5,6 +5,7 @@ import com.praveenukkoji.orderservice.dto.response.payment.PaymentResponse;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
+import com.praveenukkoji.orderservice.exception.payment.PaymentStatusUpdateException;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.Payment;
 import com.praveenukkoji.orderservice.model.enums.OrderStatus;
@@ -31,7 +32,7 @@ public class PaymentService {
 
     // make payment
     public UUID makePayment(MakePaymentRequest makePaymentRequest)
-            throws OrderNotFoundException, CreatePaymentException {
+            throws OrderNotFoundException, CreatePaymentException, PaymentStatusUpdateException {
 
         log.info("Make payment request: {}", makePaymentRequest);
 
@@ -45,17 +46,18 @@ public class PaymentService {
                     .order(order.get())
                     .build();
 
-            switch (makePaymentRequest.getStatus().toUpperCase()) {
+            String paymentStatus = makePaymentRequest.getStatus();
+            switch (paymentStatus.toUpperCase()) {
                 case "SUCCESS":
                     newPayment.setStatus(PaymentStatus.SUCCESS);
                     newPayment.getOrder().setStatus(OrderStatus.PLACED);
                     break;
                 case "FAILED":
                     newPayment.setStatus(PaymentStatus.FAILED);
+                    newPayment.getOrder().setStatus(OrderStatus.PAYMENT_FAILED);
                     break;
                 default:
-                    newPayment.setStatus(PaymentStatus.UNKNOWN);
-                    break;
+                    throw new PaymentStatusUpdateException("unknown status = " + paymentStatus);
             }
 
             try {
@@ -73,15 +75,16 @@ public class PaymentService {
             throws PaymentNotFoundException {
 
         log.info("Get payment request: {}", paymentId);
-        
+
         Optional<Payment> payment = paymentRepository.findById(paymentId);
 
         if (payment.isPresent()) {
+            String paymentStatus = String.valueOf(payment.get().getStatus());
 
             return PaymentResponse.builder()
                     .id(payment.get().getId())
                     .amount(payment.get().getAmount())
-                    .status(String.valueOf(payment.get().getStatus()))
+                    .status(paymentStatus)
                     .orderId(payment.get().getOrder().getId())
                     .build();
         }
