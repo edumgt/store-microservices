@@ -239,6 +239,36 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "update product price",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{product_service}}/api/v1/products/update-price?productId=586fbe81-702f-4d89-a7ad-cfd73aeba483&updatedPrice=0",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"update-price"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "586fbe81-702f-4d89-a7ad-cfd73aeba483"
+										},
+										{
+											"key": "updatedPrice",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},

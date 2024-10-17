@@ -52,12 +52,7 @@ public class ProductController {
     }
 
     // update
-    /*
-        TODO:
-        1. create endpoint for product update,
-        2. create separate endpoint for price update
-        3. create separate endpoint for quantity update
-    */
+    // TODO: create endpoint for product update
 
     // delete
     @DeleteMapping(path = "")
@@ -190,6 +185,38 @@ public class ProductController {
 
         UUID id = UUID.fromString(productId);
         return ResponseEntity.status(200).body(productService.decreaseStock(id, decreaseStock));
+    }
+
+    // update product price
+    @PatchMapping(value = "/update-price")
+    public ResponseEntity<?> updateProductPrice(
+            @RequestParam(defaultValue = "", name = "productId") String productId,
+            @RequestParam(defaultValue = "0.0", name = "updatedPrice") Double updatedPrice
+    ) throws ProductUpdateException, ProductNotFoundException {
+        if (Objects.equals(productId, "")) {
+            Map<String, String> error = new HashMap<>();
+            error.put("productId", "product id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        if (updatedPrice < 0) {
+            Map<String, String> error = new HashMap<>();
+            error.put("updatedPrice", "updated price should be greater than zero");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        UUID id = UUID.fromString(productId);
+        return ResponseEntity.status(200).body(productService.updateProductPrice(id, updatedPrice));
     }
 
     // fetch product details
