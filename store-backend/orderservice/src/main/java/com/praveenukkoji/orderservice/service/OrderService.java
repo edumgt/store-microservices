@@ -3,7 +3,7 @@ package com.praveenukkoji.orderservice.service;
 import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
 import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.dto.response.order.OrderResponse;
-import com.praveenukkoji.orderservice.event.OrderCreatedEvent;
+import com.praveenukkoji.orderservice.event.OrderEvent;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
@@ -35,7 +35,7 @@ public class OrderService {
     private final OrderUtility orderUtility;
     private final OrderRepository orderRepository;
 
-    private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
     // create
     public UUID createOrder(CreateOrderRequest createOrderRequest)
@@ -107,8 +107,12 @@ public class OrderService {
 
             UUID orderId = orderRepository.save(newOrder).getId();
 
-            // kafka sending order created notification for orderId
-            kafkaTemplate.send("orderTopic", new OrderCreatedEvent(orderId));
+            // kafka sending order created notification
+            OrderEvent orderEvent = OrderEvent.builder()
+                    .title("Order Created")
+                    .message("order created successfully with id = " + orderId)
+                    .build();
+            kafkaTemplate.send("orderTopic", orderEvent);
 
             return orderId;
         } catch (Exception e) {
@@ -170,7 +174,16 @@ public class OrderService {
             }
 
             try {
-                return orderRepository.save(updatedOrder).getId();
+                orderRepository.save(updatedOrder);
+
+                // kafka sending order status changed notification
+                OrderEvent orderEvent = OrderEvent.builder()
+                        .title("Order Status Changed")
+                        .message("order status changed to " + orderStatus.toUpperCase() + " for order id = " + orderId)
+                        .build();
+                kafkaTemplate.send("orderTopic", orderEvent);
+
+                return orderId;
             } catch (Exception e) {
                 throw new OrderStatusUpdateException(e.getMessage());
             }
