@@ -214,6 +214,26 @@ public class ProductService {
         throw new ProductNotFoundException("product with id = " + productId + " not found");
     }
 
+    // update product price
+    public UUID updateProductPrice(UUID productId, Double updatedPrice)
+            throws ProductNotFoundException, ProductUpdateException {
+        log.info("Updating price of product having id = {}", productId);
+
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            Product updatedProduct = product.get();
+            updatedProduct.setPrice(updatedPrice);
+            try {
+                return productRepository.save(updatedProduct).getId();
+            } catch (Exception e) {
+                throw new ProductUpdateException(e.getMessage());
+            }
+        }
+
+        throw new ProductNotFoundException("product with id = " + productId + " not found");
+    }
+
     //fetch product details
     public List<ProductDetailResponse> getProductDetails(List<ProductDetailRequest> productDetailRequest) {
 
