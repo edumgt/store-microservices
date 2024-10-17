@@ -2,6 +2,7 @@ package com.praveenukkoji.orderservice.service;
 
 import com.praveenukkoji.orderservice.dto.request.payment.MakePaymentRequest;
 import com.praveenukkoji.orderservice.dto.response.payment.PaymentResponse;
+import com.praveenukkoji.orderservice.event.OrderEvent;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
@@ -14,6 +15,7 @@ import com.praveenukkoji.orderservice.repository.OrderRepository;
 import com.praveenukkoji.orderservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +29,9 @@ import java.util.UUID;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-
     private final OrderRepository orderRepository;
+
+    private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
     // make payment
     public UUID makePayment(MakePaymentRequest makePaymentRequest)
@@ -45,7 +48,7 @@ public class PaymentService {
                     .amount(makePaymentRequest.getAmount())
                     .order(order.get())
                     .build();
-
+            
             String paymentStatus = makePaymentRequest.getStatus();
             switch (paymentStatus.toUpperCase()) {
                 case "SUCCESS":
@@ -61,7 +64,16 @@ public class PaymentService {
             }
 
             try {
-                return paymentRepository.save(newPayment).getId();
+                UUID paymentId = paymentRepository.save(newPayment).getId();
+
+                // kafka sending payment notification
+                OrderEvent orderEvent = OrderEvent.builder()
+                        .title("Payment Status")
+                        .message("payment status " + paymentStatus.toUpperCase() + " for order id = " + orderId)
+                        .build();
+                kafkaTemplate.send("orderTopic", orderEvent);
+
+                return paymentId;
             } catch (Exception e) {
                 throw new CreatePaymentException(e.getMessage());
             }

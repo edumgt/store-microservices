@@ -27,7 +27,7 @@ spring:
                 spring:
                     json:
                         type:
-                            mapping: event:com.praveenukkoji.orderservice.event.OrderCreatedEvent
+                            mapping: event:com.praveenukkoji.orderservice.event.OrderEvent
 eureka:
     client:
         serviceUrl:
