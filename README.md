@@ -66,7 +66,7 @@
 
 ## API call file
 
-- you can refer postman_file : [Store APi.postman_collection.json](Store%20APi.postman_collection.json)
+- you can refer postman_file : [Store APi.postman_collection.json](store-backend/Store%20APi.postman_collection.json)
 
 ## License
 
