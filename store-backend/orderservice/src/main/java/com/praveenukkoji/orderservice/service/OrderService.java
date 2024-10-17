@@ -21,7 +21,10 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
@@ -113,7 +116,7 @@ public class OrderService {
 
             return orderId;
         } catch (Exception e) {
-            throw new CreateOrderException(Arrays.toString(e.getStackTrace()));
+            throw new CreateOrderException(e.getMessage());
         }
     }
 
