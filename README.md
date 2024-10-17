@@ -62,6 +62,8 @@
 
 5. authentication and authorization
 
+6. add cart-service, shipping-service
+
 ## API call file
 
 - you can refer postman_file : [Store APi.postman_collection.json](Store%20APi.postman_collection.json)
