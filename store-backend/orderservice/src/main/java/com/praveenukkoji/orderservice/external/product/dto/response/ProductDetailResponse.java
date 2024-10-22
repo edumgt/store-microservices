@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.external.product.model.request;
+package com.praveenukkoji.orderservice.external.product.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDetailRequest {
+public class ProductDetailResponse {
     private UUID productId;
-    private Integer quantity;
+    private Double price;
+    private Boolean inStock;
 }

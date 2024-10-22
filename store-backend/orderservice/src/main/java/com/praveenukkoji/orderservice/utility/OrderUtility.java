@@ -2,10 +2,10 @@ package com.praveenukkoji.orderservice.utility;
 
 import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
+import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
+import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
 import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
 import com.praveenukkoji.orderservice.external.product.feignClient.ProductClient;
-import com.praveenukkoji.orderservice.external.product.model.request.ProductDetailRequest;
-import com.praveenukkoji.orderservice.external.product.model.response.ProductDetailResponse;
 import com.praveenukkoji.orderservice.model.OrderItem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

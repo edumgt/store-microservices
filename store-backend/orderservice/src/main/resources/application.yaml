@@ -27,7 +27,7 @@ spring:
                 spring:
                     json:
                         type:
-                            mapping: event:com.praveenukkoji.orderservice.event.OrderEvent
+                            mapping: event:com.praveenukkoji.orderservice.kafka.event.OrderEvent
     config:
         import: optional:configserver:http://${CONFIG_SERVER_HOSTNAME}:${CONFIG_SERVER_PORT}/
 eureka:

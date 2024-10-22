@@ -1,8 +1,8 @@
 package com.praveenukkoji.orderservice.external.product.feignClient;
 
 import com.praveenukkoji.orderservice.constant.Constant;
-import com.praveenukkoji.orderservice.external.product.model.request.ProductDetailRequest;
-import com.praveenukkoji.orderservice.external.product.model.response.ProductDetailResponse;
+import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
+import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

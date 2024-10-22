@@ -2,11 +2,11 @@ package com.praveenukkoji.orderservice.service;
 
 import com.praveenukkoji.orderservice.dto.request.payment.MakePaymentRequest;
 import com.praveenukkoji.orderservice.dto.response.payment.PaymentResponse;
-import com.praveenukkoji.orderservice.event.OrderEvent;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentStatusUpdateException;
+import com.praveenukkoji.orderservice.kafka.event.OrderEvent;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.Payment;
 import com.praveenukkoji.orderservice.model.enums.OrderStatus;
@@ -48,7 +48,7 @@ public class PaymentService {
                     .amount(makePaymentRequest.getAmount())
                     .order(order.get())
                     .build();
-            
+
             String paymentStatus = makePaymentRequest.getStatus();
             switch (paymentStatus.toUpperCase()) {
                 case "SUCCESS":

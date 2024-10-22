@@ -1,6 +1,6 @@
 package com.praveenukkoji.notificationservice;
 
-import com.praveenukkoji.notificationservice.event.OrderCreatedEvent;
+import com.praveenukkoji.notificationservice.event.OrderEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,9 +17,10 @@ public class NotificationserviceApplication {
     }
 
     @KafkaListener(topics = "orderTopic")
-    public void handleOrderNotification(OrderCreatedEvent orderCreatedEvent) {
+    public void handleOrderNotification(OrderEvent orderEvent) {
         // send email notification
-        log.info("ORDER NOTIFICATION ---- received notification for order id {}", orderCreatedEvent.getOrderId());
+        log.info("ORDER NOTIFICATION ---- received notification title: {}, message: {}",
+                orderEvent.getTitle(), orderEvent.getMessage());
     }
 
 }
