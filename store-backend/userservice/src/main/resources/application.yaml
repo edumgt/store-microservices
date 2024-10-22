@@ -3,5 +3,26 @@ server:
 spring:
     application:
         name: user-service
+    jpa:
+        database: postgresql
+        hibernate:
+            ddl-auto: update
+        show-sql: false
+        properties:
+            hibernate.format_sql: false
+    datasource:
+        password: ${DATABASE_PASSWORD}
+        driver-class-name: org.postgresql.Driver
+        username: ${DATABASE_USERNAME}
+        url: ${DATABASE_URL}/${DATABASE_NAME}
     config:
         import: optional:configserver:http://${CONFIG_SERVER_HOSTNAME}:${CONFIG_SERVER_PORT}/
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
+password:
+    encryption:
+        key: ${PASSWORD_ENCRYPTION_KEY}
+    decryption:
+        key: ${PASSWORD_DECRYPTION_KEY}
