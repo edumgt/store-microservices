@@ -998,7 +998,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=072cb0c1-932e-42d5-a69c-966a25487b10&orderStatus=canCeLeD",
+									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=5828d8a0-0c23-4a2a-a33a-c9a9fa7b27a3&orderStatus=deliVERed",
 									"host": [
 										"{{order_service}}"
 									],
@@ -1011,11 +1011,11 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "072cb0c1-932e-42d5-a69c-966a25487b10"
+											"value": "5828d8a0-0c23-4a2a-a33a-c9a9fa7b27a3"
 										},
 										{
 											"key": "orderStatus",
-											"value": "canCeLeD"
+											"value": "deliVERed"
 										}
 									]
 								}
@@ -1060,7 +1060,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"amount\": 40.00,\n    \"status\": \"processing\",\n    \"orderId\": \"072cb0c1-932e-42d5-a69c-966a25487b10\"\n}",
+									"raw": "{\n    \"amount\": 40.00,\n    \"status\": \"success\",\n    \"orderId\": \"5828d8a0-0c23-4a2a-a33a-c9a9fa7b27a3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1107,6 +1107,91 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "config server",
+			"item": [
+				{
+					"name": "api-gateway default",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api-gateway/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api-gateway",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-service default",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/product-service/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"product-service",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-service default",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/user-service/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"user-service",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order-service default",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/order-service/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"order-service",
+								"default"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
