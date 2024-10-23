@@ -26,3 +26,17 @@ password:
         key: ${PASSWORD_ENCRYPTION_KEY}
     decryption:
         key: ${PASSWORD_DECRYPTION_KEY}
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    health:
+        readiness-state:
+            enabled: true
+        liveness-state:
+            enabled: true
+    endpoint:
+        health:
+            probes:
+                enabled: true
