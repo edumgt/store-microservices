@@ -66,6 +66,12 @@ services:
         container_name: config-server
         ports:
             - "8888:8888"
+        healthcheck:
+            test: "curl --fail --silent localhost:8888/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
         extends:
             file: common-config.yml
             service: microservice-base-config
@@ -75,9 +81,29 @@ services:
         container_name: eureka-server
         ports:
             - "8761:8761"
+        healthcheck:
+            test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
         extends:
             file: common-config.yml
             service: eureka-config
+
+    gatewayservice:
+        image: "praveenukkoji/gatewayservice:1.0"
+        container_name: gatewayservice
+        ports:
+            - "8222:8222"
+        depends_on:
+            configserver:
+                condition: service_healthy
+            eurekaserver:
+                condition: service_healthy
+        extends:
+            file: common-config.yml
+            service: gatewayservice-config
 
 networks:
     store-backend:
