@@ -70,6 +70,15 @@ services:
             file: common-config.yml
             service: microservice-base-config
 
+    eurekaserver:
+        image: "praveenukkoji/eureka-server:1.0"
+        container_name: eureka-server
+        ports:
+            - "8761:8761"
+        extends:
+            file: common-config.yml
+            service: eureka-config
+
 networks:
     store-backend:
         name: store-backend

@@ -10,3 +10,10 @@ services:
             resources:
                 limits:
                     memory: 700m
+
+    eureka-config:
+        extends:
+            service: microservice-base-config
+        environment:
+            EUREKA_SERVER_HOSTNAME: localhost
+            EUREKA_SERVER_PORT: 8761
