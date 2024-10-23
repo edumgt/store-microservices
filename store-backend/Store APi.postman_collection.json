@@ -1114,6 +1114,26 @@
 			"name": "config server",
 			"item": [
 				{
+					"name": "order-service default",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/order-service/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"order-service",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "api-gateway default",
 					"request": {
 						"method": "GET",
@@ -1188,6 +1208,144 @@
 							"path": [
 								"order-service",
 								"default"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "health check",
+			"item": [
+				{
+					"name": "eureka-server",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8761/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api-gateway",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8222/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8222",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "config-server",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8888/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8001/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notification service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8003/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"actuator",
+								"health"
 							]
 						}
 					},
