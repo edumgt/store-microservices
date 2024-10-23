@@ -11,9 +11,10 @@ services:
             - postgres:/data/postgres
         ports:
             - "5432:5432"
-        networks:
-            - store-backend
         restart: unless-stopped
+        extends:
+            file: common-config.yml
+            service: microservice-base-config
 
     zookeeper:
         container_name: zookeeper
@@ -23,8 +24,9 @@ services:
             ZOOKEEPER_TICK_TIME: 2000
         ports:
             - "2181:2181"
-        networks:
-            - store-backend
+        extends:
+            file: common-config.yml
+            service: microservice-base-config
 
     kafka:
         container_name: kafka
@@ -40,8 +42,9 @@ services:
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
             KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-        networks:
-            - store-backend
+        extends:
+            file: common-config.yml
+            service: microservice-base-config
 
     kafka-ui:
         container_name: kafka-ui
@@ -54,8 +57,18 @@ services:
             KAFKA_CLUSTERS_0_NAME: local
             KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
             KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
-        networks:
-            - store-backend
+        extends:
+            file: common-config.yml
+            service: microservice-base-config
+
+    configserver:
+        image: "praveenukkoji/config-server:1.0"
+        container_name: config-server
+        ports:
+            - "8888:8888"
+        extends:
+            file: common-config.yml
+            service: microservice-base-config
 
 networks:
     store-backend:
