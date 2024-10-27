@@ -11,62 +11,65 @@ services:
                 limits:
                     memory: 700m
 
-    eureka-config:
+    eureka-server-config:
         extends:
             service: microservice-base-config
         environment:
             EUREKA_SERVER_HOSTNAME: eurekaserver
             EUREKA_SERVER_PORT: 8761
 
-    gatewayservice-config:
+    eureka-config-server-config:
         extends:
-            service: eureka-config
+            service: eureka-server-config
         environment:
             CONFIG_SERVER_HOSTNAME: configserver
             CONFIG_SERVER_PORT: 8888
 
-    notificationservice-config:
+    eureka-config-db-server-config:
         extends:
-            service: eureka-config
+            service: eureka-config-server-config
         environment:
-            CONFIG_SERVER_HOSTNAME: configserver
-            CONFIG_SERVER_PORT: 8888
+            DATABASE_NAME: store
+            DATABASE_PASSWORD: password
+            DATABASE_URL: jdbc:postgresql://postgres:5432
+            DATABASE_USERNAME: username
+
+    eureka-config-kafka-server-config:
+        extends:
+            service: eureka-config-server-config
+        environment:
             KAFKA_SERVER_HOSTNAME: kafka
             KAFKA_SERVER_PORT: 9092
 
-    orderservice-config:
+    eureka-config-db-kafka-server-config:
         extends:
-            service: eureka-config
+            service: eureka-config-db-server-config
         environment:
-            CONFIG_SERVER_HOSTNAME: configserver
-            CONFIG_SERVER_PORT: 8888
             KAFKA_SERVER_HOSTNAME: kafka
             KAFKA_SERVER_PORT: 9092
-            DATABASE_NAME: store
-            DATABASE_PASSWORD: password
-            DATABASE_URL: jdbc:postgresql://postgres:5432
-            DATABASE_USERNAME: username
 
-    productservice-config:
+    gateway-service-config:
         extends:
-            service: eureka-config
-        environment:
-            CONFIG_SERVER_HOSTNAME: configserver
-            CONFIG_SERVER_PORT: 8888
-            DATABASE_NAME: store
-            DATABASE_PASSWORD: password
-            DATABASE_URL: jdbc:postgresql://postgres:5432
-            DATABASE_USERNAME: username
+            service: eureka-config-server-config
 
-    userservice-config:
+    notification-service-config:
         extends:
-            service: eureka-config
+            service: eureka-config-kafka-server-config
+
+    order-service-config:
+        extends:
+            service: eureka-config-db-kafka-server-config
         environment:
-            CONFIG_SERVER_HOSTNAME: configserver
-            CONFIG_SERVER_PORT: 8888
-            DATABASE_NAME: store
-            DATABASE_PASSWORD: password
-            DATABASE_URL: jdbc:postgresql://postgres:5432
-            DATABASE_USERNAME: username
+            PRODUCT_SERVICE_HOSTNAME: productservice
+            PRODUCT_SERVICE_PORT: 8001
+
+    product-service-config:
+        extends:
+            service: eureka-config-db-server-config
+
+    user-service-config:
+        extends:
+            service: eureka-config-db-server-config
+        environment:
             PASSWORD_ENCRYPTION_KEY: 1234567890abcdef
             PASSWORD_DECRYPTION_KEY: 1234567890abcdef
