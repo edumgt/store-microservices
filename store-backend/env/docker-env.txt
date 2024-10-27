@@ -1,0 +1,55 @@
+1. Config-Server:
+
+2. Eureka-Server:
+	- EUREKA_SERVER_HOSTNAME=eurekaserver
+	- EUREKA_SERVER_PORT=8761
+
+3. Api-Gateway:
+    - CONFIG_SERVER_HOSTNAME=configserver
+	- CONFIG_SERVER_PORT=8888
+	- EUREKA_SERVER_HOSTNAME=eurekaserver
+	- EUREKA_SERVER_PORT=8761
+
+4. Notification-Service:
+    - CONFIG_SERVER_HOSTNAME=configserver
+    - CONFIG_SERVER_PORT=8888
+    - EUREKA_SERVER_HOSTNAME=eurekaserver
+    - EUREKA_SERVER_PORT=8761
+    - KAFKA_SERVER_HOSTNAME=kafka
+    - KAFKA_SERVER_PORT=9092
+
+5. Order-Service:
+    - CONFIG_SERVER_HOSTNAME=configserver
+    - CONFIG_SERVER_PORT=8888
+    - EUREKA_SERVER_HOSTNAME=eurekaserver
+    - EUREKA_SERVER_PORT=8761
+    - KAFKA_SERVER_HOSTNAME=kafka
+    - KAFKA_SERVER_PORT=9092
+	- DATABASE_URL=jdbc:postgresql://postgres:5432
+    - DATABASE_NAME=store
+	- DATABASE_USERNAME=username
+	- DATABASE_PASSWORD=password
+	- PRODUCT_SERVICE_HOSTNAME=productservice
+    - PRODUCT_SERVICE_PORT=8001
+
+6. Product-Service:
+	- CONFIG_SERVER_HOSTNAME=configserver
+    - CONFIG_SERVER_PORT=8888
+    - EUREKA_SERVER_HOSTNAME=eurekaserver
+    - EUREKA_SERVER_PORT=8761
+    - DATABASE_URL=jdbc:postgresql://postgres:5432
+    - DATABASE_NAME=store
+    - DATABASE_USERNAME=username
+    - DATABASE_PASSWORD=password
+
+7. User-Service:
+	- CONFIG_SERVER_HOSTNAME=configserver
+    - CONFIG_SERVER_PORT=8888
+    - EUREKA_SERVER_HOSTNAME=eurekaserver
+    - EUREKA_SERVER_PORT=8761
+    - DATABASE_URL=jdbc:postgresql://postgres:5432
+    - DATABASE_NAME=store
+    - DATABASE_USERNAME=username
+    - DATABASE_PASSWORD=password
+    - PASSWORD_ENCRYPTION_KEY=1234567890abcdef
+    - PASSWORD_DECRYPTION_KEY=1234567890abcdef
