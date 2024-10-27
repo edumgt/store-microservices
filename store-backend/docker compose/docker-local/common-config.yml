@@ -1,0 +1,75 @@
+services:
+    network-deploy-service:
+        networks:
+            - store-backend
+
+    microservice-base-config:
+        extends:
+            service: network-deploy-service
+        deploy:
+            resources:
+                limits:
+                    memory: 700m
+
+    eureka-server-config:
+        extends:
+            service: microservice-base-config
+        environment:
+            EUREKA_SERVER_HOSTNAME: eurekaserver
+            EUREKA_SERVER_PORT: 8761
+
+    eureka-config-server-config:
+        extends:
+            service: eureka-server-config
+        environment:
+            CONFIG_SERVER_HOSTNAME: configserver
+            CONFIG_SERVER_PORT: 8888
+
+    eureka-config-db-server-config:
+        extends:
+            service: eureka-config-server-config
+        environment:
+            DATABASE_NAME: store
+            DATABASE_PASSWORD: password
+            DATABASE_URL: jdbc:postgresql://postgres:5432
+            DATABASE_USERNAME: username
+
+    eureka-config-kafka-server-config:
+        extends:
+            service: eureka-config-server-config
+        environment:
+            KAFKA_SERVER_HOSTNAME: kafka
+            KAFKA_SERVER_PORT: 9092
+
+    eureka-config-db-kafka-server-config:
+        extends:
+            service: eureka-config-db-server-config
+        environment:
+            KAFKA_SERVER_HOSTNAME: kafka
+            KAFKA_SERVER_PORT: 9092
+
+    gateway-service-config:
+        extends:
+            service: eureka-config-server-config
+
+    notification-service-config:
+        extends:
+            service: eureka-config-kafka-server-config
+
+    order-service-config:
+        extends:
+            service: eureka-config-db-kafka-server-config
+        environment:
+            PRODUCT_SERVICE_HOSTNAME: productservice
+            PRODUCT_SERVICE_PORT: 8001
+
+    product-service-config:
+        extends:
+            service: eureka-config-db-server-config
+
+    user-service-config:
+        extends:
+            service: eureka-config-db-server-config
+        environment:
+            PASSWORD_ENCRYPTION_KEY: 1234567890abcdef
+            PASSWORD_DECRYPTION_KEY: 1234567890abcdef

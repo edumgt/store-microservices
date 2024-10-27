@@ -39,7 +39,7 @@ services:
             KAFKA_BROKER_ID: 1
             KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
             KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
         extends:
@@ -60,132 +60,6 @@ services:
         extends:
             file: common-config.yml
             service: microservice-base-config
-
-    eurekaserver:
-        image: "praveenukkoji/eureka-server:1.0"
-        container_name: eureka-server
-        ports:
-            - "8761:8761"
-        healthcheck:
-            test: "curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        extends:
-            file: common-config.yml
-            service: eureka-server-config
-
-    configserver:
-        image: "praveenukkoji/config-server:1.0"
-        container_name: config-server
-        ports:
-            - "8888:8888"
-        healthcheck:
-            test: "curl --fail --silent localhost:8888/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        extends:
-            file: common-config.yml
-            service: microservice-base-config
-
-    gatewayservice:
-        image: "praveenukkoji/gatewayservice:1.0"
-        container_name: gatewayservice
-        ports:
-            - "8222:8222"
-        healthcheck:
-            test: "curl --fail --silent localhost:8222/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        depends_on:
-            configserver:
-                condition: service_healthy
-            eurekaserver:
-                condition: service_healthy
-        extends:
-            file: common-config.yml
-            service: gateway-service-config
-
-    notificationservice:
-        image: "praveenukkoji/notificationservice:1.0"
-        container_name: notificationservice
-        ports:
-            - "8003:8003"
-        healthcheck:
-            test: "curl --fail --silent localhost:8003/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        depends_on:
-            orderservice:
-                condition: service_healthy
-        extends:
-            file: common-config.yml
-            service: notification-service-config
-
-    orderservice:
-        image: "praveenukkoji/orderservice:1.0"
-        container_name: orderservice
-        ports:
-            - "8002:8002"
-        healthcheck:
-            test: "curl --fail --silent localhost:8002/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        depends_on:
-            productservice:
-                condition: service_healthy
-        extends:
-            file: common-config.yml
-            service: order-service-config
-
-    productservice:
-        image: "praveenukkoji/productservice:1.0"
-        container_name: productservice
-        ports:
-            - "8001:8001"
-        healthcheck:
-            test: "curl --fail --silent localhost:8001/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        depends_on:
-            gatewayservice:
-                condition: service_healthy
-            postgres:
-                condition: service_started
-        extends:
-            file: common-config.yml
-            service: product-service-config
-
-    userservice:
-        image: "praveenukkoji/userservice:1.0"
-        container_name: userservice
-        ports:
-            - "8000:8000"
-        healthcheck:
-            test: "curl --fail --silent localhost:8000/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        depends_on:
-            gatewayservice:
-                condition: service_healthy
-            postgres:
-                condition: service_started
-        extends:
-            file: common-config.yml
-            service: user-service-config
 
 networks:
     store-backend:
