@@ -1,5 +1,6 @@
 package com.praveenukkoji.orderservice.external.product.feignClient;
 
+import com.praveenukkoji.orderservice.constant.Constant;
 import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
 import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
 import feign.Headers;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(value = "product-client", url = "http://productservice:8001/api/v1/products")
+@FeignClient(value = "product-client", url = Constant.PRODUCT_SERVICE_URL)
 public interface ProductClient {
 
     // get product detail
