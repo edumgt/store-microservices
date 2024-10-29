@@ -89,7 +89,7 @@ services:
             start_period: 10s
         extends:
             file: common-config.yml
-            service: microservice-base-config
+            service: eureka-server-config
 
     gatewayservice:
         image: "praveenukkoji/gatewayservice:1.0"

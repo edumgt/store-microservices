@@ -17,20 +17,25 @@ spring:
         url: ${DATABASE_URL}/${DATABASE_NAME}
     config:
         import: optional:configserver:http://${CONFIG_SERVER_HOSTNAME}:${CONFIG_SERVER_PORT}/
-eureka:
-    client:
-        serviceUrl:
-            defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
 password:
     encryption:
         key: ${PASSWORD_ENCRYPTION_KEY}
     decryption:
         key: ${PASSWORD_DECRYPTION_KEY}
+eureka:
+    instance:
+        prefer-ip-address: true
+    client:
+        serviceUrl:
+            defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
 management:
     endpoints:
         web:
             exposure:
                 include: "*"
+    info:
+        env:
+            enabled: true
     health:
         readiness-state:
             enabled: true
@@ -40,3 +45,13 @@ management:
         health:
             probes:
                 enabled: true
+        shutdown:
+            enabled: true
+endpoints:
+    shutdown:
+        enabled: true
+info:
+    app:
+        name: "userservice"
+        description: "User Service for store-microservices"
+        version: "1.0"

@@ -10,11 +10,20 @@ spring:
             server:
                 native:
                     search-locations: classpath:/configurations
+eureka:
+    instance:
+        prefer-ip-address: true
+    client:
+        serviceUrl:
+            defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
 management:
     endpoints:
         web:
             exposure:
                 include: "*"
+    info:
+        env:
+            enabled: true
     health:
         readiness-state:
             enabled: true
@@ -24,3 +33,13 @@ management:
         health:
             probes:
                 enabled: true
+        shutdown:
+            enabled: true
+endpoints:
+    shutdown:
+        enabled: true
+info:
+    app:
+        name: "config-server"
+        description: "Config Server for store-microservices"
+        version: "1.0"

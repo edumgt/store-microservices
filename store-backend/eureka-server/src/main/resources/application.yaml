@@ -17,6 +17,9 @@ management:
         web:
             exposure:
                 include: "*"
+    info:
+        env:
+            enabled: true
     health:
         readiness-state:
             enabled: true
@@ -26,3 +29,13 @@ management:
         health:
             probes:
                 enabled: true
+        shutdown:
+            enabled: true
+endpoints:
+    shutdown:
+        enabled: true
+info:
+    app:
+        name: "eureka-server"
+        description: "Eureka Server for store-microservices"
+        version: "1.0"

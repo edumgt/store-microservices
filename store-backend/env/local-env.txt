@@ -1,4 +1,6 @@
 1. Config-Server:
+    - EUREKA_SERVER_HOSTNAME=localhost
+    - EUREKA_SERVER_PORT=8761
 
 2. Eureka-Server:
 	- EUREKA_SERVER_HOSTNAME=localhost
