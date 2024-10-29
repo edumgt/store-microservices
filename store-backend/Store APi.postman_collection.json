@@ -22,7 +22,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    // \"quantity\": {{$randomInt}},\n    \"quantity\": 1,\n    \"categoryId\": \"6958bde9-07fc-448a-9104-914396de60ae\"\n}",
+									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    // \"quantity\": {{$randomInt}},\n    \"quantity\": 1,\n    \"categoryId\": \"e9c974e3-6114-4aa8-9004-5c4249efafb3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -423,6 +423,26 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "shutdown",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/actuator/shutdown",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -930,6 +950,26 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "shutdown",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/actuator/shutdown",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -946,7 +986,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"65fd6d6b-01ab-45a7-b859-17b51a4a896a\",\n                \"quantity\": 10\n            },\n            {\n                \"id\": \"586fbe81-702f-4d89-a7ad-cfd73aeba483\",\n                \"quantity\": 5\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"c3cd2db8-ea4a-4b99-8dc8-afdce38cc610\",\n                \"quantity\": 1\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -973,7 +1013,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders?orderId=1e7c2395-e551-4c4a-9376-987d2f7f1560",
+									"raw": "{{order_service}}/api/v1/orders?orderId=e46ed363-f5b6-463f-9b0a-67227f796cd9",
 									"host": [
 										"{{order_service}}"
 									],
@@ -985,7 +1025,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "1e7c2395-e551-4c4a-9376-987d2f7f1560"
+											"value": "e46ed363-f5b6-463f-9b0a-67227f796cd9"
 										}
 									]
 								}
@@ -1107,11 +1147,31 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "shutdown",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/actuator/shutdown",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "config server",
+			"name": "config-server",
 			"item": [
 				{
 					"name": "order-service default",
@@ -1208,6 +1268,26 @@
 							"path": [
 								"order-service",
 								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shutdown",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/actuator/shutdown",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"actuator",
+								"shutdown"
 							]
 						}
 					},
@@ -1346,6 +1426,304 @@
 							"path": [
 								"actuator",
 								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "eureka-server",
+			"item": [
+				{
+					"name": "eureka apps",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "config-server",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps/config-server",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps",
+								"config-server"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api-gateway",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps/api-gateway",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps",
+								"api-gateway"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notification-service",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps/notification-service",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps",
+								"notification-service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order-service",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps/order-service",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps",
+								"order-service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-service",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps/product-service",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps",
+								"product-service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-service",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps/user-service",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps",
+								"user-service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shutdwon",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8761/actuator/shutdown",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "notification-service",
+			"item": [
+				{
+					"name": "shutdown",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/actuator/shutdown",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api-gateway",
+			"item": [
+				{
+					"name": "shutdown",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8222/actuator/shutdown",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8222",
+							"path": [
+								"actuator",
+								"shutdown"
 							]
 						}
 					},
