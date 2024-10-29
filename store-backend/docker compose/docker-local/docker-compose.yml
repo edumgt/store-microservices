@@ -189,10 +189,10 @@ services:
 
 networks:
     store-backend:
-        name: store-backend
+        name: docker-local-store-backend
         driver: bridge
 
 volumes:
     postgres:
-        name: postgres-data
+        name: docker-local-postgres-data
         driver: local

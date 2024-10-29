@@ -63,10 +63,10 @@ services:
 
 networks:
     store-backend:
-        name: store-backend
+        name: local-store-backend
         driver: bridge
 
 volumes:
     postgres:
-        name: postgres-data
+        name: local-postgres-data
         driver: local
