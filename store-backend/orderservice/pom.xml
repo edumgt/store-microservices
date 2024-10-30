@@ -51,6 +51,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.github.openfeign/feign-okhttp -->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
+            <version>13.5</version>
+        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>

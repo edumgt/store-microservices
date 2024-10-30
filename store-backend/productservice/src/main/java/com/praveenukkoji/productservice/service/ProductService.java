@@ -8,6 +8,7 @@ import com.praveenukkoji.productservice.exception.product.ProductCreateException
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
+import com.praveenukkoji.productservice.external.product.request.DecreaseProductStockRequest;
 import com.praveenukkoji.productservice.external.product.request.ProductDetailRequest;
 import com.praveenukkoji.productservice.external.product.response.ProductDetailResponse;
 import com.praveenukkoji.productservice.model.Category;
@@ -188,30 +189,67 @@ public class ProductService {
     }
 
     // decrease stock
-    public UUID decreaseStock(UUID productId, Integer decreaseStock)
+    public Boolean decreaseStock(List<DecreaseProductStockRequest> decreaseProductStockRequestList)
             throws ProductNotFoundException, ProductUpdateException {
 
-        log.info("Decreasing stock by: {}", decreaseStock);
+        log.info("Decreasing stock request");
 
-        Optional<Product> product = productRepository.findById(productId);
+        List<UUID> productIdList = decreaseProductStockRequestList.stream().map(DecreaseProductStockRequest::getId)
+                .toList();
 
-        if (product.isPresent()) {
-            Product productToDecrease = product.get();
-            int updatedValueOfStock = productToDecrease.getQuantity() - decreaseStock;
+        List<Product> productList = productRepository.findAllById(productIdList);
 
-            if (updatedValueOfStock < 0) {
-                throw new ProductUpdateException("remaining stock = " + productToDecrease.getQuantity());
-            }
+        // Check stock availability before updating
+        for (DecreaseProductStockRequest item : decreaseProductStockRequestList) {
+            UUID itemId = item.getId();
+            Integer decreaseStockValue = item.getQuantity();
 
-            productToDecrease.setQuantity(updatedValueOfStock);
-            try {
-                return productRepository.save(productToDecrease).getId();
-            } catch (Exception e) {
-                throw new ProductUpdateException(e.getMessage());
+            Optional<Product> matchingProduct = productList.stream()
+                    .filter(product -> product.getId().equals(itemId))
+                    .findFirst();
+
+            if (matchingProduct.isPresent()) {
+                if (matchingProduct.get().getQuantity() == 0 ||
+                        matchingProduct.get().getQuantity() < decreaseStockValue) {
+                    throw new ProductUpdateException("Remaining stock = " + matchingProduct.get().getQuantity() + " for product id = " + itemId);
+                }
+            } else {
+                throw new ProductNotFoundException("Product with id = " + itemId + " not found");
             }
         }
 
-        throw new ProductNotFoundException("product with id = " + productId + " not found");
+        // updated product list
+        List<Product> updatedProductList = new ArrayList<>();
+
+        for (DecreaseProductStockRequest item : decreaseProductStockRequestList) {
+            UUID itemId = item.getId();
+            Integer decreaseStockValue = item.getQuantity();
+
+            Optional<Product> matchingProduct = productList.stream()
+                    .filter(product -> product.getId().equals(itemId))
+                    .findFirst();
+
+            if (matchingProduct.isPresent()) {
+                int updatedValueOfStock = matchingProduct.get().getQuantity() - decreaseStockValue;
+
+                // updating stock value
+                Product updatedProduct = matchingProduct.get();
+                updatedProduct.setQuantity(updatedValueOfStock);
+
+                updatedProductList.add(updatedProduct);
+            } else {
+                throw new ProductNotFoundException("product with id = " + itemId + " not found");
+            }
+        }
+
+        // commiting updatedProductList to db
+        try {
+            productRepository.saveAll(updatedProductList);
+        } catch (Exception e) {
+            throw new ProductUpdateException(e.getMessage());
+        }
+
+        return true;
     }
 
     // update product price

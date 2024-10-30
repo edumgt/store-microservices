@@ -2,6 +2,7 @@ package com.praveenukkoji.orderservice.utility;
 
 import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
+import com.praveenukkoji.orderservice.external.product.dto.request.DecreaseProductStockRequest;
 import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
 import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
 import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
@@ -112,13 +113,14 @@ public class OrderUtility {
     }
 
     // decrease product stock
-    public void decreaseProductStock(String productId, Integer quantity)
+    public void decreaseProductStock(List<DecreaseProductStockRequest> decreaseProductStockRequestList)
             throws ProductServiceException {
 
         // Using FeignClient
-        ResponseEntity<UUID> decreaseStockResponse;
+        ResponseEntity<Boolean> decreaseStockResponse;
+
         try {
-            decreaseStockResponse = productClient.decreaseStock(productId, quantity);
+            decreaseStockResponse = productClient.decreaseStock(decreaseProductStockRequestList);
         } catch (Exception e) {
             throw new ProductServiceException(e.getMessage());
         }

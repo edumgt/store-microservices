@@ -6,6 +6,7 @@ import com.praveenukkoji.orderservice.dto.response.order.OrderResponse;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
+import com.praveenukkoji.orderservice.external.product.dto.request.DecreaseProductStockRequest;
 import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
 import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
 import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
@@ -101,9 +102,16 @@ public class OrderService {
             // assigning order item's to order
             newOrder.setOrderItemList(orderItemList);
 
-            // TODO: decreasing stock call not working
+            // creating decrease stock request object
+            List<DecreaseProductStockRequest> decreaseProductStockRequestList = itemList.stream()
+                    .map(item -> DecreaseProductStockRequest.builder()
+                            .id(item.getId())
+                            .quantity(item.getQuantity())
+                            .build()
+                    ).toList();
+
             // decrease product stock
-            // orderUtility.decreaseProductStock("65fd6d6b-01ab-45a7-b859-17b51a4a896a", 10);
+            orderUtility.decreaseProductStock(decreaseProductStockRequestList);
 
             UUID orderId = orderRepository.save(newOrder).getId();
 

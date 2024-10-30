@@ -7,6 +7,7 @@ import com.praveenukkoji.productservice.exception.product.ProductCreateException
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
+import com.praveenukkoji.productservice.external.product.request.DecreaseProductStockRequest;
 import com.praveenukkoji.productservice.external.product.request.ProductDetailRequest;
 import com.praveenukkoji.productservice.external.product.response.ProductDetailResponse;
 import com.praveenukkoji.productservice.service.ProductService;
@@ -147,44 +148,13 @@ public class ProductController {
     // decrease stock
     @PatchMapping("/decrease-stock")
     public ResponseEntity<?> decreaseStock(
-            @RequestParam(defaultValue = "", name = "productId") String productId,
-            @RequestParam(defaultValue = "0", name = "decreaseStock") Integer decreaseStock
+            @RequestBody List<DecreaseProductStockRequest> decreaseProductStockRequestList
     ) throws ProductUpdateException, ProductNotFoundException {
-        if (Objects.equals(productId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("productId", "product id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
+        if (decreaseProductStockRequestList.isEmpty()) {
+            return ResponseEntity.status(400).body(false);
         }
 
-        if (decreaseStock == 0) {
-            Map<String, String> error = new HashMap<>();
-            error.put("decreaseStock", "decrease-stock is empty or value should be greater than zero");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        if (decreaseStock < 0) {
-            Map<String, String> error = new HashMap<>();
-            error.put("decreaseStock", "decrease-stock value should be greater than zero");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(productId);
-        return ResponseEntity.status(200).body(productService.decreaseStock(id, decreaseStock));
+        return ResponseEntity.status(200).body(productService.decreaseStock(decreaseProductStockRequestList));
     }
 
     // update product price

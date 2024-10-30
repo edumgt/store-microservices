@@ -1,5 +1,6 @@
 package com.praveenukkoji.orderservice.external.product.feignClient;
 
+import com.praveenukkoji.orderservice.external.product.dto.request.DecreaseProductStockRequest;
 import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
 import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
 import feign.Headers;
@@ -8,10 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.UUID;
 
 @FeignClient(value = "product-client", url = "${feign.client.config.productservice.url}")
 public interface ProductClient {
@@ -24,7 +23,5 @@ public interface ProductClient {
 
     // decrease product stock
     @PatchMapping(value = "/decrease-stock")
-    ResponseEntity<UUID> decreaseStock(
-            @RequestParam("productId") String productId,
-            @RequestParam("decreaseStock") Integer decreaseStock);
+    ResponseEntity<Boolean> decreaseStock(@RequestBody List<DecreaseProductStockRequest> decreaseProductStockRequest);
 }
