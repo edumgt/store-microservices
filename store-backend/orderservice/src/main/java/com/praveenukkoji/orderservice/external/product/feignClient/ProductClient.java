@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(value = "product-client", url = "${feign.client.config.productservice.url}")
+@FeignClient(value = "product-service", url = "${feign.client.config.productservice.url}")
 public interface ProductClient {
 
     // get product detail
