@@ -67,7 +67,7 @@ services:
         ports:
             - "8761:8761"
         healthcheck:
-            test: "curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
@@ -82,22 +82,25 @@ services:
         ports:
             - "8888:8888"
         healthcheck:
-            test: "curl --fail --silent localhost:8888/actuator/health | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8888/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
             start_period: 10s
+        depends_on:
+            eurekaserver:
+                condition: service_healthy
         extends:
             file: common-config.yml
             service: eureka-server-config
 
-    gatewayservice:
-        image: "praveenukkoji/gatewayservice:1.0"
-        container_name: gatewayservice
+    notificationservice:
+        image: "praveenukkoji/notificationservice:1.0"
+        container_name: notification-service
         ports:
-            - "8222:8222"
+            - "8003:8003"
         healthcheck:
-            test: "curl --fail --silent localhost:8222/actuator/health | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8003/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
@@ -105,37 +108,19 @@ services:
         depends_on:
             configserver:
                 condition: service_healthy
-            eurekaserver:
-                condition: service_healthy
-        extends:
-            file: common-config.yml
-            service: gateway-service-config
-
-    notificationservice:
-        image: "praveenukkoji/notificationservice:1.0"
-        container_name: notificationservice
-        ports:
-            - "8003:8003"
-        healthcheck:
-            test: "curl --fail --silent localhost:8003/actuator/health | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        depends_on:
-            orderservice:
-                condition: service_healthy
+            kafka:
+                condition: service_started
         extends:
             file: common-config.yml
             service: notification-service-config
 
     orderservice:
         image: "praveenukkoji/orderservice:1.0"
-        container_name: orderservice
+        container_name: order-service
         ports:
             - "8002:8002"
         healthcheck:
-            test: "curl --fail --silent localhost:8002/actuator/health | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8002/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
@@ -143,23 +128,29 @@ services:
         depends_on:
             productservice:
                 condition: service_healthy
+            kafka:
+                condition: service_started
+            configserver:
+                condition: service_healthy
+            postgres:
+                condition: service_started
         extends:
             file: common-config.yml
             service: order-service-config
 
     productservice:
         image: "praveenukkoji/productservice:1.0"
-        container_name: productservice
+        container_name: product-service
         ports:
             - "8001:8001"
         healthcheck:
-            test: "curl --fail --silent localhost:8001/actuator/health | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8001/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
             start_period: 10s
         depends_on:
-            gatewayservice:
+            configserver:
                 condition: service_healthy
             postgres:
                 condition: service_started
@@ -169,23 +160,49 @@ services:
 
     userservice:
         image: "praveenukkoji/userservice:1.0"
-        container_name: userservice
+        container_name: user-service
         ports:
             - "8000:8000"
         healthcheck:
-            test: "curl --fail --silent localhost:8000/actuator/health | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8000/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
             start_period: 10s
         depends_on:
-            gatewayservice:
+            configserver:
                 condition: service_healthy
             postgres:
                 condition: service_started
         extends:
             file: common-config.yml
             service: user-service-config
+
+    apigateway:
+        image: "praveenukkoji/api-gateway:1.0"
+        container_name: api-gateway
+        ports:
+            - "8222:8222"
+        healthcheck:
+            test: "curl --fail --silent localhost:8222/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
+        depends_on:
+            configserver:
+                condition: service_healthy
+            notificationservice:
+                condition: service_healthy
+            orderservice:
+                condition: service_healthy
+            productservice:
+                condition: service_healthy
+            userservice:
+                condition: service_healthy
+        extends:
+            file: common-config.yml
+            service: api-gateway-service-config
 
 networks:
     store-backend:

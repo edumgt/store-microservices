@@ -48,10 +48,6 @@ services:
             KAFKA_SERVER_HOSTNAME: kafka
             KAFKA_SERVER_PORT: 9092
 
-    gateway-service-config:
-        extends:
-            service: eureka-config-server-config
-
     notification-service-config:
         extends:
             service: eureka-config-kafka-server-config
@@ -73,3 +69,7 @@ services:
         environment:
             PASSWORD_ENCRYPTION_KEY: 1234567890abcdef
             PASSWORD_DECRYPTION_KEY: 1234567890abcdef
+
+    api-gateway-service-config:
+        extends:
+            service: eureka-config-server-config
