@@ -2,12 +2,14 @@ package com.praveenukkoji.api_gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
 
+@EnableDiscoveryClient
 @SpringBootApplication
 public class ApiGatewayApplication {
 
@@ -26,6 +28,20 @@ public class ApiGatewayApplication {
                         .uri("lb://USER-SERVICE")
                 )
                 .route(p -> p
+                        .path("/user-service/api/v1/roles/**")
+                        .filters(f ->
+                                f.rewritePath("/user-service/(?<segment>.*)", "/${segment}")
+                                        .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://USER-SERVICE")
+                )
+                .route(p -> p
+                        .path("/user-service/api/v1/addresses/**")
+                        .filters(f ->
+                                f.rewritePath("/user-service/(?<segment>.*)", "/${segment}")
+                                        .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://USER-SERVICE")
+                )
+                .route(p -> p
                         .path("/product-service/api/v1/products/**")
                         .filters(f ->
                                 f.rewritePath("/product-service/(?<segment>.*)", "/${segment}")
@@ -33,7 +49,21 @@ public class ApiGatewayApplication {
                         .uri("lb://PRODUCT-SERVICE")
                 )
                 .route(p -> p
+                        .path("/product-service/api/v1/categories/**")
+                        .filters(f ->
+                                f.rewritePath("/product-service/(?<segment>.*)", "/${segment}")
+                                        .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://PRODUCT-SERVICE")
+                )
+                .route(p -> p
                         .path("/order-service/api/v1/orders/**")
+                        .filters(f ->
+                                f.rewritePath("/order-service/(?<segment>.*)", "/${segment}")
+                                        .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://ORDER-SERVICE")
+                )
+                .route(p -> p
+                        .path("/order-service/api/v1/payments/**")
                         .filters(f ->
                                 f.rewritePath("/order-service/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))

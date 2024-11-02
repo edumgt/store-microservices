@@ -43,6 +43,6 @@ endpoints:
         enabled: true
 info:
     app:
-        name: "apigateway"
+        name: "api-gateway"
         description: "API Gateway for store-microservices"
         version: "1.0"
