@@ -81,6 +81,7 @@ public class OrderService {
         double amount = orderUtility.getOrderAmount(itemList, productDetailResponseList);
 
         // creating order
+        // TODO: validate createdBy and addressId
         Order newOrder = Order.builder()
                 .totalItems(totalItems)
                 .amount(amount)
