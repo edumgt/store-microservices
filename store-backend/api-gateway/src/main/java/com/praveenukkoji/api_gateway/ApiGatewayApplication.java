@@ -42,6 +42,13 @@ public class ApiGatewayApplication {
                         .uri("lb://USER-SERVICE")
                 )
                 .route(p -> p
+                        .path("/user-service/api/v1/auth/**")
+                        .filters(f ->
+                                f.rewritePath("/user-service/(?<segment>.*)", "/${segment}")
+                                        .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://USER-SERVICE")
+                )
+                .route(p -> p
                         .path("/product-service/api/v1/products/**")
                         .filters(f ->
                                 f.rewritePath("/product-service/(?<segment>.*)", "/${segment}")
