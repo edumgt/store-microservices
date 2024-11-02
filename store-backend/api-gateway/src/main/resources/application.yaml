@@ -1,0 +1,48 @@
+server:
+    port: 8222
+spring:
+    application:
+        name: api-gateway
+    config:
+        import: optional:configserver:http://${CONFIG_SERVER_HOSTNAME}:${CONFIG_SERVER_PORT}/
+    cloud:
+        gateway:
+            discovery:
+                locator:
+                    enabled: false
+                    lowerCaseServiceId: true
+eureka:
+    instance:
+        prefer-ip-address: true
+    client:
+        serviceUrl:
+            defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    info:
+        env:
+            enabled: true
+    health:
+        readiness-state:
+            enabled: true
+        liveness-state:
+            enabled: true
+    endpoint:
+        gateway:
+            enabled: true
+        health:
+            probes:
+                enabled: true
+        shutdown:
+            enabled: true
+endpoints:
+    shutdown:
+        enabled: true
+info:
+    app:
+        name: "apigateway"
+        description: "API Gateway for store-microservices"
+        version: "1.0"
