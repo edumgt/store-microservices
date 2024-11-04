@@ -21,72 +21,72 @@ public class ApiGatewayApplication {
     public RouteLocator RouteConfig(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
                 .route(p -> p
-                        .path("/user-service/api/v1/users/**")
+                        .path("/store/api/v1/users/**")
                         .filters(f ->
-                                f.rewritePath("/user-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://USER-SERVICE")
                 )
                 .route(p -> p
-                        .path("/user-service/api/v1/roles/**")
+                        .path("/store/api/v1/roles/**")
                         .filters(f ->
-                                f.rewritePath("/user-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://USER-SERVICE")
                 )
                 .route(p -> p
-                        .path("/user-service/api/v1/addresses/**")
+                        .path("/store/api/v1/addresses/**")
                         .filters(f ->
-                                f.rewritePath("/user-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://USER-SERVICE")
                 )
                 .route(p -> p
-                        .path("/user-service/api/v1/auth/**")
+                        .path("/store/api/v1/auth/**")
                         .filters(f ->
-                                f.rewritePath("/user-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://USER-SERVICE")
                 )
                 .route(p -> p
-                        .path("/product-service/api/v1/products/**")
+                        .path("/store/api/v1/products/**")
                         .filters(f ->
-                                f.rewritePath("/product-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://PRODUCT-SERVICE")
                 )
                 .route(p -> p
-                        .path("/product-service/api/v1/categories/**")
+                        .path("/store/api/v1/categories/**")
                         .filters(f ->
-                                f.rewritePath("/product-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://PRODUCT-SERVICE")
                 )
                 .route(p -> p
-                        .path("/order-service/api/v1/orders/**")
+                        .path("/store/api/v1/orders/**")
                         .filters(f ->
-                                f.rewritePath("/order-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://ORDER-SERVICE")
                 )
                 .route(p -> p
-                        .path("/order-service/api/v1/payments/**")
+                        .path("/store/api/v1/payments/**")
                         .filters(f ->
-                                f.rewritePath("/order-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://ORDER-SERVICE")
                 )
                 .route(p -> p
-                        .path("/notification-service/**")
+                        .path("/store/notifications/**")
                         .filters(f ->
-                                f.rewritePath("/notification-service/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/notifications/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://NOTIFICATION-SERVICE")
                 )
                 .route(p -> p
-                        .path("/config-server/**")
+                        .path("/store/config-server/**")
                         .filters(f ->
-                                f.rewritePath("/config-server/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/config-server/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://CONFIG-SERVER")
                 )
