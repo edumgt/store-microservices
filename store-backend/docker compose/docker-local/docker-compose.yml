@@ -61,6 +61,19 @@ services:
             file: common-config.yml
             service: microservice-base-config
 
+    keycloak:
+        image: quay.io/keycloak/keycloak:26.0.5
+        container_name: keycloak
+        ports:
+            - "8080:8080"
+        environment:
+            KEYCLOAK_ADMIN: admin
+            KEYCLOAK_ADMIN_PASSWORD: admin
+        command: "start-dev"
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
+
     eurekaserver:
         image: "praveenukkoji/eureka-server:1.0"
         container_name: eureka-server
@@ -97,8 +110,8 @@ services:
     notificationservice:
         image: "praveenukkoji/notificationservice:1.0"
         container_name: notification-service
-        ports:
-            - "8003:8003"
+        #        ports:
+        #            - "8003:8003"
         healthcheck:
             test: "curl --fail --silent localhost:8003/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -117,8 +130,8 @@ services:
     orderservice:
         image: "praveenukkoji/orderservice:1.0"
         container_name: order-service
-        ports:
-            - "8002:8002"
+        #        ports:
+        #            - "8002:8002"
         healthcheck:
             test: "curl --fail --silent localhost:8002/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -141,8 +154,8 @@ services:
     productservice:
         image: "praveenukkoji/productservice:1.0"
         container_name: product-service
-        ports:
-            - "8001:8001"
+        #        ports:
+        #            - "8001:8001"
         healthcheck:
             test: "curl --fail --silent localhost:8001/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -161,8 +174,8 @@ services:
     userservice:
         image: "praveenukkoji/userservice:1.0"
         container_name: user-service
-        ports:
-            - "8000:8000"
+        #        ports:
+        #            - "8000:8000"
         healthcheck:
             test: "curl --fail --silent localhost:8000/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -200,6 +213,8 @@ services:
                 condition: service_healthy
             userservice:
                 condition: service_healthy
+        environment:
+            SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
         extends:
             file: common-config.yml
             service: api-gateway-service-config
