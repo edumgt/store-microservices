@@ -163,7 +163,7 @@ public class UserService {
 
     // change password
     public UUID changePassword(UUID userId, ChangePasswordRequest changePasswordRequest)
-            throws UserNotFoundException, UserUpdateException {
+            throws UserNotFoundException, UserUpdateException, PasswordEncryptionException {
 
         log.info("Changing password for user: {}", userId);
 
@@ -178,7 +178,8 @@ public class UserService {
                 throw new UserUpdateException("password should be at least 8 characters");
             }
 
-            updatedUser.setPassword(newPassword);
+            String encryptedPassword = userUtility.getEncryptedPassword(newPassword);
+            updatedUser.setPassword(encryptedPassword);
 
             try {
                 return userRepository.save(updatedUser).getId();

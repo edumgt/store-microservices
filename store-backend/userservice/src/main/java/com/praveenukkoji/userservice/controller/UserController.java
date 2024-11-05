@@ -99,7 +99,7 @@ public class UserController {
     public ResponseEntity<?> changePassword(
             @RequestParam(defaultValue = "", name = "userId") String userId,
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest
-    ) throws UserNotFoundException, UserUpdateException {
+    ) throws UserNotFoundException, UserUpdateException, PasswordEncryptionException {
         if (Objects.equals(userId, "")) {
             Map<String, String> error = new HashMap<>();
             error.put("userId", "user id is empty");

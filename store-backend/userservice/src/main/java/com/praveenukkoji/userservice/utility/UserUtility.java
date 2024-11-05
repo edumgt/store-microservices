@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Service
@@ -22,32 +24,34 @@ public class UserUtility {
     private static final String ALGORITHM = "AES";
 
     public String getEncryptedPassword(String password) throws PasswordEncryptionException {
-        try {
-            SecretKeySpec secretKey = new SecretKeySpec(
-                    passwordEncryptionKey.getBytes(StandardCharsets.UTF_8),
-                    ALGORITHM);
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] encryptedData = cipher.doFinal(password.getBytes(StandardCharsets.UTF_8));
+        byte[] decodedKey = Base64.getDecoder().decode(passwordEncryptionKey);
 
-            return Base64.getEncoder().encodeToString(encryptedData);
+        try {
+            Cipher cipher = Cipher.getInstance("AES");
+            // rebuild key using SecretKeySpec
+            SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, originalKey);
+            byte[] cipherText = cipher.doFinal(password.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(cipherText);
         } catch (Exception e) {
-            throw new PasswordEncryptionException(e.getMessage());
+            throw new RuntimeException(
+                    "Error occurred while encrypting data", e);
         }
     }
 
     public String getDecryptedPassword(String encryptedPassword) throws PasswordDecryptionException {
-        try {
-            SecretKeySpec secretKey = new SecretKeySpec(
-                    passwordDecryptionKey.getBytes(StandardCharsets.UTF_8),
-                    ALGORITHM);
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(encryptedPassword));
+        byte[] decodedKey = Base64.getDecoder().decode(passwordDecryptionKey);
 
-            return new String(decryptedData, StandardCharsets.UTF_8);
+        try {
+            Cipher cipher = Cipher.getInstance("AES");
+            // rebuild key using SecretKeySpec
+            SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
+            cipher.init(Cipher.DECRYPT_MODE, originalKey);
+            byte[] cipherText = cipher.doFinal(Base64.getDecoder().decode(encryptedPassword));
+            return new String(cipherText);
         } catch (Exception e) {
-            throw new PasswordDecryptionException(e.getMessage());
+            throw new RuntimeException(
+                    "Error occurred while decrypting data", e);
         }
     }
 }
