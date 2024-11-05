@@ -11,23 +11,23 @@ spring:
         properties:
             hibernate.format_sql: false
     datasource:
-        password: ${DATABASE_PASSWORD}
+        password: password
         driver-class-name: org.postgresql.Driver
-        username: ${DATABASE_USERNAME}
-        url: ${DATABASE_URL}/${DATABASE_NAME}
+        username: username
+        url: jdbc:postgresql://localhost:5432/store
     config:
-        import: optional:configserver:http://${CONFIG_SERVER_HOSTNAME}:${CONFIG_SERVER_PORT}/
+        import: optional:configserver:http://localhost:8888/
 password:
     encryption:
-        key: ${PASSWORD_ENCRYPTION_KEY}
+        key: 1234567890abcdef
     decryption:
-        key: ${PASSWORD_DECRYPTION_KEY}
+        key: 1234567890abcdef
 eureka:
     instance:
         prefer-ip-address: true
     client:
         serviceUrl:
-            defaultZone: http://${EUREKA_SERVER_HOSTNAME}:${EUREKA_SERVER_PORT}/eureka
+            defaultZone: http://localhost:8761/eureka
 management:
     endpoints:
         web:

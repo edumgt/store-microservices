@@ -15,38 +15,34 @@ services:
         extends:
             service: microservice-base-config
         environment:
-            EUREKA_SERVER_HOSTNAME: eurekaserver
-            EUREKA_SERVER_PORT: 8761
+            EUREKA_INSTANCE_HOSTNAME: eurekaserver
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
 
     eureka-config-server-config:
         extends:
             service: eureka-server-config
         environment:
-            CONFIG_SERVER_HOSTNAME: configserver
-            CONFIG_SERVER_PORT: 8888
+            SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
 
     eureka-config-db-server-config:
         extends:
             service: eureka-config-server-config
         environment:
-            DATABASE_NAME: store
-            DATABASE_PASSWORD: password
-            DATABASE_URL: jdbc:postgresql://postgres:5432
-            DATABASE_USERNAME: username
+            SPRING_DATASOURCE_PASSWORD: password
+            SPRING_DATASOURCE_USERNAME: username
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/store
 
     eureka-config-kafka-server-config:
         extends:
             service: eureka-config-server-config
         environment:
-            KAFKA_SERVER_HOSTNAME: kafka
-            KAFKA_SERVER_PORT: 9092
+            SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
 
     eureka-config-db-kafka-server-config:
         extends:
             service: eureka-config-db-server-config
         environment:
-            KAFKA_SERVER_HOSTNAME: kafka
-            KAFKA_SERVER_PORT: 9092
+            SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
 
     notification-service-config:
         extends:
@@ -56,8 +52,7 @@ services:
         extends:
             service: eureka-config-db-kafka-server-config
         environment:
-            PRODUCT_SERVICE_HOSTNAME: productservice
-            PRODUCT_SERVICE_PORT: 8001
+            FEIGN_CLIENT_CONFIG_PRODUCTSERVICE_URL: http://productservice:8001/api/v1/products
 
     product-service-config:
         extends:
@@ -73,3 +68,5 @@ services:
     api-gateway-service-config:
         extends:
             service: eureka-config-server-config
+        environment:
+            SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://keycloak:8080/realms/master/protocol/openid-connect/certs

@@ -10,7 +10,7 @@
 			"name": "product-service",
 			"item": [
 				{
-					"name": "product - done",
+					"name": "product",
 					"item": [
 						{
 							"name": "create product",
@@ -34,6 +34,21 @@
 									"type": "oauth2",
 									"oauth2": [
 										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
 											"key": "addTokenTo",
 											"value": "header",
 											"type": "string"
@@ -49,16 +64,6 @@
 											"type": "string"
 										},
 										{
-											"key": "clientSecret",
-											"value": "9vnN9DA5QsLXl1i8yy3cmYjuldoVGNd8",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "store-microservices-cc",
-											"type": "string"
-										},
-										{
 											"key": "accessTokenUrl",
 											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
 											"type": "string"
@@ -67,11 +72,6 @@
 											"key": "grant_type",
 											"value": "client_credentials",
 											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "store-microservices-access-token",
-											"type": "string"
 										}
 									]
 								},
@@ -79,7 +79,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    // \"quantity\": {{$randomInt}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"{{categoryId}}\"\n}",
+									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"{{categoryId}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -137,7 +137,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products/get-by-category?category=Movies",
+									"raw": "{{product_service}}/api/v1/products/get-by-category?category=updated",
 									"host": [
 										"{{product_service}}"
 									],
@@ -150,7 +150,7 @@
 									"query": [
 										{
 											"key": "category",
-											"value": "Movies"
+											"value": "updated"
 										}
 									]
 								}
@@ -214,7 +214,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products/increase-stock?productId=cd60f66c-f0c8-4546-97c2-8d77a065b724&increaseStock=10",
+									"raw": "{{product_service}}/api/v1/products/increase-stock?productId={{productId}}&increaseStock=10",
 									"host": [
 										"{{product_service}}"
 									],
@@ -227,7 +227,7 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "cd60f66c-f0c8-4546-97c2-8d77a065b724"
+											"value": "{{productId}}"
 										},
 										{
 											"key": "increaseStock",
@@ -245,7 +245,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "[\n    {\n        \"id\": \"9dbdef51-fe21-49d6-a857-7c79e457c6ec\",\n        \"quantity\": 11\n    },\n    {\n        \"id\": \"cd60f66c-f0c8-4546-97c2-8d77a065b724\",\n        \"quantity\": 9\n    }\n]",
+									"raw": "[\n    {\n        \"id\": \"{{productId}}\",\n        \"quantity\": 11\n    }\n]",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -274,7 +274,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "[\n    {\n        \"productId\": \"764324b9-5d1b-48dd-b30a-f926376b1155\",\n        \"quantity\": 2\n    }\n]",
+									"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 194\n    }\n]",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -329,7 +329,7 @@
 					]
 				},
 				{
-					"name": "category - done",
+					"name": "category",
 					"item": [
 						{
 							"name": "create category",
@@ -488,7 +488,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId=7f15123c-ed95-4809-a4b7-4db086f2aac3",
+									"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
 									"host": [
 										"{{product_service}}"
 									],
@@ -500,7 +500,7 @@
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "7f15123c-ed95-4809-a4b7-4db086f2aac3"
+											"value": "{{categoryId}}"
 										}
 									]
 								}
@@ -516,7 +516,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId=7f15123c-ed95-4809-a4b7-4db086f2aac3",
+									"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
 									"host": [
 										"{{product_service}}"
 									],
@@ -528,7 +528,7 @@
 									"query": [
 										{
 											"key": "categoryId",
-											"value": "7f15123c-ed95-4809-a4b7-4db086f2aac3"
+											"value": "{{categoryId}}"
 										}
 									]
 								}
@@ -563,76 +563,34 @@
 			"name": "user-service",
 			"item": [
 				{
-					"name": "address - done",
+					"name": "address",
 					"item": [
 						{
 							"name": "create address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 201) {",
+											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+											"    pm.globals.set(\"addressId\", id);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "tokenName",
-											"value": "authorization_code_token",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{authorization_code_client_id}}",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{authorization_code_client_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "state",
-											"value": "3k90nqczru",
-											"type": "string"
-										},
-										{
-											"key": "authUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
-											"type": "string"
-										},
-										{
-											"key": "useBrowser",
-											"value": true,
-											"type": "boolean"
-										},
-										{
-											"key": "grant_type",
-											"value": "authorization_code",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										}
-									]
+									"type": "noauth"
 								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"1\",\n    \"country\": \"1\",\n    \"state\": \"1\",\n    \"city\": \"1\",\n    \"pincode\": \"123456\"\n}",
+									"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"2\",\n    \"country\": \"2\",\n    \"state\": \"2\",\n    \"city\": \"2\",\n    \"pincode\": \"123465\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -640,7 +598,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?userId=efcfc3ec-2738-42e8-b1ae-17e2b972872f",
+									"raw": "{{user_service}}/api/v1/addresses?userId={{userId}}",
 									"host": [
 										"{{user_service}}"
 									],
@@ -652,7 +610,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "efcfc3ec-2738-42e8-b1ae-17e2b972872f"
+											"value": "{{userId}}"
 										}
 									]
 								}
@@ -725,7 +683,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId=e668d358-e661-4035-8e0d-25ea1d5cfa6c",
+									"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
 									"host": [
 										"{{user_service}}"
 									],
@@ -737,7 +695,7 @@
 									"query": [
 										{
 											"key": "addressId",
-											"value": "e668d358-e661-4035-8e0d-25ea1d5cfa6c"
+											"value": "{{addressId}}"
 										}
 									]
 								}
@@ -750,7 +708,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId=e668d358-e661-4035-8e0d-25ea1d5cfa6c",
+									"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
 									"host": [
 										"{{user_service}}"
 									],
@@ -762,7 +720,7 @@
 									"query": [
 										{
 											"key": "addressId",
-											"value": "e668d358-e661-4035-8e0d-25ea1d5cfa6c"
+											"value": "{{addressId}}"
 										}
 									]
 								}
@@ -772,7 +730,7 @@
 					]
 				},
 				{
-					"name": "user - done",
+					"name": "user",
 					"item": [
 						{
 							"name": "create user",
@@ -796,33 +754,18 @@
 									"type": "oauth2",
 									"oauth2": [
 										{
-											"key": "tokenName",
-											"value": "authorization_code_token",
-											"type": "string"
-										},
-										{
-											"key": "useBrowser",
-											"value": true,
-											"type": "boolean"
-										},
-										{
-											"key": "authUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
 											"type": "string"
 										},
 										{
 											"key": "clientId",
-											"value": "{{authorization_code_client_id}}",
+											"value": "{{client_credentials_cilent_id}}",
 											"type": "string"
 										},
 										{
-											"key": "clientSecret",
-											"value": "{{authorization_code_client_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "authorization_code",
+											"key": "tokenName",
+											"value": "token",
 											"type": "string"
 										},
 										{
@@ -844,6 +787,11 @@
 											"key": "accessTokenUrl",
 											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
 											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
 										}
 									]
 								},
@@ -851,7 +799,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"demo user1\",\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"qwertyuiop\",\n    \"email\": \"{{$randomEmail}}\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
+									"raw": "{\n    \"fullname\": \"demo user\",\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"12345678\",\n    \"email\": \"{{$randomEmail}}\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -904,7 +852,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"updated1\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\"\n}",
+									"raw": "{\n    \"fullname\": \"updated\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -912,7 +860,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/users?userId=9031530a-ab3c-4f33-93fe-82066560273d",
+									"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
 									"host": [
 										"{{user_service}}"
 									],
@@ -924,7 +872,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
+											"value": "{{userId}}"
 										}
 									]
 								}
@@ -971,7 +919,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/users/change-password?userId=9031530a-ab3c-4f33-93fe-82066560273d",
+									"raw": "{{user_service}}/api/v1/users/change-password?userId={{userId}}",
 									"host": [
 										"{{user_service}}"
 									],
@@ -984,7 +932,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
+											"value": "{{userId}}"
 										}
 									]
 								}
@@ -997,7 +945,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/users/active-status?userId=9031530a-ab3c-4f33-93fe-82066560273d&activeStatus=true",
+									"raw": "{{user_service}}/api/v1/users/active-status?userId={{userId}}&activeStatus=true",
 									"host": [
 										"{{user_service}}"
 									],
@@ -1010,7 +958,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "9031530a-ab3c-4f33-93fe-82066560273d"
+											"value": "{{userId}}"
 										},
 										{
 											"key": "activeStatus",
@@ -1024,7 +972,7 @@
 					]
 				},
 				{
-					"name": "role - done",
+					"name": "role",
 					"item": [
 						{
 							"name": "create role",
@@ -1049,47 +997,27 @@
 									"oauth2": [
 										{
 											"key": "clientSecret",
-											"value": "{{authorization_code_client_secret}}",
+											"value": "{{client_credentials_secret}}",
 											"type": "string"
 										},
 										{
 											"key": "clientId",
-											"value": "{{authorization_code_client_id}}",
+											"value": "{{client_credentials_cilent_id}}",
 											"type": "string"
 										},
 										{
-											"key": "grant_type",
-											"value": "authorization_code",
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
 											"type": "string"
 										},
 										{
 											"key": "client_authentication",
 											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "client_credentials_token",
-											"type": "string"
-										},
-										{
-											"key": "state",
-											"value": "1234qwer",
-											"type": "string"
-										},
-										{
-											"key": "authUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
-											"type": "string"
-										},
-										{
-											"key": "useBrowser",
-											"value": true,
-											"type": "boolean"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
 											"type": "string"
 										},
 										{
@@ -1101,6 +1029,11 @@
 											"key": "accessTokenUrl",
 											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
 											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
 										}
 									]
 								},
@@ -1108,7 +1041,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"user\"\n}",
+									"raw": "{\n    \"type\": \"demo\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1169,7 +1102,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId=3842a17f-50aa-4c1a-9cae-d18f0abceb66",
+									"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
 									"host": [
 										"{{user_service}}"
 									],
@@ -1181,7 +1114,7 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "3842a17f-50aa-4c1a-9cae-d18f0abceb66"
+											"value": "{{roleId}}"
 										}
 									]
 								}
@@ -1194,7 +1127,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId=3842a17f-50aa-4c1a-9cae-d18f0abceb66",
+									"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
 									"host": [
 										"{{user_service}}"
 									],
@@ -1206,7 +1139,7 @@
 									"query": [
 										{
 											"key": "roleId",
-											"value": "3842a17f-50aa-4c1a-9cae-d18f0abceb66"
+											"value": "{{roleId}}"
 										}
 									]
 								}
@@ -1236,7 +1169,7 @@
 					]
 				},
 				{
-					"name": "auth - done",
+					"name": "auth",
 					"item": [
 						{
 							"name": "login",
@@ -1245,7 +1178,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"demouser\",\n    \"password\": \"qwertyuiop\"\n}",
+									"raw": "{\n    \"username\": \"Addie__Jenkins70\",\n    \"password\": \"12345678\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1295,7 +1228,7 @@
 			"name": "order-service",
 			"item": [
 				{
-					"name": "order - done",
+					"name": "order",
 					"item": [
 						{
 							"name": "create order",
@@ -1316,65 +1249,13 @@
 							],
 							"request": {
 								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "tokenName",
-											"value": "authorization_code_token",
-											"type": "string"
-										},
-										{
-											"key": "useBrowser",
-											"value": true,
-											"type": "boolean"
-										},
-										{
-											"key": "authUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{authorization_code_client_id}}",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{authorization_code_client_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "authorization_code",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										}
-									]
+									"type": "noauth"
 								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"5897ac7b-e114-4060-b697-c40fa5c44cb0\",\n                \"quantity\": 3\n            },\n            {\n                \"id\": \"48e7bb9e-c44f-46db-908a-5dc28cc211f9\",\n                \"quantity\": 6\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"{{productId}}\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1426,7 +1307,7 @@
 								"method": "PATCH",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders/order-status?orderId=5828d8a0-0c23-4a2a-a33a-c9a9fa7b27a3&orderStatus=deliVERed",
+									"raw": "{{order_service}}/api/v1/orders/order-status?orderId={{orderId}}&orderStatus=deliVERed",
 									"host": [
 										"{{order_service}}"
 									],
@@ -1439,7 +1320,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "5828d8a0-0c23-4a2a-a33a-c9a9fa7b27a3"
+											"value": "{{orderId}}"
 										},
 										{
 											"key": "orderStatus",
@@ -1456,7 +1337,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{order_service}}/api/v1/orders/get-by-user?userId=8b8959bb-8a3e-4365-b116-27713cce32f1",
+									"raw": "{{order_service}}/api/v1/orders/get-by-user?userId={{userId}}",
 									"host": [
 										"{{order_service}}"
 									],
@@ -1469,7 +1350,7 @@
 									"query": [
 										{
 											"key": "userId",
-											"value": "8b8959bb-8a3e-4365-b116-27713cce32f1"
+											"value": "{{userId}}"
 										}
 									]
 								}
@@ -1479,7 +1360,7 @@
 					]
 				},
 				{
-					"name": "payment - done",
+					"name": "payment",
 					"item": [
 						{
 							"name": "make payment",
@@ -1500,65 +1381,13 @@
 							],
 							"request": {
 								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "tokenName",
-											"value": "authorization_code_token",
-											"type": "string"
-										},
-										{
-											"key": "useBrowser",
-											"value": true,
-											"type": "boolean"
-										},
-										{
-											"key": "authUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{authorization_code_client_id}}",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{authorization_code_client_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "authorization_code",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										}
-									]
+									"type": "noauth"
 								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"amount\": 4898.16,\n    \"status\": \"success\",\n    \"orderId\": \"{{orderId}}\"\n}",
+									"raw": "{\n    \"amount\": 3000.00,\n    \"status\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1752,14 +1581,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8761/actuator/health",
+							"raw": "localhost:8761/actuator/health/readiness",
 							"host": [
 								"localhost"
 							],
 							"port": "8761",
 							"path": [
 								"actuator",
-								"health"
+								"health",
+								"readiness"
 							]
 						}
 					},
@@ -1771,14 +1601,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8222/actuator/health",
+							"raw": "localhost:8222/actuator/health/readiness",
 							"host": [
 								"localhost"
 							],
 							"port": "8222",
 							"path": [
 								"actuator",
-								"health"
+								"health",
+								"readiness"
 							]
 						}
 					},
@@ -1790,14 +1621,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8888/actuator/health",
+							"raw": "localhost:8888/actuator/health/readiness",
 							"host": [
 								"localhost"
 							],
 							"port": "8888",
 							"path": [
 								"actuator",
-								"health"
+								"health",
+								"readiness"
 							]
 						}
 					},
@@ -1809,14 +1641,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/actuator/health",
+							"raw": "localhost:8000/actuator/health/readiness",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
 								"actuator",
-								"health"
+								"health",
+								"readiness"
 							]
 						}
 					},
@@ -1828,14 +1661,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8001/actuator/health",
+							"raw": "localhost:8001/actuator/health/readiness",
 							"host": [
 								"localhost"
 							],
 							"port": "8001",
 							"path": [
 								"actuator",
-								"health"
+								"health",
+								"readiness"
 							]
 						}
 					},
@@ -1847,14 +1681,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8002/actuator/health",
+							"raw": "localhost:8002/actuator/health/readiness",
 							"host": [
 								"localhost"
 							],
 							"port": "8002",
 							"path": [
 								"actuator",
-								"health"
+								"health",
+								"readiness"
 							]
 						}
 					},
@@ -1866,14 +1701,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8003/actuator/health",
+							"raw": "localhost:8003/actuator/health/readiness",
 							"host": [
 								"localhost"
 							],
 							"port": "8003",
 							"path": [
 								"actuator",
-								"health"
+								"health",
+								"readiness"
 							]
 						}
 					},
@@ -1901,12 +1737,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8761/eureka/apps",
-							"protocol": "http",
+							"raw": "{{eureka_server}}/eureka/apps",
 							"host": [
-								"localhost"
+								"{{eureka_server}}"
 							],
-							"port": "8761",
 							"path": [
 								"eureka",
 								"apps"
@@ -1932,12 +1766,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8761/eureka/apps/config-server",
-							"protocol": "http",
+							"raw": "{{eureka_server}}/eureka/apps/config-server",
 							"host": [
-								"localhost"
+								"{{eureka_server}}"
 							],
-							"port": "8761",
 							"path": [
 								"eureka",
 								"apps",
@@ -1964,12 +1796,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8761/eureka/apps/api-gateway",
-							"protocol": "http",
+							"raw": "{{eureka_server}}/eureka/apps/api-gateway",
 							"host": [
-								"localhost"
+								"{{eureka_server}}"
 							],
-							"port": "8761",
 							"path": [
 								"eureka",
 								"apps",
@@ -1996,12 +1826,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8761/eureka/apps/notification-service",
-							"protocol": "http",
+							"raw": "{{eureka_server}}/eureka/apps/notification-service",
 							"host": [
-								"localhost"
+								"{{eureka_server}}"
 							],
-							"port": "8761",
 							"path": [
 								"eureka",
 								"apps",
@@ -2028,12 +1856,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8761/eureka/apps/order-service",
-							"protocol": "http",
+							"raw": "{{eureka_server}}/eureka/apps/order-service",
 							"host": [
-								"localhost"
+								"{{eureka_server}}"
 							],
-							"port": "8761",
 							"path": [
 								"eureka",
 								"apps",
@@ -2060,12 +1886,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8761/eureka/apps/product-service",
-							"protocol": "http",
+							"raw": "{{eureka_server}}/eureka/apps/product-service",
 							"host": [
-								"localhost"
+								"{{eureka_server}}"
 							],
-							"port": "8761",
 							"path": [
 								"eureka",
 								"apps",
@@ -2092,12 +1916,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8761/eureka/apps/user-service",
-							"protocol": "http",
+							"raw": "{{eureka_server}}/eureka/apps/user-service",
 							"host": [
-								"localhost"
+								"{{eureka_server}}"
 							],
-							"port": "8761",
 							"path": [
 								"eureka",
 								"apps",
