@@ -213,8 +213,6 @@ services:
                 condition: service_healthy
             userservice:
                 condition: service_healthy
-        environment:
-            SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
         extends:
             file: common-config.yml
             service: api-gateway-service-config
