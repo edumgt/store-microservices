@@ -61,6 +61,19 @@ services:
             file: common-config.yml
             service: microservice-base-config
 
+    keycloak:
+        image: quay.io/keycloak/keycloak:26.0.5
+        container_name: keycloak
+        ports:
+            - "8080:8080"
+        environment:
+            KEYCLOAK_ADMIN: admin
+            KEYCLOAK_ADMIN_PASSWORD: admin
+        command: "start-dev"
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
+
 networks:
     store-backend:
         name: local-store-backend

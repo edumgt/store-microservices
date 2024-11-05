@@ -19,8 +19,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"pm.globals.set(\"productId\", id);"
+											"if (pm.response.code === 201) {",
+											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+											"    pm.globals.set(\"productId\", id);",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -29,7 +31,49 @@
 							],
 							"request": {
 								"auth": {
-									"type": "noauth"
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "9vnN9DA5QsLXl1i8yy3cmYjuldoVGNd8",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "store-microservices-cc",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "store-microservices-access-token",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [],
@@ -294,8 +338,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"pm.globals.set(\"categoryId\", id);"
+											"if (pm.response.code === 201) {",
+											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+											"    pm.globals.set(\"categoryId\", id);",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -304,7 +350,49 @@
 							],
 							"request": {
 								"auth": {
-									"type": "noauth"
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [],
@@ -480,6 +568,66 @@
 						{
 							"name": "create address",
 							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "tokenName",
+											"value": "authorization_code_token",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{authorization_code_client_id}}",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{authorization_code_client_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "state",
+											"value": "3k90nqczru",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+											"type": "string"
+										},
+										{
+											"key": "useBrowser",
+											"value": true,
+											"type": "boolean"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -633,8 +781,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"pm.globals.set(\"userId\", id);"
+											"if (pm.response.code === 201) {",
+											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+											"    pm.globals.set(\"userId\", id);",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -642,11 +792,66 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "tokenName",
+											"value": "authorization_code_token",
+											"type": "string"
+										},
+										{
+											"key": "useBrowser",
+											"value": true,
+											"type": "boolean"
+										},
+										{
+											"key": "authUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{authorization_code_client_id}}",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{authorization_code_client_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"demo user\",\n    \"username\": \"demouser\",\n    \"password\": \"qwertyuiop\",\n    \"email\": \"demouser@doamin.com\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
+									"raw": "{\n    \"fullname\": \"demo user1\",\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"qwertyuiop\",\n    \"email\": \"{{$randomEmail}}\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -828,8 +1033,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"pm.globals.set(\"roleId\", id);"
+											"if (pm.response.code === 201) {",
+											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+											"    pm.globals.set(\"roleId\", id);",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -837,11 +1044,71 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "clientSecret",
+											"value": "{{authorization_code_client_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{authorization_code_client_id}}",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "client_credentials_token",
+											"type": "string"
+										},
+										{
+											"key": "state",
+											"value": "1234qwer",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+											"type": "string"
+										},
+										{
+											"key": "useBrowser",
+											"value": true,
+											"type": "boolean"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"Superuser\"\n}",
+									"raw": "{\n    \"type\": \"user\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1037,8 +1304,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"pm.globals.set(\"orderId\", id);"
+											"if (pm.response.code === 201) {",
+											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+											"    pm.globals.set(\"orderId\", id);",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -1046,11 +1315,66 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "tokenName",
+											"value": "authorization_code_token",
+											"type": "string"
+										},
+										{
+											"key": "useBrowser",
+											"value": true,
+											"type": "boolean"
+										},
+										{
+											"key": "authUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{authorization_code_client_id}}",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{authorization_code_client_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"5245c8eb-1eee-400f-913f-bba0a0e591b7\",\n                \"quantity\": 3\n            },\n            {\n                \"id\": \"4552b41f-8441-4e89-9ff9-b4a31372c24b\",\n                \"quantity\": 6\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
+									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"5897ac7b-e114-4060-b697-c40fa5c44cb0\",\n                \"quantity\": 3\n            },\n            {\n                \"id\": \"48e7bb9e-c44f-46db-908a-5dc28cc211f9\",\n                \"quantity\": 6\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1164,8 +1488,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"pm.globals.set(\"paymentId\", id);"
+											"if (pm.response.code === 201) {",
+											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+											"    pm.globals.set(\"paymentId\", id);",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -1173,6 +1499,61 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "tokenName",
+											"value": "authorization_code_token",
+											"type": "string"
+										},
+										{
+											"key": "useBrowser",
+											"value": true,
+											"type": "boolean"
+										},
+										{
+											"key": "authUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{authorization_code_client_id}}",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{authorization_code_client_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -1797,6 +2178,59 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "keycloak",
+			"item": [
+				{
+					"name": "client-credentials-access-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_credentials_cilent_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_credentials_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid email profile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"realms",
+								"master",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -1819,6 +2253,24 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authorization_code_client_secret",
+			"value": "byLKxEDByX6C40Zx7Q9vSasVHWWcXsNq"
+		},
+		{
+			"key": "authorization_code_client_id",
+			"value": "store-microservices-ac"
+		},
+		{
+			"key": "client_credentials_cilent_id",
+			"value": "store-microservices-cc"
+		},
+		{
+			"key": "client_credentials_secret",
+			"value": "prbJAecEcqg9SBw2SYUUdyU0TtKb5MqC"
 		}
 	]
 }
