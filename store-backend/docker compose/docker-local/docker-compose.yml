@@ -72,7 +72,7 @@ services:
         command: "start-dev"
         extends:
             file: common-config.yml
-            service: network-deploy-service
+            service: microservice-base-config
 
     eurekaserver:
         image: "praveenukkoji/eureka-server:1.0"
