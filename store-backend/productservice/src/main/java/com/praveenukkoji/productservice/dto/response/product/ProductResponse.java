@@ -19,5 +19,5 @@ public class ProductResponse {
     private Double price;
     private Integer quantity;
     private CategoryResponse category;
-    private String imageUrl;
+    private String imageName;
 }

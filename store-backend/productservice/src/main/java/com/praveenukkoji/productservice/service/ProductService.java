@@ -4,6 +4,7 @@ import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest
 import com.praveenukkoji.productservice.dto.response.category.CategoryResponse;
 import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
+import com.praveenukkoji.productservice.exception.image.ImageNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
@@ -17,6 +18,7 @@ import com.praveenukkoji.productservice.repository.CategoryRepository;
 import com.praveenukkoji.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,11 +51,11 @@ public class ProductService {
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
-            String imageUrl = "";
+            String imageName = "";
 
             // uploading product image
             if (image != null) {
-                imageUrl = fileStorageService.storeFile(image);
+                imageName = fileStorageService.storeFile(image);
             }
 
             Product newProduct = Product.builder()
@@ -62,7 +64,7 @@ public class ProductService {
                     .price(createProductRequest.getPrice())
                     .quantity(createProductRequest.getQuantity())
                     .category(category.get())
-                    .imageUrl(imageUrl)
+                    .imageName(imageName)
                     .build();
 
             try {
@@ -96,7 +98,7 @@ public class ProductService {
                     .price(product.get().getPrice())
                     .quantity(product.get().getQuantity())
                     .category(category)
-                    .imageUrl(product.get().getImageUrl())
+                    .imageName(product.get().getImageName())
                     .build();
         }
 
@@ -112,9 +114,10 @@ public class ProductService {
 
         if (product.isPresent()) {
 
+            String imageName = product.get().getImageName();
+
             // Delete the file associated with the product (if it exists)
-            if (!Objects.equals(product.get().getImageUrl(), "")) {
-                String imageName = product.get().getImageUrl().replace("/uploads/", "");
+            if (!Objects.equals(imageName, "")) {
 
                 Path filePath = Paths.get("productservice/src/main/resources/uploads", imageName);
 
@@ -343,5 +346,12 @@ public class ProductService {
         }
 
         return productDetailResponse;
+    }
+
+    // fetch image
+    public Resource getImage(String imageId) throws ImageNotFoundException {
+        log.info("Getting image with id = {}", imageId);
+
+        return fileStorageService.getImage(imageId);
     }
 }

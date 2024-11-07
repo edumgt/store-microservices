@@ -6,6 +6,7 @@ import com.praveenukkoji.productservice.exception.category.CategoryCreateExcepti
 import com.praveenukkoji.productservice.exception.category.CategoryDeleteException;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.category.CategoryUpdateException;
+import com.praveenukkoji.productservice.exception.image.ImageNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
@@ -107,6 +108,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<?> handleException(CategoryNotFoundException exception) {
         log.error("CategoryNotFoundException - {}", exception.getMessage());
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(404).body(exceptionResponse);
+    }
+
+    // image
+    @ExceptionHandler(ImageNotFoundException.class)
+    public ResponseEntity<?> handleException(ImageNotFoundException exception) {
+        log.error("ImageNotFoundException - {}", exception.getMessage());
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                 .message(exception.getMessage())

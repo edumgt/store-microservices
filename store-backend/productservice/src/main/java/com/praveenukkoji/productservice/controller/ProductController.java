@@ -3,6 +3,7 @@ package com.praveenukkoji.productservice.controller;
 import com.praveenukkoji.productservice.dto.error.ValidationResponse;
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
+import com.praveenukkoji.productservice.exception.image.ImageNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
@@ -13,11 +14,15 @@ import com.praveenukkoji.productservice.external.product.response.ProductDetailR
 import com.praveenukkoji.productservice.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -198,5 +203,34 @@ public class ProductController {
     public ResponseEntity<List<ProductDetailResponse>> getProductDetails(
             @RequestBody List<ProductDetailRequest> productDetailRequest) {
         return ResponseEntity.status(200).body(productService.getProductDetails(productDetailRequest));
+    }
+
+    // fetch image
+    @GetMapping(value = "/image")
+    public ResponseEntity<?> getImage(@RequestParam(defaultValue = "", name = "imageId") String imageId)
+            throws ImageNotFoundException, IOException {
+        if (Objects.equals(imageId, "")) {
+            Map<String, String> error = new HashMap<>();
+            error.put("imageId", "image id is empty");
+
+            ValidationResponse response = ValidationResponse.builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.status(400).body(response);
+        }
+
+        Resource resource = productService.getImage(imageId);
+
+        // Dynamically determine content type based on file's MIME type
+        String contentType = Files.probeContentType(resource.getFile().toPath());
+        if (contentType == null) {
+            contentType = "application/octet-stream"; // Fallback to a generic type
+        }
+
+        return ResponseEntity.status(200)
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 }
