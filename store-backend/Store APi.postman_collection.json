@@ -31,60 +31,44 @@
 							],
 							"request": {
 								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
-										}
-									]
+									"type": "noauth"
 								},
 								"method": "POST",
 								"header": [],
 								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"price\": {{$randomPrice}},\n    \"quantity\": {{$randomInt}},\n    \"categoryId\": \"{{categoryId}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "{{$randomProductName}}",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "{{$randomLoremSentence}}",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "{{$randomPrice}}",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "{{$randomInt}}",
+											"type": "text"
+										},
+										{
+											"key": "categoryId",
+											"value": "{{categoryId}}",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "postman-cloud:///1ef9ce71-ca4b-4730-9588-728e106e8f2d"
 										}
-									}
+									]
 								},
 								"url": {
 									"raw": "{{product_service}}/api/v1/products",
@@ -189,7 +173,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{product_service}}/api/v1/products?productId=9d088571-a556-4cf5-955d-18b15f12ddcb",
+									"raw": "{{product_service}}/api/v1/products?productId={{productId}}",
 									"host": [
 										"{{product_service}}"
 									],
@@ -201,7 +185,7 @@
 									"query": [
 										{
 											"key": "productId",
-											"value": "9d088571-a556-4cf5-955d-18b15f12ddcb"
+											"value": "{{productId}}"
 										}
 									]
 								}
@@ -350,49 +334,7 @@
 							],
 							"request": {
 								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
-										}
-									]
+									"type": "noauth"
 								},
 								"method": "POST",
 								"header": [],
