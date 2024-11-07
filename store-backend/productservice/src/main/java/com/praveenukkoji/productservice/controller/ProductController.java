@@ -15,7 +15,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -27,9 +29,11 @@ public class ProductController {
 
     // create
     @PostMapping(path = "")
-    public ResponseEntity<?> createProduct(@RequestBody @Valid CreateProductRequest createProductRequest)
-            throws CategoryNotFoundException, ProductCreateException {
-        return ResponseEntity.status(201).body(productService.createProduct(createProductRequest));
+    public ResponseEntity<?> createProduct(
+            @ModelAttribute @Valid CreateProductRequest createProductRequest,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) throws CategoryNotFoundException, ProductCreateException, IOException {
+        return ResponseEntity.status(201).body(productService.createProduct(createProductRequest, image));
     }
 
     // retrieve
