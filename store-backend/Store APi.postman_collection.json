@@ -86,6 +86,23 @@
 						},
 						{
 							"name": "get product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 200) {",
+											"    let responseJson = pm.response.json();",
+											"    let imageName = responseJson.imageName;",
+											"    let imageNameWithoutExtension = imageName.split('.')[0];",
+											"    pm.globals.set(\"imageName\", imageNameWithoutExtension);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "noauth"
@@ -304,6 +321,32 @@
 										{
 											"key": "updatedPrice",
 											"value": "1000"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product image",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{product_service}}/api/v1/products/image?imageId={{imageName}}",
+									"host": [
+										"{{product_service}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"image"
+									],
+									"query": [
+										{
+											"key": "imageId",
+											"value": "{{imageName}}"
 										}
 									]
 								}
