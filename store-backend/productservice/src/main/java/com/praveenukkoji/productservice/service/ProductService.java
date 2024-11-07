@@ -19,11 +19,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -35,9 +37,11 @@ public class ProductService {
 
     private final CategoryRepository categoryRepository;
 
+    private final FileStorageService fileStorageService;
+
     // create
-    public UUID createProduct(CreateProductRequest createProductRequest)
-            throws CategoryNotFoundException, ProductCreateException {
+    public UUID createProduct(CreateProductRequest createProductRequest, MultipartFile image)
+            throws CategoryNotFoundException, ProductCreateException, IOException {
 
         log.info("Creating product {}", createProductRequest);
 
@@ -45,12 +49,20 @@ public class ProductService {
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
+            String imageUrl = "";
+
+            // uploading product image
+            if (image != null) {
+                imageUrl = fileStorageService.storeFile(image);
+            }
+
             Product newProduct = Product.builder()
                     .name(createProductRequest.getName())
                     .description(createProductRequest.getDescription())
                     .price(createProductRequest.getPrice())
                     .quantity(createProductRequest.getQuantity())
                     .category(category.get())
+                    .imageUrl(imageUrl)
                     .build();
 
             try {
@@ -84,6 +96,7 @@ public class ProductService {
                     .price(product.get().getPrice())
                     .quantity(product.get().getQuantity())
                     .category(category)
+                    .imageUrl(product.get().getImageUrl())
                     .build();
         }
 
@@ -98,6 +111,20 @@ public class ProductService {
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
+
+            // Delete the file associated with the product (if it exists)
+            if (!Objects.equals(product.get().getImageUrl(), "")) {
+                String imageName = product.get().getImageUrl().replace("/uploads/", "");
+
+                Path filePath = Paths.get("productservice/src/main/resources/uploads", imageName);
+
+                try {
+                    Files.deleteIfExists(filePath); // Delete file if exists
+                } catch (IOException e) {
+                    throw new ProductDeleteException("Error deleting file: " + e.getMessage());
+                }
+            }
+
             try {
                 productRepository.deleteById(productId);
                 return;
