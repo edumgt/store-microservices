@@ -18,6 +18,19 @@ spring:
                             mapping: event:com.praveenukkoji.notificationservice.event.OrderEvent
     config:
         import: optional:configserver:http://localhost:8888/
+    mail:
+        host: ${MAILTRAP_HOST}
+        port: 587
+        username: ${MAILTRAP_USERNAME}
+        password: ${MAILTRAP_PASSWORD}
+        properties:
+            mail:
+                smtp:
+                    auth: false
+                    starttls:
+                        enable: true
+        to: ${TO}
+        from: ${FROM}
 eureka:
     instance:
         prefer-ip-address: true
