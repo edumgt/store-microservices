@@ -39,8 +39,13 @@ public class FileStorageService {
         Path filePath = imageDir.resolve(fileName);
         Files.copy(file.getInputStream(), filePath);
 
-        // Return the URL path for accessing the file
+        // Return the file name
         return fileName;
+    }
+
+    public void deleteFile(String imageName) throws IOException {
+        Path filePath = Paths.get(String.valueOf(imageDir), imageName);
+        Files.deleteIfExists(filePath); // Delete file if exists
     }
 
     public Resource getImage(String imageId) throws ImageNotFoundException {
