@@ -24,9 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -45,16 +42,16 @@ public class ProductService {
     public UUID createProduct(CreateProductRequest createProductRequest, MultipartFile image)
             throws CategoryNotFoundException, ProductCreateException, IOException {
 
-        log.info("Creating product {}", createProductRequest);
+        log.info("creating new product {}", createProductRequest);
 
-        UUID categoryId = createProductRequest.getCategoryId();
+        UUID categoryId = UUID.fromString(createProductRequest.getCategoryId());
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
             String imageName = "";
 
-            // uploading product image
-            if (image != null) {
+            // saving product image
+            if (image != null && !image.isEmpty()) {
                 imageName = fileStorageService.storeFile(image);
             }
 
@@ -63,8 +60,8 @@ public class ProductService {
                     .description(createProductRequest.getDescription())
                     .price(createProductRequest.getPrice())
                     .quantity(createProductRequest.getQuantity())
-                    .category(category.get())
                     .imageName(imageName)
+                    .category(category.get())
                     .build();
 
             try {
@@ -77,10 +74,10 @@ public class ProductService {
         throw new CategoryNotFoundException("category with id = " + categoryId + " not found");
     }
 
-    // retrieve
+    // get
     public ProductResponse getProduct(UUID productId) throws ProductNotFoundException {
 
-        log.info("Getting product {}", productId);
+        log.info("fetching product having id = {}", productId);
 
         Optional<Product> product = productRepository.findById(productId);
 
@@ -106,26 +103,18 @@ public class ProductService {
     }
 
     // delete
-    public void deleteProduct(UUID productId) throws ProductNotFoundException, ProductDeleteException {
+    public void deleteProduct(UUID productId) throws ProductNotFoundException, ProductDeleteException, IOException {
 
-        log.info("Deleting product {}", productId);
+        log.info("deleting product having id = {}", productId);
 
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
 
+            // deleting file
             String imageName = product.get().getImageName();
-
-            // Delete the file associated with the product (if it exists)
             if (!Objects.equals(imageName, "")) {
-
-                Path filePath = Paths.get("productservice/src/main/resources/uploads", imageName);
-
-                try {
-                    Files.deleteIfExists(filePath); // Delete file if exists
-                } catch (IOException e) {
-                    throw new ProductDeleteException("Error deleting file: " + e.getMessage());
-                }
+                fileStorageService.deleteFile(imageName);
             }
 
             try {
@@ -142,7 +131,7 @@ public class ProductService {
     // get all
     public List<ProductResponse> getAllProduct() {
 
-        log.info("Getting all products");
+        log.info("fetching all products");
 
         List<Product> productList = productRepository.findAll();
 
@@ -160,17 +149,18 @@ public class ProductService {
                             .description(product.getDescription())
                             .price(product.getPrice())
                             .quantity(product.getQuantity())
+                            .imageName(product.getImageName())
                             .category(category)
                             .build();
                 })
                 .toList();
     }
 
-    // get by category name
+    // get by category
     public List<ProductResponse> getProductByCategory(String categoryName)
             throws CategoryNotFoundException {
 
-        log.info("Getting all products by category {}", categoryName);
+        log.info("fetch all products having category =  {}", categoryName);
 
         Optional<Category> category = categoryRepository.findByCategoryName(categoryName);
 
@@ -182,16 +172,16 @@ public class ProductService {
                     .name(category.get().getName())
                     .build();
 
-            return productList.stream().map(product -> {
-                return ProductResponse.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .description(product.getDescription())
-                        .price(product.getPrice())
-                        .quantity(product.getQuantity())
-                        .category(productCategory)
-                        .build();
-            }).toList();
+            return productList.stream().map(product -> ProductResponse.builder()
+                            .id(product.getId())
+                            .name(product.getName())
+                            .description(product.getDescription())
+                            .price(product.getPrice())
+                            .quantity(product.getQuantity())
+                            .imageName(product.getImageName())
+                            .category(productCategory)
+                            .build())
+                    .toList();
         }
 
         throw new CategoryNotFoundException(categoryName + " category not found");
@@ -219,19 +209,19 @@ public class ProductService {
     }
 
     // decrease stock
-    public Boolean decreaseStock(List<DecreaseProductStockRequest> decreaseProductStockRequestList)
+    public void decreaseStock(List<DecreaseProductStockRequest> decreaseProductStockRequestList)
             throws ProductNotFoundException, ProductUpdateException {
 
-        log.info("Decreasing stock request");
+        log.info("decrease stock request");
 
-        List<UUID> productIdList = decreaseProductStockRequestList.stream().map(DecreaseProductStockRequest::getId)
+        List<UUID> productIdList = decreaseProductStockRequestList.stream().map(DecreaseProductStockRequest::getProductId)
                 .toList();
 
         List<Product> productList = productRepository.findAllById(productIdList);
 
         // Check stock availability before updating
         for (DecreaseProductStockRequest item : decreaseProductStockRequestList) {
-            UUID itemId = item.getId();
+            UUID itemId = item.getProductId();
             Integer decreaseStockValue = item.getQuantity();
 
             Optional<Product> matchingProduct = productList.stream()
@@ -241,10 +231,10 @@ public class ProductService {
             if (matchingProduct.isPresent()) {
                 if (matchingProduct.get().getQuantity() == 0 ||
                         matchingProduct.get().getQuantity() < decreaseStockValue) {
-                    throw new ProductUpdateException("Remaining stock = " + matchingProduct.get().getQuantity() + " for product id = " + itemId);
+                    throw new ProductUpdateException("remaining stock = " + matchingProduct.get().getQuantity() + " for product id = " + itemId);
                 }
             } else {
-                throw new ProductNotFoundException("Product with id = " + itemId + " not found");
+                throw new ProductNotFoundException("product with id = " + itemId + " not found");
             }
         }
 
@@ -252,7 +242,7 @@ public class ProductService {
         List<Product> updatedProductList = new ArrayList<>();
 
         for (DecreaseProductStockRequest item : decreaseProductStockRequestList) {
-            UUID itemId = item.getId();
+            UUID itemId = item.getProductId();
             Integer decreaseStockValue = item.getQuantity();
 
             Optional<Product> matchingProduct = productList.stream()
@@ -278,8 +268,6 @@ public class ProductService {
         } catch (Exception e) {
             throw new ProductUpdateException(e.getMessage());
         }
-
-        return true;
     }
 
     // update product price
@@ -302,16 +290,16 @@ public class ProductService {
         throw new ProductNotFoundException("product with id = " + productId + " not found");
     }
 
-    //fetch product details
+    // fetch product details
     public List<ProductDetailResponse> getProductDetails(List<ProductDetailRequest> productDetailRequest) {
 
-        log.info("Getting product details");
+        log.info("fetching product details");
 
         List<ProductDetailResponse> productDetailResponse = new ArrayList<>();
 
-        List<UUID> productIds = productDetailRequest.stream().map(ProductDetailRequest::getProductId).toList();
+        List<UUID> productIdList = productDetailRequest.stream().map(ProductDetailRequest::getProductId).toList();
 
-        List<Product> productList = productRepository.findAllById(productIds);
+        List<Product> productList = productRepository.findAllById(productIdList);
 
         if (!productList.isEmpty()) {
             productDetailRequest.forEach(requestedProduct -> {
@@ -349,8 +337,8 @@ public class ProductService {
     }
 
     // fetch image
-    public Resource getImage(String imageId) throws ImageNotFoundException {
-        log.info("Getting image with id = {}", imageId);
+    public Resource getProductImage(String imageId) throws ImageNotFoundException {
+        log.info("fetching image having id = {}", imageId);
 
         return fileStorageService.getImage(imageId);
     }

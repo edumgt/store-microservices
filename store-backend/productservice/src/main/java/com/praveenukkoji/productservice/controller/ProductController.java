@@ -41,7 +41,7 @@ public class ProductController {
         return ResponseEntity.status(201).body(productService.createProduct(createProductRequest, image));
     }
 
-    // retrieve
+    // get
     @GetMapping(path = "")
     public ResponseEntity<?> getProduct(
             @RequestParam(defaultValue = "", name = "productId") String productId
@@ -68,7 +68,7 @@ public class ProductController {
     @DeleteMapping(path = "")
     public ResponseEntity<?> deleteProduct(
             @RequestParam(defaultValue = "", name = "productId") String productId
-    ) throws ProductNotFoundException, ProductDeleteException {
+    ) throws ProductNotFoundException, ProductDeleteException, IOException {
         if (Objects.equals(productId, "")) {
             Map<String, String> error = new HashMap<>();
             error.put("productId", "product id is empty");
@@ -92,14 +92,14 @@ public class ProductController {
         return ResponseEntity.status(200).body(productService.getAllProduct());
     }
 
-    //get by category name
+    // get by category
     @GetMapping("/get-by-category")
     public ResponseEntity<?> getProductByCategory(
-            @RequestParam(defaultValue = "", name = "category") String category
+            @RequestParam(defaultValue = "", name = "categoryName") String categoryName
     ) throws CategoryNotFoundException {
-        if (Objects.equals(category, "")) {
+        if (Objects.equals(categoryName, "")) {
             Map<String, String> error = new HashMap<>();
-            error.put("category", "category name is empty");
+            error.put("categoryName", "category name is empty");
 
             ValidationResponse response = ValidationResponse.builder()
                     .error(error)
@@ -108,9 +108,10 @@ public class ProductController {
             return ResponseEntity.status(400).body(response);
         }
 
-        return ResponseEntity.status(200).body(productService.getProductByCategory(category));
+        return ResponseEntity.status(200).body(productService.getProductByCategory(categoryName));
     }
 
+    // TODO: update logic of increase stock of product
     // increase stock
     @PatchMapping("/increase-stock")
     public ResponseEntity<?> increaseStock(
@@ -160,12 +161,14 @@ public class ProductController {
             @RequestBody List<DecreaseProductStockRequest> decreaseProductStockRequestList
     ) throws ProductUpdateException, ProductNotFoundException {
         if (decreaseProductStockRequestList.isEmpty()) {
-            return ResponseEntity.status(400).body(false);
+            return ResponseEntity.status(400).body("");
         }
 
-        return ResponseEntity.status(200).body(productService.decreaseStock(decreaseProductStockRequestList));
+        productService.decreaseStock(decreaseProductStockRequestList);
+        return ResponseEntity.status(204).body("");
     }
 
+    // TODO: create request class with id and updated-price as variables
     // update product price
     @PatchMapping(value = "/update-price")
     public ResponseEntity<?> updateProductPrice(
@@ -201,14 +204,15 @@ public class ProductController {
     // fetch product details
     @PostMapping(value = "/product-detail")
     public ResponseEntity<List<ProductDetailResponse>> getProductDetails(
-            @RequestBody List<ProductDetailRequest> productDetailRequest) {
+            @RequestBody @Valid List<ProductDetailRequest> productDetailRequest) {
         return ResponseEntity.status(200).body(productService.getProductDetails(productDetailRequest));
     }
 
     // fetch image
     @GetMapping(value = "/image")
-    public ResponseEntity<?> getImage(@RequestParam(defaultValue = "", name = "imageId") String imageId)
-            throws ImageNotFoundException, IOException {
+    public ResponseEntity<?> getProductImage(
+            @RequestParam(defaultValue = "", name = "imageId") String imageId
+    ) throws ImageNotFoundException, IOException {
         if (Objects.equals(imageId, "")) {
             Map<String, String> error = new HashMap<>();
             error.put("imageId", "image id is empty");
@@ -220,7 +224,7 @@ public class ProductController {
             return ResponseEntity.status(400).body(response);
         }
 
-        Resource resource = productService.getImage(imageId);
+        Resource resource = productService.getProductImage(imageId);
 
         // Dynamically determine content type based on file's MIME type
         String contentType = Files.probeContentType(resource.getFile().toPath());

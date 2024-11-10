@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
-    // get by category
+    // get products by category
     @Query("""
             SELECT p FROM Product p WHERE p.category = ?1
             """)

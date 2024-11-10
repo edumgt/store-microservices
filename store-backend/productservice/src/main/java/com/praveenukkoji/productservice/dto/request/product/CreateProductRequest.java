@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,5 +27,6 @@ public class CreateProductRequest {
     private Integer quantity;
 
     @NotNull(message = "category id is null")
-    private UUID categoryId;
+    @NotEmpty(message = "category id is empty")
+    private String categoryId;
 }
