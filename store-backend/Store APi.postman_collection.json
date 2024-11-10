@@ -578,55 +578,13 @@
 									],
 									"request": {
 										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "clientSecret",
-													"value": "{{client_credentials_secret}}",
-													"type": "string"
-												},
-												{
-													"key": "clientId",
-													"value": "{{client_credentials_cilent_id}}",
-													"type": "string"
-												},
-												{
-													"key": "tokenName",
-													"value": "token",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "client_authentication",
-													"value": "body",
-													"type": "string"
-												},
-												{
-													"key": "scope",
-													"value": "openid email profile",
-													"type": "string"
-												},
-												{
-													"key": "accessTokenUrl",
-													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-													"type": "string"
-												},
-												{
-													"key": "grant_type",
-													"value": "client_credentials",
-													"type": "string"
-												}
-											]
+											"type": "noauth"
 										},
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"{{productId}}\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
+											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 36\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f2\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f2\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -677,8 +635,17 @@
 									"request": {
 										"method": "PATCH",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"orderId\": \"{{orderId}}\",\n    \"orderStatus\": \"delivered\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{order_service}}/api/v1/orders/order-status?orderId={{orderId}}&orderStatus=deliVERed",
+											"raw": "{{order_service}}/api/v1/orders/order-status",
 											"host": [
 												"{{order_service}}"
 											],
@@ -687,16 +654,6 @@
 												"v1",
 												"orders",
 												"order-status"
-											],
-											"query": [
-												{
-													"key": "orderId",
-													"value": "{{orderId}}"
-												},
-												{
-													"key": "orderStatus",
-													"value": "deliVERed"
-												}
 											]
 										}
 									},
@@ -758,7 +715,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"amount\": 3000.00,\n    \"status\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
+											"raw": "{\n    \"amount\": 20502.72,\n    \"status\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
