@@ -10,7 +10,7 @@
 			"name": "secured",
 			"item": [
 				{
-					"name": "api-gateway",
+					"name": "api-gateway - done",
 					"item": [
 						{
 							"name": "shutdown",
@@ -35,7 +35,7 @@
 					]
 				},
 				{
-					"name": "notification-service",
+					"name": "notification-service - done",
 					"item": [
 						{
 							"name": "shutdown",
@@ -60,7 +60,7 @@
 					]
 				},
 				{
-					"name": "eureka-server",
+					"name": "eureka-server - done",
 					"item": [
 						{
 							"name": "eureka apps",
@@ -294,7 +294,7 @@
 					]
 				},
 				{
-					"name": "health check",
+					"name": "health check - done",
 					"item": [
 						{
 							"name": "eureka-server",
@@ -439,7 +439,7 @@
 					]
 				},
 				{
-					"name": "config-server",
+					"name": "config-server - done",
 					"item": [
 						{
 							"name": "order-service default",
@@ -554,7 +554,7 @@
 					]
 				},
 				{
-					"name": "order-service",
+					"name": "order-service - done",
 					"item": [
 						{
 							"name": "order",
@@ -715,7 +715,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"amount\": 20502.72,\n    \"status\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
+											"raw": "{\n    \"amount\": 20502.72,\n    \"status\": \"success\",\n    \"orderId\": \"{{orderId}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
