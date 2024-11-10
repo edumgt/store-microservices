@@ -5,8 +5,6 @@ spring:
         name: notification-service
     kafka:
         bootstrap-servers: localhost:9092
-        template:
-            default-topic: orderTopic
         consumer:
             group-id: orderEventId
             key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -19,18 +17,18 @@ spring:
     config:
         import: optional:configserver:http://localhost:8888/
     mail:
-        host: ${MAILTRAP_HOST}
+        host: live.smtp.mailtrap.io
         port: 587
-        username: ${MAILTRAP_USERNAME}
-        password: ${MAILTRAP_PASSWORD}
+        username: username
+        password: password
         properties:
             mail:
                 smtp:
                     auth: false
                     starttls:
                         enable: true
-        to: ${TO}
-        from: ${FROM}
+        to: demo@domain.com
+        from: demo@demomailtrap.com
 eureka:
     instance:
         prefer-ip-address: true
