@@ -32,7 +32,7 @@ public class CategoryController {
         return ResponseEntity.status(201).body(categoryService.createCategory(createCategoryRequest));
     }
 
-    // retrieve
+    // get
     @GetMapping(path = "")
     public ResponseEntity<?> getCategory(
             @RequestParam(defaultValue = "", name = "categoryId") String categoryId
@@ -55,22 +55,9 @@ public class CategoryController {
     // update
     @PatchMapping(path = "")
     public ResponseEntity<?> updateCategory(
-            @RequestParam(defaultValue = "", name = "categoryId") String categoryId,
             @RequestBody @Valid UpdateCategoryRequest updateCategoryRequest
     ) throws CategoryNotFoundException, CategoryUpdateException {
-        if (Objects.equals(categoryId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("categoryId", "category id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(categoryId);
-        return ResponseEntity.status(200).body(categoryService.updateCategory(id, updateCategoryRequest));
+        return ResponseEntity.status(200).body(categoryService.updateCategory(updateCategoryRequest));
     }
 
     // delete
