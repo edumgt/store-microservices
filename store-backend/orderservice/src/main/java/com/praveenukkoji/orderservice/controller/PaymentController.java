@@ -31,7 +31,7 @@ public class PaymentController {
         return ResponseEntity.status(201).body(paymentService.makePayment(makePaymentRequest));
     }
 
-    // retrieve
+    // get
     @GetMapping(path = "")
     public ResponseEntity<?> getPayment(
             @RequestParam(defaultValue = "", name = "paymentId") String paymentId

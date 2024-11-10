@@ -28,8 +28,10 @@ public class Payment {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private Double amount;
 
+    @Column(nullable = false)
     private PaymentStatus status;
 
     @CreatedDate
