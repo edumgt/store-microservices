@@ -29,9 +29,13 @@ public class Order {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private Integer totalItems;
+
+    @Column(nullable = false)
     private Double amount;
 
+    @Column(nullable = false)
     private OrderStatus status;
 
     @Column(nullable = false)

@@ -11,11 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
-    @NotNull(message = "product id is null")
-    @NotEmpty(message = "product id is empty")
-    private String productId;
+public class ChangeOrderStatusRequest {
+    @NotNull(message = "order id is null")
+    @NotEmpty(message = "order id is empty")
+    private String orderId;
 
-    @NotNull(message = "quantity is null")
-    private Integer quantity;
+    @NotNull(message = "order status is null")
+    @NotEmpty(message = "order status is empty")
+    private String orderStatus;
 }

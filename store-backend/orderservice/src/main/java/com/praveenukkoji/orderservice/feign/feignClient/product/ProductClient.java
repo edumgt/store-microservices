@@ -1,9 +1,8 @@
-package com.praveenukkoji.orderservice.external.product.feignClient;
+package com.praveenukkoji.orderservice.feign.feignClient.product;
 
-import com.praveenukkoji.orderservice.external.product.dto.request.DecreaseProductStockRequest;
-import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
-import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
-import feign.Headers;
+import com.praveenukkoji.orderservice.feign.dto.product.request.DecreaseProductStockRequest;
+import com.praveenukkoji.orderservice.feign.dto.product.request.ProductDetailRequest;
+import com.praveenukkoji.orderservice.feign.dto.product.response.ProductDetailResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,7 +16,6 @@ public interface ProductClient {
 
     // get product detail
     @PostMapping(value = "/product-detail")
-    @Headers("Content-Type: application/json")
     ResponseEntity<List<ProductDetailResponse>> getProductDetails(
             @RequestBody List<ProductDetailRequest> productDetailRequest);
 

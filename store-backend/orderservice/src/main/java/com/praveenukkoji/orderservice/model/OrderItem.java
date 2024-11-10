@@ -24,8 +24,13 @@ public class OrderItem {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private UUID productId;
+
+    @Column(nullable = false)
     private Integer quantity;
+
+    @Column(nullable = false)
     private Double price;
 
     @ManyToOne(fetch = EAGER)
