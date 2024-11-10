@@ -7,2035 +7,2029 @@
 	},
 	"item": [
 		{
-			"name": "product-service",
+			"name": "secured",
 			"item": [
-				{
-					"name": "product",
-					"item": [
-						{
-							"name": "create product",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 201) {",
-											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"    pm.globals.set(\"productId\", id);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "{{$randomProductName}}",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "{{$randomLoremSentence}}",
-											"type": "text"
-										},
-										{
-											"key": "price",
-											"value": "{{$randomPrice}}",
-											"type": "text"
-										},
-										{
-											"key": "quantity",
-											"value": "{{$randomInt}}",
-											"type": "text"
-										},
-										{
-											"key": "categoryId",
-											"value": "{{categoryId}}",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": "postman-cloud:///1ef9ce71-ca4b-4730-9588-728e106e8f2d"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{product_service}}/api/v1/products",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get product",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 200) {",
-											"    let responseJson = pm.response.json();",
-											"    let imageName = responseJson.imageName;",
-											"    let imageNameWithoutExtension = imageName.split('.')[0];",
-											"    pm.globals.set(\"imageName\", imageNameWithoutExtension);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/products?productId={{productId}}",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products"
-									],
-									"query": [
-										{
-											"key": "productId",
-											"value": "{{productId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get by category",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/products/get-by-category?category=updated",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"get-by-category"
-									],
-									"query": [
-										{
-											"key": "category",
-											"value": "updated"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get all product",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/products/all",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"all"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete product",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/products?productId={{productId}}",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products"
-									],
-									"query": [
-										{
-											"key": "productId",
-											"value": "{{productId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "increase stock",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/products/increase-stock?productId={{productId}}&increaseStock=10",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"increase-stock"
-									],
-									"query": [
-										{
-											"key": "productId",
-											"value": "{{productId}}"
-										},
-										{
-											"key": "increaseStock",
-											"value": "10"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "decrease stock",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n    {\n        \"id\": \"{{productId}}\",\n        \"quantity\": 11\n    }\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{product_service}}/api/v1/products/decrease-stock",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"decrease-stock"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get product detail",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 194\n    }\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{product_service}}/api/v1/products/product-detail",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"product-detail"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update product price",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/products/update-price?productId={{productId}}&updatedPrice=1000",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"update-price"
-									],
-									"query": [
-										{
-											"key": "productId",
-											"value": "{{productId}}"
-										},
-										{
-											"key": "updatedPrice",
-											"value": "1000"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get product image",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/products/image?imageId={{imageName}}",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"products",
-										"image"
-									],
-									"query": [
-										{
-											"key": "imageId",
-											"value": "{{imageName}}"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "category",
-					"item": [
-						{
-							"name": "create category",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 201) {",
-											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"    pm.globals.set(\"categoryId\", id);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{$randomDepartment}}\"\n    // \"name\": \"Games\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{product_service}}/api/v1/categories",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"categories"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get category",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"categories"
-									],
-									"query": [
-										{
-											"key": "categoryId",
-											"value": "{{categoryId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get all category",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/categories/all",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"categories",
-										"all"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update category",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"updated\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"categories"
-									],
-									"query": [
-										{
-											"key": "categoryId",
-											"value": "{{categoryId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete category",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
-									"host": [
-										"{{product_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"categories"
-									],
-									"query": [
-										{
-											"key": "categoryId",
-											"value": "{{categoryId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "shutdown",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8001/actuator/shutdown",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8001",
-							"path": [
-								"actuator",
-								"shutdown"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "user-service",
-			"item": [
-				{
-					"name": "address",
-					"item": [
-						{
-							"name": "create address",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 201) {",
-											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"    pm.globals.set(\"addressId\", id);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"2\",\n    \"country\": \"2\",\n    \"state\": \"2\",\n    \"city\": \"2\",\n    \"pincode\": \"123465\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?userId={{userId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"addresses"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get address",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId=9b592883-8179-41ce-9f35-af3b09698025",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"addresses"
-									],
-									"query": [
-										{
-											"key": "addressId",
-											"value": "9b592883-8179-41ce-9f35-af3b09698025"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get address by user",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/addresses/get-by-user?userId={{userId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"addresses",
-										"get-by-user"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update address",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"line\": \"updated\",\n    \"state\": \"updated\",\n    \"city\": \"updated\",\n    \"country\": \"updated\",\n    \"pincode\": \"000000\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"addresses"
-									],
-									"query": [
-										{
-											"key": "addressId",
-											"value": "{{addressId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete address",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"addresses"
-									],
-									"query": [
-										{
-											"key": "addressId",
-											"value": "{{addressId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "user",
-					"item": [
-						{
-							"name": "create user",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 201) {",
-											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"    pm.globals.set(\"userId\", id);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"demo user\",\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"12345678\",\n    \"email\": \"{{$randomEmail}}\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/users",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get user",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update user",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"fullname\": \"updated\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete user",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "change password",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"password\" : \"12345678\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/users/change-password?userId={{userId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users",
-										"change-password"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update active status",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/users/active-status?userId={{userId}}&activeStatus=true",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users",
-										"active-status"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										},
-										{
-											"key": "activeStatus",
-											"value": "true"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "role",
-					"item": [
-						{
-							"name": "create role",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 201) {",
-											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"    pm.globals.set(\"roleId\", id);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"type\": \"demo\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/roles",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"roles"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get role",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"roles"
-									],
-									"query": [
-										{
-											"key": "roleId",
-											"value": "{{roleId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update role",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"type\": \"updated\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"roles"
-									],
-									"query": [
-										{
-											"key": "roleId",
-											"value": "{{roleId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete role",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"roles"
-									],
-									"query": [
-										{
-											"key": "roleId",
-											"value": "{{roleId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get all role",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{user_service}}/api/v1/roles/all",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"roles",
-										"all"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "auth",
-					"item": [
-						{
-							"name": "login",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"Addie__Jenkins70\",\n    \"password\": \"12345678\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{user_service}}/api/v1/auth/login",
-									"host": [
-										"{{user_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"auth",
-										"login"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "shutdown",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/actuator/shutdown",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"actuator",
-								"shutdown"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "order-service",
-			"item": [
-				{
-					"name": "order",
-					"item": [
-						{
-							"name": "create order",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 201) {",
-											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"    pm.globals.set(\"orderId\", id);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"{{productId}}\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{order_service}}/api/v1/orders",
-									"host": [
-										"{{order_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"orders"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get order",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{order_service}}/api/v1/orders?orderId={{orderId}}",
-									"host": [
-										"{{order_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"orders"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update order status",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"url": {
-									"raw": "{{order_service}}/api/v1/orders/order-status?orderId={{orderId}}&orderStatus=deliVERed",
-									"host": [
-										"{{order_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"orders",
-										"order-status"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderId}}"
-										},
-										{
-											"key": "orderStatus",
-											"value": "deliVERed"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get by user",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{order_service}}/api/v1/orders/get-by-user?userId={{userId}}",
-									"host": [
-										"{{order_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"orders",
-										"get-by-user"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "{{userId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "payment",
-					"item": [
-						{
-							"name": "make payment",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"if (pm.response.code === 201) {",
-											"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-											"    pm.globals.set(\"paymentId\", id);",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"amount\": 3000.00,\n    \"status\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{order_service}}/api/v1/payments",
-									"host": [
-										"{{order_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"payments"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get payment",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{order_service}}/api/v1/payments?paymentId={{paymentId}}",
-									"host": [
-										"{{order_service}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"payments"
-									],
-									"query": [
-										{
-											"key": "paymentId",
-											"value": "{{paymentId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "shutdown",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8002/actuator/shutdown",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8002",
-							"path": [
-								"actuator",
-								"shutdown"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "config-server",
-			"item": [
-				{
-					"name": "order-service default",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{config_server}}/order-service/default",
-							"host": [
-								"{{config_server}}"
-							],
-							"path": [
-								"order-service",
-								"default"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "api-gateway default",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{config_server}}/api-gateway/default",
-							"host": [
-								"{{config_server}}"
-							],
-							"path": [
-								"api-gateway",
-								"default"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "product-service default",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{config_server}}/product-service/default",
-							"host": [
-								"{{config_server}}"
-							],
-							"path": [
-								"product-service",
-								"default"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "user-service default",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{config_server}}/user-service/default",
-							"host": [
-								"{{config_server}}"
-							],
-							"path": [
-								"user-service",
-								"default"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "order-service default",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{config_server}}/order-service/default",
-							"host": [
-								"{{config_server}}"
-							],
-							"path": [
-								"order-service",
-								"default"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "shutdown",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8888/actuator/shutdown",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"actuator",
-								"shutdown"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "health check",
-			"item": [
-				{
-					"name": "eureka-server",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8761/actuator/health/readiness",
-							"host": [
-								"localhost"
-							],
-							"port": "8761",
-							"path": [
-								"actuator",
-								"health",
-								"readiness"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "api-gateway",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8222/actuator/health/readiness",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"actuator",
-								"health",
-								"readiness"
-							]
+					"item": [
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8222/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "config-server",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8888/actuator/health/readiness",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"actuator",
-								"health",
-								"readiness"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "user service",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8000/actuator/health/readiness",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"actuator",
-								"health",
-								"readiness"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "product service",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8001/actuator/health/readiness",
-							"host": [
-								"localhost"
-							],
-							"port": "8001",
-							"path": [
-								"actuator",
-								"health",
-								"readiness"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "order service",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8002/actuator/health/readiness",
-							"host": [
-								"localhost"
-							],
-							"port": "8002",
-							"path": [
-								"actuator",
-								"health",
-								"readiness"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "notification service",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8003/actuator/health/readiness",
-							"host": [
-								"localhost"
-							],
-							"port": "8003",
-							"path": [
-								"actuator",
-								"health",
-								"readiness"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "eureka-server",
-			"item": [
-				{
-					"name": "eureka apps",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
-						}
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{eureka_server}}/eureka/apps",
-							"host": [
-								"{{eureka_server}}"
-							],
-							"path": [
-								"eureka",
-								"apps"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "config-server",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
-						}
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{eureka_server}}/eureka/apps/config-server",
-							"host": [
-								"{{eureka_server}}"
-							],
-							"path": [
-								"eureka",
-								"apps",
-								"config-server"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "api-gateway",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
-						}
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{eureka_server}}/eureka/apps/api-gateway",
-							"host": [
-								"{{eureka_server}}"
-							],
-							"path": [
-								"eureka",
-								"apps",
-								"api-gateway"
-							]
-						}
-					},
-					"response": []
+					]
 				},
 				{
 					"name": "notification-service",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
+					"item": [
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8003/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8003",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{eureka_server}}/eureka/apps/notification-service",
-							"host": [
-								"{{eureka_server}}"
-							],
-							"path": [
-								"eureka",
-								"apps",
-								"notification-service"
-							]
+					]
+				},
+				{
+					"name": "eureka-server",
+					"item": [
+						{
+							"name": "eureka apps",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka_server}}/eureka/apps",
+									"host": [
+										"{{eureka_server}}"
+									],
+									"path": [
+										"eureka",
+										"apps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "config-server",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka_server}}/eureka/apps/config-server",
+									"host": [
+										"{{eureka_server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"config-server"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api-gateway",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka_server}}/eureka/apps/api-gateway",
+									"host": [
+										"{{eureka_server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"api-gateway"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "notification-service",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka_server}}/eureka/apps/notification-service",
+									"host": [
+										"{{eureka_server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"notification-service"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order-service",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka_server}}/eureka/apps/order-service",
+									"host": [
+										"{{eureka_server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"order-service"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "product-service",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka_server}}/eureka/apps/product-service",
+									"host": [
+										"{{eureka_server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"product-service"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user-service",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka_server}}/eureka/apps/user-service",
+									"host": [
+										"{{eureka_server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"user-service"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8761/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8761",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "health check",
+					"item": [
+						{
+							"name": "eureka-server",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8761/actuator/health/readiness",
+									"host": [
+										"localhost"
+									],
+									"port": "8761",
+									"path": [
+										"actuator",
+										"health",
+										"readiness"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api-gateway",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/actuator/health/readiness",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"actuator",
+										"health",
+										"readiness"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "config-server",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8888/actuator/health/readiness",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"actuator",
+										"health",
+										"readiness"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user service",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/actuator/health/readiness",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"actuator",
+										"health",
+										"readiness"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "product service",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8001/actuator/health/readiness",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"actuator",
+										"health",
+										"readiness"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order service",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8002/actuator/health/readiness",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"actuator",
+										"health",
+										"readiness"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "notification service",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8003/actuator/health/readiness",
+									"host": [
+										"localhost"
+									],
+									"port": "8003",
+									"path": [
+										"actuator",
+										"health",
+										"readiness"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "config-server",
+					"item": [
+						{
+							"name": "order-service default",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config_server}}/order-service/default",
+									"host": [
+										"{{config_server}}"
+									],
+									"path": [
+										"order-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api-gateway default",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config_server}}/api-gateway/default",
+									"host": [
+										"{{config_server}}"
+									],
+									"path": [
+										"api-gateway",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "product-service default",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config_server}}/product-service/default",
+									"host": [
+										"{{config_server}}"
+									],
+									"path": [
+										"product-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user-service default",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config_server}}/user-service/default",
+									"host": [
+										"{{config_server}}"
+									],
+									"path": [
+										"user-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order-service default",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config_server}}/order-service/default",
+									"host": [
+										"{{config_server}}"
+									],
+									"path": [
+										"order-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "order-service",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
-						}
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{eureka_server}}/eureka/apps/order-service",
-							"host": [
-								"{{eureka_server}}"
-							],
-							"path": [
-								"eureka",
-								"apps",
-								"order-service"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "product-service",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
-						}
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{eureka_server}}/eureka/apps/product-service",
-							"host": [
-								"{{eureka_server}}"
-							],
-							"path": [
-								"eureka",
-								"apps",
-								"product-service"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "user-service",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
-						}
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{eureka_server}}/eureka/apps/user-service",
-							"host": [
-								"{{eureka_server}}"
-							],
-							"path": [
-								"eureka",
-								"apps",
-								"user-service"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "shutdown",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8761/actuator/shutdown",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8761",
-							"path": [
-								"actuator",
-								"shutdown"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "notification-service",
-			"item": [
-				{
-					"name": "shutdown",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8003/actuator/shutdown",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8003",
-							"path": [
-								"actuator",
-								"shutdown"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "api-gateway",
-			"item": [
-				{
-					"name": "shutdown",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8222/actuator/shutdown",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8222",
-							"path": [
-								"actuator",
-								"shutdown"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "keycloak",
-			"item": [
-				{
-					"name": "client-credentials-access-token",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
+					"item": [
+						{
+							"name": "order",
+							"item": [
 								{
-									"key": "grant_type",
-									"value": "client_credentials",
-									"type": "text"
+									"name": "create order",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"orderId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"itemList\" : [\n            {\n                \"id\": \"{{productId}}\",\n                \"quantity\": 4\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f1\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{order_service}}/api/v1/orders",
+											"host": [
+												"{{order_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders"
+											]
+										}
+									},
+									"response": []
 								},
 								{
-									"key": "client_id",
-									"value": "{{client_credentials_cilent_id}}",
-									"type": "text"
+									"name": "get order",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{order_service}}/api/v1/orders?orderId={{orderId}}",
+											"host": [
+												"{{order_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "orderId",
+													"value": "{{orderId}}"
+												}
+											]
+										}
+									},
+									"response": []
 								},
 								{
-									"key": "client_secret",
-									"value": "{{client_credentials_secret}}",
-									"type": "text"
+									"name": "update order status",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{order_service}}/api/v1/orders/order-status?orderId={{orderId}}&orderStatus=deliVERed",
+											"host": [
+												"{{order_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders",
+												"order-status"
+											],
+											"query": [
+												{
+													"key": "orderId",
+													"value": "{{orderId}}"
+												},
+												{
+													"key": "orderStatus",
+													"value": "deliVERed"
+												}
+											]
+										}
+									},
+									"response": []
 								},
 								{
-									"key": "scope",
-									"value": "openid email profile",
-									"type": "text"
+									"name": "get by user",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{order_service}}/api/v1/orders/get-by-user?userId={{userId}}",
+											"host": [
+												"{{order_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders",
+												"get-by-user"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
-						"url": {
-							"raw": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"realms",
-								"master",
-								"protocol",
-								"openid-connect",
-								"token"
+						{
+							"name": "payment",
+							"item": [
+								{
+									"name": "make payment",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"paymentId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"amount\": 3000.00,\n    \"status\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{order_service}}/api/v1/payments",
+											"host": [
+												"{{order_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"payments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get payment",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{order_service}}/api/v1/payments?paymentId={{paymentId}}",
+											"host": [
+												"{{order_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"payments"
+											],
+											"query": [
+												{
+													"key": "paymentId",
+													"value": "{{paymentId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
 							]
+						},
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "user-service",
+					"item": [
+						{
+							"name": "address",
+							"item": [
+								{
+									"name": "create address",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"addressId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"2\",\n    \"country\": \"2\",\n    \"state\": \"2\",\n    \"city\": \"2\",\n    \"pincode\": \"123465\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/addresses?userId={{userId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"addresses"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get address",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/addresses?addressId=9b592883-8179-41ce-9f35-af3b09698025",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"addresses"
+											],
+											"query": [
+												{
+													"key": "addressId",
+													"value": "9b592883-8179-41ce-9f35-af3b09698025"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get address by user",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/addresses/get-by-user?userId={{userId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"addresses",
+												"get-by-user"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update address",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"line\": \"updated\",\n    \"state\": \"updated\",\n    \"city\": \"updated\",\n    \"country\": \"updated\",\n    \"pincode\": \"000000\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"addresses"
+											],
+											"query": [
+												{
+													"key": "addressId",
+													"value": "{{addressId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete address",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"addresses"
+											],
+											"query": [
+												{
+													"key": "addressId",
+													"value": "{{addressId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "user",
+							"item": [
+								{
+									"name": "create user",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"userId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"fullname\": \"demo user\",\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"12345678\",\n    \"email\": \"{{$randomEmail}}\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/users",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get user",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update user",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"fullname\": \"updated\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete user",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "change password",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"password\" : \"12345678\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/users/change-password?userId={{userId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"change-password"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update active status",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/users/active-status?userId={{userId}}&activeStatus=true",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"active-status"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												},
+												{
+													"key": "activeStatus",
+													"value": "true"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "role",
+							"item": [
+								{
+									"name": "create role",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"roleId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\": \"demo\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/roles",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get role",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											],
+											"query": [
+												{
+													"key": "roleId",
+													"value": "{{roleId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update role",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\": \"updated\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											],
+											"query": [
+												{
+													"key": "roleId",
+													"value": "{{roleId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete role",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											],
+											"query": [
+												{
+													"key": "roleId",
+													"value": "{{roleId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all role",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{user_service}}/api/v1/roles/all",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "auth",
+							"item": [
+								{
+									"name": "login",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"username\": \"Addie__Jenkins70\",\n    \"password\": \"12345678\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{user_service}}/api/v1/auth/login",
+											"host": [
+												"{{user_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product-service - done",
+					"item": [
+						{
+							"name": "product",
+							"item": [
+								{
+									"name": "create product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"productId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "{{$randomProductName}}",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "{{$randomLoremSentence}}",
+													"type": "text"
+												},
+												{
+													"key": "price",
+													"value": "{{$randomPrice}}",
+													"type": "text"
+												},
+												{
+													"key": "quantity",
+													"value": "{{$randomInt}}",
+													"type": "text"
+												},
+												{
+													"key": "categoryId",
+													"value": "{{categoryId}}",
+													"type": "text"
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "postman-cloud:///1ef9ce71-ca4b-4730-9588-728e106e8f2d"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{product_service}}/api/v1/products",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 200) {",
+													"    let responseJson = pm.response.json();",
+													"    let imageName = responseJson.imageName;",
+													"    let imageNameWithoutExtension = imageName.split('.')[0];",
+													"    pm.globals.set(\"imageId\", imageNameWithoutExtension);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/products?productId={{productId}}",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products"
+											],
+											"query": [
+												{
+													"key": "productId",
+													"value": "{{productId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get by category",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/products/get-by-category?categoryName=Jewelery",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"get-by-category"
+											],
+											"query": [
+												{
+													"key": "categoryName",
+													"value": "Jewelery"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all product",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/products/all",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"all"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete product",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/products?productId={{productId}}",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products"
+											],
+											"query": [
+												{
+													"key": "productId",
+													"value": "{{productId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "increase stock",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/products/increase-stock?productId={{productId}}&increaseStock=10",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"increase-stock"
+											],
+											"query": [
+												{
+													"key": "productId",
+													"value": "{{productId}}"
+												},
+												{
+													"key": "increaseStock",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "decrease stock",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 989\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{product_service}}/api/v1/products/decrease-stock",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"decrease-stock"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get product detail",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 1\n    },\n    {\n        \"productId\": \"cfa4041c-58b5-4b06-8be7-69c3d1c488c4\",\n        \"quantity\": 71\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{product_service}}/api/v1/products/product-detail",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"product-detail"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update product price",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/products/update-price?productId={{productId}}&updatedPrice=1000",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"update-price"
+											],
+											"query": [
+												{
+													"key": "productId",
+													"value": "{{productId}}"
+												},
+												{
+													"key": "updatedPrice",
+													"value": "1000"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get product image",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/products/image?imageId={{imageId}}",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"image"
+											],
+											"query": [
+												{
+													"key": "imageId",
+													"value": "{{imageId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "category",
+							"item": [
+								{
+									"name": "create category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"categoryId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"{{$randomDepartment}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{product_service}}/api/v1/categories",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"categories"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get category",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"categories"
+											],
+											"query": [
+												{
+													"key": "categoryId",
+													"value": "{{categoryId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all category",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/categories/all",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"categories",
+												"all"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update category",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"categoryId\": \"{{categoryId}}\",\n    \"name\": \"updated\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"categories"
+											],
+											"query": [
+												{
+													"key": "categoryId",
+													"value": "{{categoryId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete category",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"categories"
+											],
+											"query": [
+												{
+													"key": "categoryId",
+													"value": "{{categoryId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8001/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
