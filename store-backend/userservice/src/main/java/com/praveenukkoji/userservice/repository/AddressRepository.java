@@ -12,9 +12,9 @@ import java.util.UUID;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, UUID> {
 
-    // get address by user
+    // get addresses by user
     @Query("""
             SELECT a FROM Address a WHERE a.user = ?1
             """)
-    List<Address> findAllByUser(User user);
+    List<Address> findAllAddressByUser(User user);
 }

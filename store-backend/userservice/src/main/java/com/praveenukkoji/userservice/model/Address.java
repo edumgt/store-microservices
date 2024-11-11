@@ -25,12 +25,22 @@ public class Address {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private String line;
+
+    @Column(nullable = false)
     private String country;
+
+    @Column(nullable = false)
     private String state;
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
     private String pincode;
 
+    @Column(nullable = false)
     private Boolean isDefault;
 
     @CreatedDate

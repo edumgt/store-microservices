@@ -32,7 +32,7 @@ public class AddressController {
         return ResponseEntity.status(201).body(addressService.createAddress(createAddressRequest));
     }
 
-    // retrieve
+    // get
     @GetMapping(path = "")
     public ResponseEntity<?> getAddress(
             @RequestParam(defaultValue = "", name = "addressId") String addressId
@@ -52,6 +52,7 @@ public class AddressController {
         return ResponseEntity.status(200).body(addressService.getAddress(id));
     }
 
+    // TODO: update variable to request class
     // update
     @PatchMapping(path = "")
     public ResponseEntity<?> updateAddress(

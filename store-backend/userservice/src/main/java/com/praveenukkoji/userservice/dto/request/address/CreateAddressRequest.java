@@ -7,15 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class CreateAddressRequest {
     @NotNull(message = "user id is null")
-    private UUID userId;
+    @NotEmpty(message = "user id is empty")
+    private String userId;
 
     @NotNull(message = "address line is null")
     @NotEmpty(message = "address line is empty")
@@ -36,4 +35,7 @@ public class CreateAddressRequest {
     @NotNull(message = "pincode is null")
     @NotEmpty(message = "pincode is empty")
     private String pincode;
+
+    @NotNull(message = "isDefault is null")
+    private Boolean isDefault;
 }
