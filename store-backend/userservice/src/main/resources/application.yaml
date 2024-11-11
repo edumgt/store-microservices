@@ -11,10 +11,10 @@ spring:
         properties:
             hibernate.format_sql: false
     datasource:
-        password: password
         driver-class-name: org.postgresql.Driver
-        username: username
         url: jdbc:postgresql://localhost:5432/store
+        username: username
+        password: password
     config:
         import: optional:configserver:http://localhost:8888/
 password:
