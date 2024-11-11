@@ -32,7 +32,7 @@ public class RoleController {
         return ResponseEntity.status(201).body(roleService.createRole(createRoleRequest));
     }
 
-    // retrieve
+    // get
     @GetMapping(path = "")
     public ResponseEntity<?> getRole(
             @RequestParam(defaultValue = "", name = "roleId") String roleId
@@ -55,22 +55,9 @@ public class RoleController {
     // update
     @PatchMapping(path = "")
     public ResponseEntity<?> updateRole(
-            @RequestParam(defaultValue = "", name = "roleId") String roleId,
             @RequestBody @Valid UpdateRoleRequest updateRoleRequest
     ) throws RoleNotFoundException, RoleUpdateException {
-        if (Objects.equals(roleId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("roleId", "role id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(roleId);
-        return ResponseEntity.status(200).body(roleService.updateRole(id, updateRoleRequest));
+        return ResponseEntity.status(200).body(roleService.updateRole(updateRoleRequest));
     }
 
     // delete
