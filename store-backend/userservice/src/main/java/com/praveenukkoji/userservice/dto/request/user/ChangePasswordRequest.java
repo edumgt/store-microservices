@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ChangePasswordRequest {
+    @NotNull(message = "user id is null")
+    @NotEmpty(message = "user id is empty")
+    private String userId;
+
     @NotNull(message = "password is null")
     @NotEmpty(message = "password is empty")
     private String password;

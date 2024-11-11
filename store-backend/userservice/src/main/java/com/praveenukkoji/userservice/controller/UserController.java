@@ -31,7 +31,7 @@ public class UserController {
         return ResponseEntity.status(201).body(userService.createUser(createUserRequest));
     }
 
-    // retrieve
+    // get
     @GetMapping(path = "")
     public ResponseEntity<?> getUser(
             @RequestParam(defaultValue = "", name = "userId") String userId
@@ -51,6 +51,7 @@ public class UserController {
         return ResponseEntity.status(200).body(userService.getUser(id));
     }
 
+    // TODO: update map to class request
     // update
     @PatchMapping(path = "")
     public ResponseEntity<?> updateUser(
@@ -97,24 +98,12 @@ public class UserController {
     // change password
     @PatchMapping("/change-password")
     public ResponseEntity<?> changePassword(
-            @RequestParam(defaultValue = "", name = "userId") String userId,
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest
     ) throws UserNotFoundException, UserUpdateException, PasswordEncryptionException {
-        if (Objects.equals(userId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("userId", "user id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(userId);
-        return ResponseEntity.status(200).body(userService.changePassword(id, changePasswordRequest));
+        return ResponseEntity.status(200).body(userService.changePassword(changePasswordRequest));
     }
 
+    // TODO: change parameters to request class
     // update active status
     @PatchMapping("/active-status")
     public ResponseEntity<?> updateActiveStatus(
