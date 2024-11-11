@@ -816,7 +816,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"2\",\n    \"country\": \"2\",\n    \"state\": \"2\",\n    \"city\": \"2\",\n    \"pincode\": \"123465\"\n}",
+											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"{{$randomStreetAddress}}\",\n    \"country\": \"{{$randomStreetName}}\",\n    \"state\": \"{{$randomStreetName}}\",\n    \"city\": \"{{$randomStreetName}}\",\n    \"pincode\": \"123456\",\n    \"isDefault\": true\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -824,7 +824,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses?userId={{userId}}",
+											"raw": "{{user_service}}/api/v1/addresses",
 											"host": [
 												"{{user_service}}"
 											],
@@ -832,12 +832,6 @@
 												"api",
 												"v1",
 												"addresses"
-											],
-											"query": [
-												{
-													"key": "userId",
-													"value": "{{userId}}"
-												}
 											]
 										}
 									},
@@ -849,7 +843,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses?addressId=9b592883-8179-41ce-9f35-af3b09698025",
+											"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
 											"host": [
 												"{{user_service}}"
 											],
@@ -861,7 +855,7 @@
 											"query": [
 												{
 													"key": "addressId",
-													"value": "9b592883-8179-41ce-9f35-af3b09698025"
+													"value": "{{addressId}}"
 												}
 											]
 										}
@@ -977,55 +971,13 @@
 									],
 									"request": {
 										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "clientSecret",
-													"value": "{{client_credentials_secret}}",
-													"type": "string"
-												},
-												{
-													"key": "clientId",
-													"value": "{{client_credentials_cilent_id}}",
-													"type": "string"
-												},
-												{
-													"key": "tokenName",
-													"value": "token",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "client_authentication",
-													"value": "body",
-													"type": "string"
-												},
-												{
-													"key": "scope",
-													"value": "openid email profile",
-													"type": "string"
-												},
-												{
-													"key": "accessTokenUrl",
-													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-													"type": "string"
-												},
-												{
-													"key": "grant_type",
-													"value": "client_credentials",
-													"type": "string"
-												}
-											]
+											"type": "noauth"
 										},
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"fullname\": \"demo user\",\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"12345678\",\n    \"email\": \"{{$randomEmail}}\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
+											"raw": "{\n    \"fullname\": \"{{$randomUserName}}\",\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"12345678\",\n    \"email\": \"{{$randomEmail}}\",\n    \"roleId\": \"{{roleId}}\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1137,7 +1089,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"password\" : \"12345678\"\n}",
+											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"password\" : \"qwertyuiop\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1145,7 +1097,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/users/change-password?userId={{userId}}",
+											"raw": "{{user_service}}/api/v1/users/change-password",
 											"host": [
 												"{{user_service}}"
 											],
@@ -1154,12 +1106,6 @@
 												"v1",
 												"users",
 												"change-password"
-											],
-											"query": [
-												{
-													"key": "userId",
-													"value": "{{userId}}"
-												}
 											]
 										}
 									},
@@ -1219,55 +1165,13 @@
 									],
 									"request": {
 										"auth": {
-											"type": "oauth2",
-											"oauth2": [
-												{
-													"key": "clientSecret",
-													"value": "{{client_credentials_secret}}",
-													"type": "string"
-												},
-												{
-													"key": "clientId",
-													"value": "{{client_credentials_cilent_id}}",
-													"type": "string"
-												},
-												{
-													"key": "tokenName",
-													"value": "token",
-													"type": "string"
-												},
-												{
-													"key": "addTokenTo",
-													"value": "header",
-													"type": "string"
-												},
-												{
-													"key": "client_authentication",
-													"value": "body",
-													"type": "string"
-												},
-												{
-													"key": "scope",
-													"value": "openid email profile",
-													"type": "string"
-												},
-												{
-													"key": "accessTokenUrl",
-													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-													"type": "string"
-												},
-												{
-													"key": "grant_type",
-													"value": "client_credentials",
-													"type": "string"
-												}
-											]
+											"type": "noauth"
 										},
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"type\": \"demo\"\n}",
+											"raw": "{\n    \"type\": \"superuser\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1320,7 +1224,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"type\": \"updated\"\n}",
+											"raw": "{\n    \"roleId\": \"{{roleId}}\",\n    \"type\": \"updated\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1328,7 +1232,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
+											"raw": "{{user_service}}/api/v1/roles",
 											"host": [
 												"{{user_service}}"
 											],
@@ -1336,12 +1240,6 @@
 												"api",
 												"v1",
 												"roles"
-											],
-											"query": [
-												{
-													"key": "roleId",
-													"value": "{{roleId}}"
-												}
 											]
 										}
 									},
@@ -1387,40 +1285,6 @@
 												"v1",
 												"roles",
 												"all"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "auth",
-							"item": [
-								{
-									"name": "login",
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"username\": \"Addie__Jenkins70\",\n    \"password\": \"12345678\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{user_service}}/api/v1/auth/login",
-											"host": [
-												"{{user_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"auth",
-												"login"
 											]
 										}
 									},
