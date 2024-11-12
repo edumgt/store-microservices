@@ -3,6 +3,7 @@ package com.praveenukkoji.productservice.controller;
 import com.praveenukkoji.productservice.dto.error.ValidationResponse;
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
 import com.praveenukkoji.productservice.dto.request.product.UpdateProductPriceRequest;
+import com.praveenukkoji.productservice.dto.request.product.UpdateProductRequest;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.image.ImageNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
@@ -64,7 +65,12 @@ public class ProductController {
     }
 
     // update
-    // TODO: create endpoint for product update
+    @PatchMapping(path = "")
+    public ResponseEntity<?> updateProduct(
+            @RequestBody @Valid UpdateProductRequest updateProductRequest
+    ) throws ProductNotFoundException, ProductUpdateException {
+        return ResponseEntity.status(200).body(productService.updateProduct(updateProductRequest));
+    }
 
     // delete
     @DeleteMapping(path = "")

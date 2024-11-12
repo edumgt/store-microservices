@@ -2,6 +2,7 @@ package com.praveenukkoji.productservice.service;
 
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
 import com.praveenukkoji.productservice.dto.request.product.UpdateProductPriceRequest;
+import com.praveenukkoji.productservice.dto.request.product.UpdateProductRequest;
 import com.praveenukkoji.productservice.dto.response.category.CategoryResponse;
 import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
@@ -99,6 +100,37 @@ public class ProductService {
                     .category(category)
                     .imageName(product.get().getImageName())
                     .build();
+        }
+
+        throw new ProductNotFoundException("product with id = " + productId + " not found");
+    }
+
+    // update
+    public UUID updateProduct(UpdateProductRequest updateProductRequest)
+            throws ProductNotFoundException, ProductUpdateException {
+
+        UUID productId = UUID.fromString(updateProductRequest.getProductId());
+
+        log.info("updating product having id = {}", productId);
+
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            Product updatedProduct = product.get();
+
+            if (!Objects.equals(updateProductRequest.getName(), "")) {
+                updatedProduct.setName(updateProductRequest.getName());
+            }
+
+            if (!Objects.equals(updateProductRequest.getDescription(), "")) {
+                updatedProduct.setDescription(updateProductRequest.getDescription());
+            }
+
+            try {
+                return productRepository.save(updatedProduct).getId();
+            } catch (Exception e) {
+                throw new ProductUpdateException(e.getMessage());
+            }
         }
 
         throw new ProductNotFoundException("product with id = " + productId + " not found");
