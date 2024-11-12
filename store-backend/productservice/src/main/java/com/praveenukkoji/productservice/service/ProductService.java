@@ -1,6 +1,7 @@
 package com.praveenukkoji.productservice.service;
 
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
+import com.praveenukkoji.productservice.dto.request.product.UpdateProductPriceRequest;
 import com.praveenukkoji.productservice.dto.response.category.CategoryResponse;
 import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
@@ -271,16 +272,24 @@ public class ProductService {
     }
 
     // update product price
-    public UUID updateProductPrice(UUID productId, Double updatedPrice)
+    public UUID updateProductPrice(UpdateProductPriceRequest updateProductPriceRequest)
             throws ProductNotFoundException, ProductUpdateException {
-        log.info("Updating price of product having id = {}", productId);
+        UUID productId = UUID.fromString(updateProductPriceRequest.getProductId());
+        Double newPrice = updateProductPriceRequest.getProductPrice();
+
+        if (newPrice <= 0.0) {
+            throw new ProductUpdateException("product price cannot be zero or less than zero");
+        }
+
+        log.info("updating price of product having id = {}", productId);
 
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
-            Product updatedProduct = product.get();
-            updatedProduct.setPrice(updatedPrice);
             try {
+                Product updatedProduct = product.get();
+                updatedProduct.setPrice(newPrice);
+
                 return productRepository.save(updatedProduct).getId();
             } catch (Exception e) {
                 throw new ProductUpdateException(e.getMessage());

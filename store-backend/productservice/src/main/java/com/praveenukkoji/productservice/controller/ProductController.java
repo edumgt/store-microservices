@@ -2,6 +2,7 @@ package com.praveenukkoji.productservice.controller;
 
 import com.praveenukkoji.productservice.dto.error.ValidationResponse;
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
+import com.praveenukkoji.productservice.dto.request.product.UpdateProductPriceRequest;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.image.ImageNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductCreateException;
@@ -167,38 +168,12 @@ public class ProductController {
         productService.decreaseStock(decreaseProductStockRequestList);
         return ResponseEntity.status(204).body("");
     }
-
-    // TODO: create request class with id and updated-price as variables
+    
     // update product price
     @PatchMapping(value = "/update-price")
-    public ResponseEntity<?> updateProductPrice(
-            @RequestParam(defaultValue = "", name = "productId") String productId,
-            @RequestParam(defaultValue = "0.0", name = "updatedPrice") Double updatedPrice
+    public ResponseEntity<?> updateProductPrice(@RequestBody @Valid UpdateProductPriceRequest updateProductPriceRequest
     ) throws ProductUpdateException, ProductNotFoundException {
-        if (Objects.equals(productId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("productId", "product id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        if (updatedPrice < 0) {
-            Map<String, String> error = new HashMap<>();
-            error.put("updatedPrice", "updated price should be greater than zero");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(productId);
-        return ResponseEntity.status(200).body(productService.updateProductPrice(id, updatedPrice));
+        return ResponseEntity.status(200).body(productService.updateProductPrice(updateProductPriceRequest));
     }
 
     // fetch product details
