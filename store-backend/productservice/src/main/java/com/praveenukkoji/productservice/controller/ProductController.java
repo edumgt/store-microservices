@@ -10,6 +10,7 @@ import com.praveenukkoji.productservice.exception.product.ProductDeleteException
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
 import com.praveenukkoji.productservice.feign.product.request.DecreaseProductStockRequest;
+import com.praveenukkoji.productservice.feign.product.request.IncreaseProductStockRequest;
 import com.praveenukkoji.productservice.feign.product.request.ProductDetailRequest;
 import com.praveenukkoji.productservice.feign.product.response.ProductDetailResponse;
 import com.praveenukkoji.productservice.service.ProductService;
@@ -112,54 +113,23 @@ public class ProductController {
         return ResponseEntity.status(200).body(productService.getProductByCategory(categoryName));
     }
 
-    // TODO: update logic of increase stock of product
     // increase stock
     @PatchMapping("/increase-stock")
     public ResponseEntity<?> increaseStock(
-            @RequestParam(defaultValue = "", name = "productId") String productId,
-            @RequestParam(defaultValue = "0", name = "increaseStock") Integer increaseStock
+            @RequestBody @Valid List<IncreaseProductStockRequest> increaseProductStockRequestList
     ) throws ProductNotFoundException, ProductUpdateException {
-        if (Objects.equals(productId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("productId", "product id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
+        if (increaseProductStockRequestList.isEmpty()) {
+            return ResponseEntity.status(400).body("");
         }
 
-        if (increaseStock == 0) {
-            Map<String, String> error = new HashMap<>();
-            error.put("increaseStock", "increase-stock is empty or value should be greater than zero");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        if (increaseStock < 0) {
-            Map<String, String> error = new HashMap<>();
-            error.put("increaseStock", "increase-stock value should be greater than 0");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(productId);
-        return ResponseEntity.status(200).body(productService.increaseStock(id, increaseStock));
+        productService.increaseStock(increaseProductStockRequestList);
+        return ResponseEntity.status(204).body("");
     }
 
     // decrease stock
     @PatchMapping("/decrease-stock")
     public ResponseEntity<?> decreaseStock(
-            @RequestBody List<DecreaseProductStockRequest> decreaseProductStockRequestList
+            @RequestBody @Valid List<DecreaseProductStockRequest> decreaseProductStockRequestList
     ) throws ProductUpdateException, ProductNotFoundException {
         if (decreaseProductStockRequestList.isEmpty()) {
             return ResponseEntity.status(400).body("");

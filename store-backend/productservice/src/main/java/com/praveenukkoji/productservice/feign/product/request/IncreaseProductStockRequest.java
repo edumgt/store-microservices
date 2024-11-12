@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DecreaseProductStockRequest {
+public class IncreaseProductStockRequest {
     @NotNull(message = "product id is null")
     @NotEmpty(message = "product id is empty")
     private String productId;
