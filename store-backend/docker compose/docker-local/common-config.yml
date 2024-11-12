@@ -48,11 +48,11 @@ services:
         extends:
             service: eureka-config-kafka-server-config
         environment:
-            MAILTRAP_HOST: live.smtp.mailtrap.io
-            MAILTRAP_PASSWORD: 4c6d189f9cb8c8072973cd447b21ebea
-            MAILTRAP_USERNAME: api
-            TO: praveenukkoji.dev@gmail.com
-            FROM: demo@demomailtrap.com
+            SPRING_MAIL_FROM: demo@demomailtrap.com
+            SPRING_MAIL_HOST: live.smtp.mailtrap.io
+            SPRING_MAIL_PASSWORD: 4c6d189f9cb8c8072973cd447b21ebea
+            SPRING_MAIL_USERNAME: api
+            SPRING_MAIL_TO: praveenukkoji.dev@gmail.com
 
     order-service-config:
         extends:

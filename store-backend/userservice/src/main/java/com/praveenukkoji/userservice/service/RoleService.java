@@ -31,7 +31,7 @@ public class RoleService {
     public UUID createRole(CreateRoleRequest createRoleRequest)
             throws RoleCreateException {
 
-        log.info("Creating new role: {}", createRoleRequest);
+        log.info("creating new role = {}", createRoleRequest.getType());
 
         String roleType = createRoleRequest.getType().toUpperCase();
 
@@ -48,11 +48,11 @@ public class RoleService {
         }
     }
 
-    // retrieve
+    // get
     public RoleResponse getRole(UUID roleId)
             throws RoleNotFoundException {
 
-        log.info("Retrieving role: {}", roleId);
+        log.info("fetching role having id = {}", roleId);
 
         Optional<Role> role = roleRepository.findById(roleId);
 
@@ -66,17 +66,20 @@ public class RoleService {
     }
 
     // update
-    public UUID updateRole(UUID roleId, UpdateRoleRequest updateRoleRequest)
+    public UUID updateRole(UpdateRoleRequest updateRoleRequest)
             throws RoleNotFoundException, RoleUpdateException {
 
-        log.info("Updating role: {}", updateRoleRequest);
+        log.info("updating role having id = {}", updateRoleRequest.getRoleId());
 
+        UUID roleId = UUID.fromString(updateRoleRequest.getRoleId());
         Optional<Role> role = roleRepository.findById(roleId);
 
         if (role.isPresent()) {
             try {
+                String newType = updateRoleRequest.getType().toUpperCase();
+
                 Role updatedRole = role.get();
-                updatedRole.setType(updateRoleRequest.getType().toUpperCase());
+                updatedRole.setType(newType);
 
                 return roleRepository.save(updatedRole).getId();
             } catch (Exception e) {
@@ -91,7 +94,7 @@ public class RoleService {
     public void deleteRole(UUID roleId)
             throws RoleNotFoundException, RoleDeleteException {
 
-        log.info("Deleting role: {}", roleId);
+        log.info("deleting role having id = {}", roleId);
 
         Optional<Role> role = roleRepository.findById(roleId);
 
@@ -110,8 +113,8 @@ public class RoleService {
     // get all
     public List<RoleResponse> getAllRole() {
 
-        log.info("Retrieving all roles");
-        
+        log.info("fetching all roles");
+
         List<Role> roleList = roleRepository.findAll();
 
         return roleList.stream().map(role -> {

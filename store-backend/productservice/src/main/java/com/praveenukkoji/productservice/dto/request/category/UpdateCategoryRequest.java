@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UpdateCategoryRequest {
+    @NotNull(message = "category id is null")
+    @NotEmpty(message = "category id is empty")
+    private String categoryId;
+
     @NotNull(message = "category name is null")
     @NotEmpty(message = "category name is empty")
     private String name;

@@ -25,8 +25,6 @@ public class OrderResponse {
     private UUID createdBy;
     private LocalDateTime modifiedOn;
     private UUID modifiedBy;
-
     private Payment payment;
-
     private List<OrderItem> orderItemList;
 }

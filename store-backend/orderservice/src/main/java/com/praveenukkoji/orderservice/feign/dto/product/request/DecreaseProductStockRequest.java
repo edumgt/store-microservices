@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.external.product.dto.response;
+package com.praveenukkoji.orderservice.feign.dto.product.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDetailResponse {
+public class DecreaseProductStockRequest {
     private UUID productId;
-    private Double price;
-    private Boolean inStock;
+    private Integer quantity;
 }

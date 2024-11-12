@@ -1,60 +1,54 @@
-1. Config-Server:
+1. Eureka-Server:
+    - EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
 
-2. Eureka-Server:
-	- EUREKA_SERVER_HOSTNAME=eurekaserver
-	- EUREKA_SERVER_PORT=8761
+2. Config-Server:
+    - EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
 
 3. Api-Gateway:
-    - CONFIG_SERVER_HOSTNAME=configserver
-	- CONFIG_SERVER_PORT=8888
-	- EUREKA_SERVER_HOSTNAME=eurekaserver
-	- EUREKA_SERVER_PORT=8761
+    - EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
+    - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
+    - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://keycloak:8080/realms/master/protocol/openid-connect/certs
 
 4. Notification-Service:
-    - CONFIG_SERVER_HOSTNAME=configserver
-    - CONFIG_SERVER_PORT=8888
-    - EUREKA_SERVER_HOSTNAME=eurekaserver
-    - EUREKA_SERVER_PORT=8761
-    - KAFKA_SERVER_HOSTNAME=kafka
-    - KAFKA_SERVER_PORT=9092
-    - MAILTRAP_HOST=live.smtp.mailtrap.io;
-    - MAILTRAP_PASSWORD=4c6d189f9cb8c8072973cd447b21ebea;
-    - MAILTRAP_USERNAME=api;
-    - TO=praveenukkoji.dev@gmail.com;
-    - FROM=demo@demomailtrap.com
+    - EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
+    - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
+    - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+    - SPRING_MAIL_FROM=demo@demomailtrap.com
+    - SPRING_MAIL_HOST=live.smtp.mailtrap.io
+    - SPRING_MAIL_PASSWORD=4c6d189f9cb8c8072973cd447b21ebea
+    - SPRING_MAIL_USERNAME=api
+    - SPRING_MAIL_TO=praveenukkoji.dev@gmail.com
 
 5. Order-Service:
-    - CONFIG_SERVER_HOSTNAME=configserver
-    - CONFIG_SERVER_PORT=8888
-    - EUREKA_SERVER_HOSTNAME=eurekaserver
-    - EUREKA_SERVER_PORT=8761
-    - KAFKA_SERVER_HOSTNAME=kafka
-    - KAFKA_SERVER_PORT=9092
-	- DATABASE_URL=jdbc:postgresql://postgres:5432
-    - DATABASE_NAME=store
-	- DATABASE_USERNAME=username
-	- DATABASE_PASSWORD=password
-	- PRODUCT_SERVICE_HOSTNAME=productservice
-    - PRODUCT_SERVICE_PORT=8001
+    - EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
+    - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
+    - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+    - SPRING_DATASOURCE_PASSWORD: password
+    - SPRING_DATASOURCE_USERNAME: username
+    - SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/store
+	- FEIGN_CLIENT_CONFIG_PRODUCTSERVICE_URL: http://productservice:8001/api/v1/products
 
 6. Product-Service:
-	- CONFIG_SERVER_HOSTNAME=configserver
-    - CONFIG_SERVER_PORT=8888
-    - EUREKA_SERVER_HOSTNAME=eurekaserver
-    - EUREKA_SERVER_PORT=8761
-    - DATABASE_URL=jdbc:postgresql://postgres:5432
-    - DATABASE_NAME=store
-    - DATABASE_USERNAME=username
-    - DATABASE_PASSWORD=password
+	- EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
+    - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
+    - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+    - SPRING_DATASOURCE_PASSWORD: password
+    - SPRING_DATASOURCE_USERNAME: username
+    - SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/store
 
 7. User-Service:
-	- CONFIG_SERVER_HOSTNAME=configserver
-    - CONFIG_SERVER_PORT=8888
-    - EUREKA_SERVER_HOSTNAME=eurekaserver
-    - EUREKA_SERVER_PORT=8761
-    - DATABASE_URL=jdbc:postgresql://postgres:5432
-    - DATABASE_NAME=store
-    - DATABASE_USERNAME=username
-    - DATABASE_PASSWORD=password
-    - PASSWORD_ENCRYPTION_KEY=1234567890abcdef
-    - PASSWORD_DECRYPTION_KEY=1234567890abcdef
+	- EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
+    - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
+    - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+    - SPRING_DATASOURCE_PASSWORD: password
+    - SPRING_DATASOURCE_USERNAME: username
+    - SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/store
+    - PASSWORD_ENCRYPTION_KEY: 1234567890abcdef
+    - PASSWORD_DECRYPTION_KEY: 1234567890abcdef

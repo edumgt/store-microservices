@@ -6,7 +6,7 @@ import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentStatusUpdateException;
-import com.praveenukkoji.orderservice.kafka.event.OrderEvent;
+import com.praveenukkoji.orderservice.kafka.order.OrderEvent;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.Payment;
 import com.praveenukkoji.orderservice.model.enums.OrderStatus;
@@ -29,21 +29,23 @@ import java.util.UUID;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
+
     private final OrderRepository orderRepository;
 
     private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
-    // make payment
+    // create
     public UUID makePayment(MakePaymentRequest makePaymentRequest)
             throws OrderNotFoundException, CreatePaymentException, PaymentStatusUpdateException {
 
-        log.info("Make payment request: {}", makePaymentRequest);
+        log.info("create payment request = {}", makePaymentRequest);
 
         UUID orderId = makePaymentRequest.getOrderId();
         Optional<Order> order = orderRepository.findById(orderId);
 
-        if (order.isPresent()) {
+        UUID paymentId = null;
 
+        if (order.isPresent()) {
             Payment newPayment = Payment.builder()
                     .amount(makePaymentRequest.getAmount())
                     .order(order.get())
@@ -64,29 +66,29 @@ public class PaymentService {
             }
 
             try {
-                UUID paymentId = paymentRepository.save(newPayment).getId();
-
-                // kafka sending payment notification
-                OrderEvent orderEvent = OrderEvent.builder()
-                        .title("Payment Status")
-                        .message("payment status " + paymentStatus.toUpperCase() + " for order id = " + orderId)
-                        .build();
-                kafkaTemplate.send("orderTopic", orderEvent);
-
-                return paymentId;
+                paymentId = paymentRepository.save(newPayment).getId();
             } catch (Exception e) {
                 throw new CreatePaymentException(e.getMessage());
             }
+
+            // kafka sending payment notification
+            OrderEvent orderEvent = OrderEvent.builder()
+                    .title("Payment Created")
+                    .message("payment created with status = " + paymentStatus.toUpperCase() + " for order id = " + orderId)
+                    .build();
+            kafkaTemplate.send("orderTopic", orderEvent);
+
+            return paymentId;
         }
 
         throw new OrderNotFoundException("order with id = " + orderId + " not found");
     }
 
-    // retrieve
+    // get
     public PaymentResponse getPayment(UUID paymentId)
             throws PaymentNotFoundException {
 
-        log.info("Get payment request: {}", paymentId);
+        log.info("fetching payment having id = {}", paymentId);
 
         Optional<Payment> payment = paymentRepository.findById(paymentId);
 

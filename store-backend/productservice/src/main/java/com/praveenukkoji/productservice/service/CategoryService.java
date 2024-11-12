@@ -31,10 +31,12 @@ public class CategoryService {
     public UUID createCategory(CreateCategoryRequest createCategoryRequest)
             throws CategoryCreateException {
 
-        log.info("Creating new category: {}", createCategoryRequest);
+        String categoryName = createCategoryRequest.getName();
+
+        log.info("creating new category = {}", categoryName);
 
         Category newCategory = Category.builder()
-                .name(createCategoryRequest.getName())
+                .name(categoryName)
                 .build();
 
         try {
@@ -46,11 +48,11 @@ public class CategoryService {
         }
     }
 
-    // retrieve
+    // get
     public CategoryResponse getCategory(UUID categoryId)
             throws CategoryNotFoundException {
 
-        log.info("Retrieving category: {}", categoryId);
+        log.info("fetching category having id = {}", categoryId);
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -66,16 +68,20 @@ public class CategoryService {
     }
 
     // update
-    public UUID updateCategory(UUID categoryId, UpdateCategoryRequest updateCategoryRequest)
+    public UUID updateCategory(UpdateCategoryRequest updateCategoryRequest)
             throws CategoryNotFoundException, CategoryUpdateException {
 
-        log.info("Updating category: {}", updateCategoryRequest);
+        UUID categoryId = UUID.fromString(updateCategoryRequest.getCategoryId());
+
+        log.info("updating category having id = {}", categoryId);
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
+            String categoryName = updateCategoryRequest.getName();
+
             Category updatedCategory = category.get();
-            updatedCategory.setName(updateCategoryRequest.getName());
+            updatedCategory.setName(categoryName);
 
             try {
                 return categoryRepository.save(updatedCategory).getId();
@@ -91,7 +97,7 @@ public class CategoryService {
     public void deleteCategory(UUID categoryId)
             throws CategoryNotFoundException, CategoryDeleteException {
 
-        log.info("Deleting category: {}", categoryId);
+        log.info("deleting category having id = {}", categoryId);
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -110,7 +116,7 @@ public class CategoryService {
     // get all
     public List<CategoryResponse> getAllCategory() {
 
-        log.info("Retrieving all categories");
+        log.info("fetching all categories");
 
         List<Category> categoryList = categoryRepository.findAll();
 

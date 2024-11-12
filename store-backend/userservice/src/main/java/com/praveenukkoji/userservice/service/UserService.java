@@ -38,7 +38,7 @@ public class UserService {
     public UUID createUser(CreateUserRequest createUserRequest)
             throws RoleNotFoundException, UserCreateException, PasswordEncryptionException {
 
-        log.info("Creating user: {}", createUserRequest);
+        log.info("creating new user = {}", createUserRequest);
 
         UUID roleId = createUserRequest.getRoleId();
         Optional<Role> role = roleRepository.findById(roleId);
@@ -47,7 +47,7 @@ public class UserService {
             String password = createUserRequest.getPassword();
 
             if (password.length() < 8) {
-                throw new UserCreateException("Password must be at least 8 characters");
+                throw new UserCreateException("password must be at least 8 characters");
             }
 
             String encryptedPassword = userUtility.getEncryptedPassword(password);
@@ -73,10 +73,10 @@ public class UserService {
         throw new RoleNotFoundException("role with id = " + roleId + " not found");
     }
 
-    // retrieve
+    // get
     public UserResponse getUser(UUID userId) throws UserNotFoundException {
 
-        log.info("Retrieving user: {}", userId);
+        log.info("fetching user having id = {}", userId);
 
         Optional<User> user = userRepository.findById(userId);
 
@@ -100,7 +100,6 @@ public class UserService {
     }
 
     //update
-    // TODO: change Map<String, String> to Class of UpdateUserRequest
     public UUID updateUser(UUID userId, Map<String, String> updates)
             throws UserUpdateException, UserNotFoundException {
 
@@ -145,7 +144,7 @@ public class UserService {
     public void deleteUser(UUID userId)
             throws UserNotFoundException, UserDeleteException {
 
-        log.info("Deleting user: {}", userId);
+        log.info("deleting user having id = {}", userId);
 
         Optional<User> user = userRepository.findById(userId);
 
@@ -162,11 +161,12 @@ public class UserService {
     }
 
     // change password
-    public UUID changePassword(UUID userId, ChangePasswordRequest changePasswordRequest)
+    public UUID changePassword(ChangePasswordRequest changePasswordRequest)
             throws UserNotFoundException, UserUpdateException, PasswordEncryptionException {
 
-        log.info("Changing password for user: {}", userId);
+        log.info("changing password for user having id = {}", changePasswordRequest.getUserId());
 
+        UUID userId = UUID.fromString(changePasswordRequest.getUserId());
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
@@ -175,7 +175,7 @@ public class UserService {
             String newPassword = changePasswordRequest.getPassword();
 
             if (newPassword.length() < 8) {
-                throw new UserUpdateException("password should be at least 8 characters");
+                throw new UserUpdateException("password must be at least 8 characters");
             }
 
             String encryptedPassword = userUtility.getEncryptedPassword(newPassword);

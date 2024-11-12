@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, UUID> {
-    // retrieve by user
+    // get by user
     @Query("""
             SELECT o FROM Order o WHERE o.createdBy = :userId
             """)

@@ -2,11 +2,11 @@ package com.praveenukkoji.orderservice.utility;
 
 import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
-import com.praveenukkoji.orderservice.external.product.dto.request.DecreaseProductStockRequest;
-import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
-import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
-import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
-import com.praveenukkoji.orderservice.external.product.feignClient.ProductClient;
+import com.praveenukkoji.orderservice.feign.dto.product.request.DecreaseProductStockRequest;
+import com.praveenukkoji.orderservice.feign.dto.product.request.ProductDetailRequest;
+import com.praveenukkoji.orderservice.feign.dto.product.response.ProductDetailResponse;
+import com.praveenukkoji.orderservice.feign.exception.product.ProductServiceException;
+import com.praveenukkoji.orderservice.feign.feignClient.product.ProductClient;
 import com.praveenukkoji.orderservice.model.OrderItem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,49 +25,45 @@ public class OrderUtility {
 
     private final ProductClient productClient;
 
-    // get product detail
+    // getting product detail from product-service
     public List<ProductDetailResponse> getProductDetail(List<ProductDetailRequest> productDetailRequest)
             throws ProductServiceException {
 
-        log.info("fetching product details from product-service");
+        log.info("fetching product detail from product-service");
 
         if (productDetailRequest.isEmpty()) {
-            throw new ProductServiceException("product detail request is null or empty");
+            throw new ProductServiceException("product detail request is empty");
         }
 
-        // Using FeignClient
-        ResponseEntity<List<ProductDetailResponse>> productDetailsResponse;
-
         try {
-            productDetailsResponse = productClient.getProductDetails(productDetailRequest);
+            // Using FeignClient
+            ResponseEntity<List<ProductDetailResponse>> productDetailsResponse = productClient.getProductDetails(productDetailRequest);
+
+            if (productDetailsResponse.getStatusCode().value() != 200) {
+                throw new ProductServiceException("some error occurred while fetching product details");
+            }
+
+            return productDetailsResponse.getBody();
         } catch (Exception e) {
             throw new ProductServiceException(e.getMessage());
         }
-
-        List<ProductDetailResponse> productList = productDetailsResponse.getBody();
-
-        if (productDetailsResponse.getStatusCode().value() != 200) {
-            throw new ProductServiceException("some error occurred while fetching product details");
-        }
-
-        return productList;
     }
 
     // get order amount
-    public Double getOrderAmount(List<Item> itemList, List<ProductDetailResponse> productDetailResponseList)
+    public Double getOrderAmount(List<Item> itemList, List<ProductDetailResponse> productDetailList)
             throws CreateOrderException {
 
-        log.info("Get order amount");
+        log.info("calculating order amount");
 
         double orderAmount = 0.0;
 
         // calculating order amount
         for (Item item : itemList) {
-            UUID itemId = item.getId();
+            UUID itemId = UUID.fromString(item.getProductId());
             int quantity = item.getQuantity();
 
-            Optional<ProductDetailResponse> matchingProduct = productDetailResponseList.stream()
-                    .filter(productDetailResponse -> productDetailResponse.getProductId().equals(itemId))
+            Optional<ProductDetailResponse> matchingProduct = productDetailList.stream()
+                    .filter(product -> product.getProductId().equals(itemId))
                     .findFirst();
 
             if (matchingProduct.isPresent()) {
@@ -82,19 +78,19 @@ public class OrderUtility {
     }
 
     // get order item list
-    public List<OrderItem> getOrderItemList(List<Item> itemList, List<ProductDetailResponse> productDetailResponseList)
+    public List<OrderItem> getOrderItemList(List<Item> itemList, List<ProductDetailResponse> productDetailList)
             throws CreateOrderException {
 
-        log.info("Get order item list");
+        log.info("creating order item list");
 
         List<OrderItem> orderItemsList = new ArrayList<>();
 
         // create order item list
         for (Item item : itemList) {
-            UUID itemId = item.getId();
+            UUID itemId = UUID.fromString(item.getProductId());
             int quantity = item.getQuantity();
 
-            Optional<ProductDetailResponse> matchingProduct = productDetailResponseList.stream()
+            Optional<ProductDetailResponse> matchingProduct = productDetailList.stream()
                     .filter(productDetailResponse -> productDetailResponse.getProductId().equals(itemId))
                     .findFirst();
 
@@ -112,21 +108,22 @@ public class OrderUtility {
         return orderItemsList;
     }
 
-    // decrease product stock
-    public void decreaseProductStock(List<DecreaseProductStockRequest> decreaseProductStockRequestList)
+    // decreasing product stock through product-service
+    public void decreaseProductStock(List<DecreaseProductStockRequest> decreaseProductStockRequest)
             throws ProductServiceException {
-
-        // Using FeignClient
-        ResponseEntity<Boolean> decreaseStockResponse;
+        
+        log.info("decreasing product stock through product-service");
 
         try {
-            decreaseStockResponse = productClient.decreaseStock(decreaseProductStockRequestList);
+            // Using FeignClient
+            ResponseEntity<Boolean> decreaseStockResponse = productClient.decreaseStock(decreaseProductStockRequest);
+
+            if (decreaseStockResponse.getStatusCode().value() != 204) {
+                throw new ProductServiceException("some error occurred while decreasing stock");
+            }
+
         } catch (Exception e) {
             throw new ProductServiceException(e.getMessage());
-        }
-
-        if (decreaseStockResponse.getStatusCode().value() != 200) {
-            throw new ProductServiceException("some error occurred while decreasing stock");
         }
     }
 }

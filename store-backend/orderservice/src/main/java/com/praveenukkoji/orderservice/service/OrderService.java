@@ -1,16 +1,17 @@
 package com.praveenukkoji.orderservice.service;
 
+import com.praveenukkoji.orderservice.dto.request.order.ChangeOrderStatusRequest;
 import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
 import com.praveenukkoji.orderservice.dto.request.order.Item;
 import com.praveenukkoji.orderservice.dto.response.order.OrderResponse;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
-import com.praveenukkoji.orderservice.external.product.dto.request.DecreaseProductStockRequest;
-import com.praveenukkoji.orderservice.external.product.dto.request.ProductDetailRequest;
-import com.praveenukkoji.orderservice.external.product.dto.response.ProductDetailResponse;
-import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
-import com.praveenukkoji.orderservice.kafka.event.OrderEvent;
+import com.praveenukkoji.orderservice.feign.dto.product.request.DecreaseProductStockRequest;
+import com.praveenukkoji.orderservice.feign.dto.product.request.ProductDetailRequest;
+import com.praveenukkoji.orderservice.feign.dto.product.response.ProductDetailResponse;
+import com.praveenukkoji.orderservice.feign.exception.product.ProductServiceException;
+import com.praveenukkoji.orderservice.kafka.order.OrderEvent;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.OrderItem;
 import com.praveenukkoji.orderservice.model.enums.OrderStatus;
@@ -34,6 +35,7 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderUtility orderUtility;
+
     private final OrderRepository orderRepository;
 
     private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
@@ -45,94 +47,97 @@ public class OrderService {
         // item list
         List<Item> itemList = createOrderRequest.getItemList();
 
-        List<ProductDetailRequest> productDetailRequest = itemList.stream().map(item -> ProductDetailRequest.builder()
-                .productId(item.getId())
-                .quantity(item.getQuantity())
-                .build()
+        // creating product-detail-request dto
+        List<ProductDetailRequest> productDetailRequest = itemList.stream().map(item ->
+                ProductDetailRequest.builder()
+                        .productId(UUID.fromString(item.getProductId()))
+                        .quantity(item.getQuantity())
+                        .build()
         ).toList();
 
-        // get product from product-service
-        List<ProductDetailResponse> productDetailResponseList = orderUtility.getProductDetail(productDetailRequest);
+        // calling product-service through feign for product-detail
+        List<ProductDetailResponse> productDetailList = orderUtility.getProductDetail(productDetailRequest);
 
         // check if all products are in stock
         boolean isInStock = true;
         StringBuilder productIdsNotInStock = new StringBuilder();
-        for (ProductDetailResponse productDetailResponse : productDetailResponseList) {
+        for (ProductDetailResponse productDetailResponse : productDetailList) {
             if (!productDetailResponse.getInStock()) {
                 isInStock = false;
                 productIdsNotInStock.append(productDetailResponse.getProductId()).append(", ");
             }
         }
 
-        // throw exception when not in stock
+        // when some products are not in stock throw Exception
         if (!isInStock) {
             throw new CreateOrderException("product's not in stock with id's = " + productIdsNotInStock);
         }
 
-        // ----> CREATING NEW-ORDER
+        // CREATING NEW-ORDER
 
-        log.info("Creating order {}", createOrderRequest);
+        log.info("creating new order {}", createOrderRequest);
 
         // calculating total items
         int totalItems = itemList.stream()
                 .mapToInt(Item::getQuantity).sum();
 
         // calculating order amount
-        double amount = orderUtility.getOrderAmount(itemList, productDetailResponseList);
+        double amount = orderUtility.getOrderAmount(itemList, productDetailList);
 
-        // creating order
-        // TODO: validate createdBy and addressId
+        // TODO: verify createdBy and addressId
         Order newOrder = Order.builder()
                 .totalItems(totalItems)
                 .amount(amount)
                 .status(OrderStatus.CREATED)
-                .createdBy(createOrderRequest.getCreatedBy())
-                .addressId(createOrderRequest.getAddressId())
+                .addressId(UUID.fromString(createOrderRequest.getAddressId()))
+                .createdBy(UUID.fromString(createOrderRequest.getCreatedBy()))
                 .build();
 
+        UUID orderId = null;
+
         try {
-
-            log.info("Creating order item's");
-
             // CREATING ORDER-ITEM-LIST
 
+            log.info("creating order item's");
+
             // order items list
-            List<OrderItem> orderItemList = orderUtility.getOrderItemList(itemList, productDetailResponseList);
+            List<OrderItem> orderItemList = orderUtility.getOrderItemList(itemList, productDetailList);
             orderItemList.forEach(orderItem -> orderItem.setOrder(newOrder));
 
-            // assigning order item's to order
+            // assigning order-item-list to order
             newOrder.setOrderItemList(orderItemList);
 
-            // creating decrease stock request object
-            List<DecreaseProductStockRequest> decreaseProductStockRequestList = itemList.stream()
+            // creating decrease-stock-request dto
+            List<DecreaseProductStockRequest> decreaseProductStockRequest = itemList.stream()
                     .map(item -> DecreaseProductStockRequest.builder()
-                            .id(item.getId())
+                            .productId(UUID.fromString(item.getProductId()))
                             .quantity(item.getQuantity())
                             .build()
                     ).toList();
 
-            // decrease product stock
-            orderUtility.decreaseProductStock(decreaseProductStockRequestList);
+            // calling product-service through feign to decrease product stock
+            orderUtility.decreaseProductStock(decreaseProductStockRequest);
 
-            UUID orderId = orderRepository.save(newOrder).getId();
+            orderId = orderRepository.save(newOrder).getId();
 
-            // kafka sending order created notification
-            OrderEvent orderEvent = OrderEvent.builder()
-                    .title("Order Created")
-                    .message("order created successfully with id = " + orderId)
-                    .build();
-            kafkaTemplate.send("orderTopic", orderEvent);
-
-            return orderId;
         } catch (Exception e) {
             throw new CreateOrderException(e.getMessage());
         }
+
+        // kafka sending order created notification
+        OrderEvent orderEvent = OrderEvent.builder()
+                .title("Order Created")
+                .message("order created successfully with id = " + orderId)
+                .build();
+        kafkaTemplate.send("orderTopic", orderEvent);
+
+        return orderId;
     }
 
-    // retrieve
+    // get
     public OrderResponse getOrder(UUID orderId) throws OrderNotFoundException {
 
-        log.info("Get order {}", orderId);
+        log.info("fetching order having id = {}", orderId);
 
         Optional<Order> order = orderRepository.findById(orderId);
 
@@ -158,53 +163,53 @@ public class OrderService {
     }
 
     // change order status
-    public UUID changeOrderStatus(UUID orderId, String orderStatus)
+    public UUID changeOrderStatus(ChangeOrderStatusRequest changeOrderStatusRequest)
             throws OrderNotFoundException, OrderStatusUpdateException {
 
-        log.info("Change order status {}", orderId);
+        UUID orderId = UUID.fromString(changeOrderStatusRequest.getOrderId());
+        String newOrderStatus = changeOrderStatusRequest.getOrderStatus();
+
+        log.info("update order status to = {} of order having id = {}", newOrderStatus, orderId);
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if (order.isPresent()) {
             Order updatedOrder = order.get();
 
-            switch (orderStatus.toUpperCase()) {
+            switch (newOrderStatus.toUpperCase()) {
                 case "OUTFORDELIVERY":
                     updatedOrder.setStatus(OrderStatus.OUT_FOR_DELIVERY);
                     break;
                 case "DELIVERED":
                     updatedOrder.setStatus(OrderStatus.DELIVERED);
                     break;
-                case "CANCELED":
-                    updatedOrder.setStatus(OrderStatus.CANCELED);
-                    break;
                 default:
-                    throw new OrderStatusUpdateException("unknown status = " + orderStatus);
+                    throw new OrderStatusUpdateException("unknown order status = " + newOrderStatus);
             }
 
             try {
                 orderRepository.save(updatedOrder);
-
-                // kafka sending order status changed notification
-                OrderEvent orderEvent = OrderEvent.builder()
-                        .title("Order Status Changed")
-                        .message("order status changed to " + orderStatus.toUpperCase() + " for order id = " + orderId)
-                        .build();
-                kafkaTemplate.send("orderTopic", orderEvent);
-
-                return orderId;
             } catch (Exception e) {
                 throw new OrderStatusUpdateException(e.getMessage());
             }
+
+            // kafka sending order status changed notification
+            OrderEvent orderEvent = OrderEvent.builder()
+                    .title("Order Status Changed")
+                    .message("order status changed to " + newOrderStatus.toUpperCase() + " for order id = " + orderId)
+                    .build();
+            kafkaTemplate.send("orderTopic", orderEvent);
+
+            return orderId;
         }
 
         throw new OrderNotFoundException("order with id = " + orderId + " not found");
     }
 
-    // retrieve by user
+    // get by user
     public List<OrderResponse> getOrderByUser(UUID userId) {
 
-        log.info("Get orders by user {}", userId);
+        log.info("fetching orders of user having id = {}", userId);
 
         List<Order> orders = orderRepository.findOrderByUserId(userId);
 

@@ -3,6 +3,7 @@ package com.praveenukkoji.productservice.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,10 +30,20 @@ public class Product {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    @Min(value = 0)
     private Double price;
+
+    @Column(nullable = false)
+    @Min(value = 0)
     private Integer quantity;
+
     private String imageName;
 
     @CreatedDate

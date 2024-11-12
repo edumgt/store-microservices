@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.kafka.event;
+package com.praveenukkoji.orderservice.kafka.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

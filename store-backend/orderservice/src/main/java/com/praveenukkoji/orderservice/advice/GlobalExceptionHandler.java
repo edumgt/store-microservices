@@ -8,7 +8,7 @@ import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException
 import com.praveenukkoji.orderservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentNotFoundException;
 import com.praveenukkoji.orderservice.exception.payment.PaymentStatusUpdateException;
-import com.praveenukkoji.orderservice.external.product.exception.ProductServiceException;
+import com.praveenukkoji.orderservice.feign.exception.product.ProductServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;

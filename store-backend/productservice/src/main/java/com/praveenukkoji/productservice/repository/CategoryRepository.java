@@ -10,7 +10,8 @@ import java.util.UUID;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, UUID> {
-    // get by category type
+
+    // get category by name
     @Query("""
             SELECT c From Category c WHERE c.name = ?1
             """)

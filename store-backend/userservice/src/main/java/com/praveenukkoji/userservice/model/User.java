@@ -26,16 +26,19 @@ public class User {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private String fullname;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private Boolean isActive;
 
     @CreatedDate

@@ -21,8 +21,6 @@ public class UserUtility {
     @Value("${password.decryption.key}")
     private String passwordDecryptionKey;
 
-    private static final String ALGORITHM = "AES";
-
     public String getEncryptedPassword(String password) throws PasswordEncryptionException {
         byte[] decodedKey = Base64.getDecoder().decode(passwordEncryptionKey);
 
@@ -34,8 +32,8 @@ public class UserUtility {
             byte[] cipherText = cipher.doFinal(password.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(cipherText);
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "Error occurred while encrypting data", e);
+            throw new PasswordEncryptionException(
+                    "error occurred while encrypting data = " + e.getMessage());
         }
     }
 
@@ -50,8 +48,8 @@ public class UserUtility {
             byte[] cipherText = cipher.doFinal(Base64.getDecoder().decode(encryptedPassword));
             return new String(cipherText);
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "Error occurred while decrypting data", e);
+            throw new PasswordDecryptionException(
+                    "error occurred while decrypting data = " + e.getMessage());
         }
     }
 }

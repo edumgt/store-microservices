@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.external.product.config;
+package com.praveenukkoji.orderservice.feign.config;
 
 import feign.okhttp.OkHttpClient;
 import org.springframework.context.annotation.Bean;

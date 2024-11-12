@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    // auth login endpoint
+    // get user by username
     @Query("""
             SELECT u FROM User u WHERE u.username = :username
             """)

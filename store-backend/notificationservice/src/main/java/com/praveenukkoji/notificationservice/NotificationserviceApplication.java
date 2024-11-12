@@ -27,10 +27,10 @@ public class NotificationserviceApplication {
 
     @KafkaListener(topics = "orderTopic")
     public void handleOrderNotification(OrderEvent orderEvent) {
-        // send email notification
-        log.info("ORDER NOTIFICATION ---- received notification title: {}, message: {}",
+        log.info("ORDER-SERVICE NOTIFICATION ---- received notification  {title: {}, message: {}}",
                 orderEvent.getTitle(), orderEvent.getMessage());
 
+        // send email notification
         emailService.sendEmail(to, orderEvent.getTitle(), orderEvent.getMessage());
     }
 

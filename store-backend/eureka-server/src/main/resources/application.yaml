@@ -9,9 +9,6 @@ eureka:
     client:
         fetch-registry: false
         register-with-eureka: false
-logging:
-    pattern:
-        console: '%d{yyyy-MMM-dd HH:mm:s} %-5level - %msg%n'
 management:
     endpoints:
         web:
