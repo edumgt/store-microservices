@@ -9,9 +9,9 @@ import com.praveenukkoji.productservice.exception.product.ProductCreateException
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
-import com.praveenukkoji.productservice.external.product.request.DecreaseProductStockRequest;
-import com.praveenukkoji.productservice.external.product.request.ProductDetailRequest;
-import com.praveenukkoji.productservice.external.product.response.ProductDetailResponse;
+import com.praveenukkoji.productservice.feign.product.request.DecreaseProductStockRequest;
+import com.praveenukkoji.productservice.feign.product.request.ProductDetailRequest;
+import com.praveenukkoji.productservice.feign.product.response.ProductDetailResponse;
 import com.praveenukkoji.productservice.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -168,7 +168,7 @@ public class ProductController {
         productService.decreaseStock(decreaseProductStockRequestList);
         return ResponseEntity.status(204).body("");
     }
-    
+
     // update product price
     @PatchMapping(value = "/update-price")
     public ResponseEntity<?> updateProductPrice(@RequestBody @Valid UpdateProductPriceRequest updateProductPriceRequest
