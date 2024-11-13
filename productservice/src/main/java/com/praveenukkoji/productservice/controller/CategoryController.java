@@ -1,12 +1,13 @@
 package com.praveenukkoji.productservice.controller;
 
-import com.praveenukkoji.productservice.dto.error.ValidationResponse;
-import com.praveenukkoji.productservice.dto.request.category.CreateCategoryRequest;
-import com.praveenukkoji.productservice.dto.request.category.UpdateCategoryRequest;
+import com.praveenukkoji.productservice.dto.error.ErrorResponse;
+import com.praveenukkoji.productservice.dto.category.request.CreateCategoryRequest;
+import com.praveenukkoji.productservice.dto.category.request.UpdateCategoryRequest;
 import com.praveenukkoji.productservice.exception.category.CategoryCreateException;
 import com.praveenukkoji.productservice.exception.category.CategoryDeleteException;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.category.CategoryUpdateException;
+import com.praveenukkoji.productservice.exception.error.ValidationException;
 import com.praveenukkoji.productservice.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,57 +29,30 @@ public class CategoryController {
     // create
     @PostMapping(path = "")
     public ResponseEntity<?> createCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest)
-            throws CategoryCreateException {
+            throws CategoryCreateException, ValidationException {
         return ResponseEntity.status(201).body(categoryService.createCategory(createCategoryRequest));
     }
 
     // get
     @GetMapping(path = "")
-    public ResponseEntity<?> getCategory(
-            @RequestParam(defaultValue = "", name = "categoryId") String categoryId
-    ) throws CategoryNotFoundException {
-        if (Objects.equals(categoryId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("categoryId", "category id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(categoryId);
-        return ResponseEntity.status(200).body(categoryService.getCategory(id));
+    public ResponseEntity<?> getCategory(@RequestParam(defaultValue = "", name = "categoryId") String categoryId)
+            throws CategoryNotFoundException, ValidationException {
+        return ResponseEntity.status(200).body(categoryService.getCategory(categoryId));
     }
 
     // update
     @PatchMapping(path = "")
-    public ResponseEntity<?> updateCategory(
-            @RequestBody @Valid UpdateCategoryRequest updateCategoryRequest
-    ) throws CategoryNotFoundException, CategoryUpdateException {
-        return ResponseEntity.status(200).body(categoryService.updateCategory(updateCategoryRequest));
+    public ResponseEntity<?> updateCategory(@RequestBody @Valid UpdateCategoryRequest updateCategoryRequest)
+            throws CategoryNotFoundException, CategoryUpdateException, ValidationException {
+        categoryService.updateCategory(updateCategoryRequest);
+        return ResponseEntity.status(204).body("");
     }
 
     // delete
     @DeleteMapping(path = "")
-    public ResponseEntity<?> deleteCategory(
-            @RequestParam(defaultValue = "", name = "categoryId") String categoryId
-    ) throws CategoryNotFoundException, CategoryDeleteException {
-        if (Objects.equals(categoryId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("categoryId", "category id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(categoryId);
-        categoryService.deleteCategory(id);
-
+    public ResponseEntity<?> deleteCategory(@RequestParam(defaultValue = "", name = "categoryId") String categoryId)
+            throws CategoryNotFoundException, CategoryDeleteException, ValidationException {
+        categoryService.deleteCategory(categoryId);
         return ResponseEntity.status(204).body("");
     }
 

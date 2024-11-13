@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.feign.product.response;
+package com.praveenukkoji.productservice.dto.product.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

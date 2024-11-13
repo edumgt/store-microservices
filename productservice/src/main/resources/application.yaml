@@ -52,6 +52,6 @@ endpoints:
         enabled: true
 info:
     app:
-        name: "productservice"
-        description: "Product Service for store-microservices"
+        name: "product-service"
+        description: "product service for store-microservices"
         version: "1.0"

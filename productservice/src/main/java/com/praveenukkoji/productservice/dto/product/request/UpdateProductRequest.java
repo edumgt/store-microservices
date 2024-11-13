@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.feign.product.request;
+package com.praveenukkoji.productservice.dto.product.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,14 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class IncreaseProductStockRequest {
+@Builder
+public class UpdateProductRequest {
     @NotNull(message = "product id is null")
-    @NotEmpty(message = "product id is empty")
     private String productId;
 
-    @NotNull(message = "quantity is null")
-    private Integer quantity;
+    @NotNull(message = "product name is null")
+    private String name;
+
+    @NotNull(message = "description is null")
+    private String description;
 }

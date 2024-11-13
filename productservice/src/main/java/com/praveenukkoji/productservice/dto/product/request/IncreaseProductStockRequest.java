@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto.request.product;
+package com.praveenukkoji.productservice.dto.product.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,14 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class UpdateProductPriceRequest {
+public class IncreaseProductStockRequest {
     @NotNull(message = "product id is null")
-    @NotEmpty(message = "product id is empty")
     private String productId;
 
-    @NotNull(message = "product price is null")
-    private Double productPrice;
+    @NotNull(message = "quantity is null")
+    private Integer quantity;
 }

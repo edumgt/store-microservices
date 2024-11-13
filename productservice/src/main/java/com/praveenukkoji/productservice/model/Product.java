@@ -37,11 +37,9 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    @Min(value = 0)
     private Double price;
 
     @Column(nullable = false)
-    @Min(value = 0)
     private Integer quantity;
 
     private String imageName;

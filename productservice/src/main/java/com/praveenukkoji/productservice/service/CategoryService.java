@@ -1,12 +1,13 @@
 package com.praveenukkoji.productservice.service;
 
-import com.praveenukkoji.productservice.dto.request.category.CreateCategoryRequest;
-import com.praveenukkoji.productservice.dto.request.category.UpdateCategoryRequest;
-import com.praveenukkoji.productservice.dto.response.category.CategoryResponse;
+import com.praveenukkoji.productservice.dto.category.request.CreateCategoryRequest;
+import com.praveenukkoji.productservice.dto.category.request.UpdateCategoryRequest;
+import com.praveenukkoji.productservice.dto.category.response.CategoryResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryCreateException;
 import com.praveenukkoji.productservice.exception.category.CategoryDeleteException;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
 import com.praveenukkoji.productservice.exception.category.CategoryUpdateException;
+import com.praveenukkoji.productservice.exception.error.ValidationException;
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,17 +31,21 @@ public class CategoryService {
 
     // create
     public UUID createCategory(CreateCategoryRequest createCategoryRequest)
-            throws CategoryCreateException {
+            throws CategoryCreateException, ValidationException {
 
         String categoryName = createCategoryRequest.getName();
 
         log.info("creating new category = {}", categoryName);
 
-        Category newCategory = Category.builder()
-                .name(categoryName)
-                .build();
+        if(Objects.equals(categoryName, "")) {
+            throw new ValidationException("name", "category name cannot be empty");
+        }
 
         try {
+            Category newCategory = Category.builder()
+                    .name(categoryName)
+                    .build();
+
             return categoryRepository.save(newCategory).getId();
         } catch (DataIntegrityViolationException e) {
             throw new CategoryCreateException(e.getMostSpecificCause().getMessage());
@@ -49,10 +55,16 @@ public class CategoryService {
     }
 
     // get
-    public CategoryResponse getCategory(UUID categoryId)
-            throws CategoryNotFoundException {
+    public CategoryResponse getCategory(String id)
+            throws CategoryNotFoundException, ValidationException {
 
-        log.info("fetching category having id = {}", categoryId);
+        log.info("fetching category having id = {}", id);
+
+        if(Objects.equals(id, "")) {
+            throw new ValidationException("categoryId", "category id cannot be empty");
+        }
+
+        UUID categoryId = UUID.fromString(id);
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -63,54 +75,76 @@ public class CategoryService {
                     .build();
         }
 
-        throw new CategoryNotFoundException("category with id = " + categoryId + " not found");
+        throw new CategoryNotFoundException("category with id = " + id + " not found");
 
     }
 
     // update
-    public UUID updateCategory(UpdateCategoryRequest updateCategoryRequest)
-            throws CategoryNotFoundException, CategoryUpdateException {
+    public void updateCategory(UpdateCategoryRequest updateCategoryRequest)
+            throws CategoryNotFoundException, CategoryUpdateException, ValidationException {
 
-        UUID categoryId = UUID.fromString(updateCategoryRequest.getCategoryId());
+        String id = updateCategoryRequest.getCategoryId();
+        String name = updateCategoryRequest.getName();
 
-        log.info("updating category having id = {}", categoryId);
+        log.info("updating category having id = {}", id);
 
-        Optional<Category> category = categoryRepository.findById(categoryId);
-
-        if (category.isPresent()) {
-            String categoryName = updateCategoryRequest.getName();
-
-            Category updatedCategory = category.get();
-            updatedCategory.setName(categoryName);
-
-            try {
-                return categoryRepository.save(updatedCategory).getId();
-            } catch (Exception e) {
-                throw new CategoryUpdateException(e.getMessage());
-            }
+        if(Objects.equals(id, "")) {
+            throw new ValidationException("categoryId", "category id cannot be empty");
         }
 
-        throw new CategoryNotFoundException("category with id = " + categoryId + " not found");
+        if(Objects.equals(name, "")) {
+            throw new ValidationException("name", "category name cannot be empty");
+        }
+
+        try {
+            UUID categoryId = UUID.fromString(id);
+            Optional<Category> category = categoryRepository.findById(categoryId);
+
+            if (category.isPresent()) {
+                Category updatedCategory = category.get();
+                updatedCategory.setName(name);
+
+                categoryRepository.save(updatedCategory);
+            }
+            else {
+                throw new CategoryNotFoundException("category with id = " + id + " not found");
+            }
+        }
+        catch (CategoryNotFoundException e) {
+            throw new CategoryNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new CategoryUpdateException(e.getMessage());
+        }
     }
 
     // delete
-    public void deleteCategory(UUID categoryId)
-            throws CategoryNotFoundException, CategoryDeleteException {
+    public void deleteCategory(String id)
+            throws CategoryNotFoundException, CategoryDeleteException, ValidationException {
 
-        log.info("deleting category having id = {}", categoryId);
+        log.info("deleting category having id = {}", id);
 
-        Optional<Category> category = categoryRepository.findById(categoryId);
-
-        if (category.isPresent()) {
-            try {
-                categoryRepository.deleteById(categoryId);
-                return;
-            } catch (Exception e) {
-                throw new CategoryDeleteException(e.getMessage());
-            }
+        if (Objects.equals(id, "")) {
+            throw new ValidationException("categoryId", "category id cannot be empty");
         }
 
-        throw new CategoryNotFoundException("category with id = " + categoryId + " not found");
+        try {
+            UUID categoryId = UUID.fromString(id);
+            Optional<Category> category = categoryRepository.findById(categoryId);
+
+            if (category.isPresent()) {
+                categoryRepository.deleteById(categoryId);
+            }
+            else {
+                throw new CategoryNotFoundException("category with id = " + id + " not found");
+            }
+        }
+        catch(CategoryNotFoundException e){
+            throw new CategoryNotFoundException(e.getMessage());
+        }
+        catch(Exception e){
+            throw new CategoryDeleteException(e.getMessage());
+        }
     }
 
     // get all

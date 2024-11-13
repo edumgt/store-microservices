@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto.request.category;
+package com.praveenukkoji.productservice.dto.category.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateCategoryRequest {
     @NotNull(message = "category name is null")
-    @NotEmpty(message = "category name is empty")
     private String name;
 }

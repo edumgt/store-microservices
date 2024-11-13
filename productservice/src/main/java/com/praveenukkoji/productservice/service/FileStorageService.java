@@ -1,6 +1,6 @@
 package com.praveenukkoji.productservice.service;
 
-import com.praveenukkoji.productservice.exception.image.ImageNotFoundException;
+import com.praveenukkoji.productservice.exception.product.ProductImageNotFoundException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class FileStorageService {
 
     private final Path imageDir = Paths.get("productservice/src/main/resources/uploads");
 
-    // Helper method to extract file extension
+    // helper method to extract file extension
     private String getFileExtension(String fileName) {
         int index = fileName.lastIndexOf('.');
         if (index > 0) {
@@ -27,6 +27,7 @@ public class FileStorageService {
         return ""; // Default to no extension if none is found
     }
 
+    // store file
     public String storeFile(MultipartFile file) throws IOException {
         if (!Files.exists(imageDir)) {
             Files.createDirectories(imageDir); // Create directory if it doesn’t exist
@@ -43,12 +44,14 @@ public class FileStorageService {
         return fileName;
     }
 
+    // delete file
     public void deleteFile(String imageName) throws IOException {
         Path filePath = Paths.get(String.valueOf(imageDir), imageName);
         Files.deleteIfExists(filePath); // Delete file if exists
     }
 
-    public Resource getImage(String imageId) throws ImageNotFoundException {
+    // get file
+    public Resource getImage(String imageId) throws ProductImageNotFoundException {
         try {
             // Try to find the image with multiple common extensions
             String[] extensions = {".jpg", ".jpeg", ".png", ".gif", ".bmp"};
@@ -64,13 +67,13 @@ public class FileStorageService {
 
             // If no valid resource is found
             if (!resource.exists() || !resource.isReadable()) {
-                throw new ImageNotFoundException("image with id = " + imageId + " not found");
+                throw new ProductImageNotFoundException("image with id = " + imageId + " not found");
             }
 
             return resource;
 
         } catch (Exception e) {
-            throw new ImageNotFoundException(e.getMessage());
+            throw new ProductImageNotFoundException(e.getMessage());
         }
     }
 }

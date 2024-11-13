@@ -10,7 +10,7 @@
 			"name": "secured",
 			"item": [
 				{
-					"name": "api-gateway - done",
+					"name": "api-gateway",
 					"item": [
 						{
 							"name": "shutdown",
@@ -35,7 +35,7 @@
 					]
 				},
 				{
-					"name": "notification-service - done",
+					"name": "notification-service",
 					"item": [
 						{
 							"name": "shutdown",
@@ -60,7 +60,7 @@
 					]
 				},
 				{
-					"name": "eureka-server - done",
+					"name": "eureka-server",
 					"item": [
 						{
 							"name": "eureka apps",
@@ -294,7 +294,7 @@
 					]
 				},
 				{
-					"name": "health check - done",
+					"name": "health check",
 					"item": [
 						{
 							"name": "eureka-server",
@@ -439,7 +439,7 @@
 					]
 				},
 				{
-					"name": "config-server - done",
+					"name": "config-server",
 					"item": [
 						{
 							"name": "order-service default",
@@ -554,7 +554,7 @@
 					]
 				},
 				{
-					"name": "order-service - done",
+					"name": "order-service",
 					"item": [
 						{
 							"name": "order",
@@ -1273,6 +1273,9 @@
 								{
 									"name": "get all role",
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
@@ -1315,7 +1318,7 @@
 					]
 				},
 				{
-					"name": "product-service - done",
+					"name": "product-service",
 					"item": [
 						{
 							"name": "product",
@@ -1446,7 +1449,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/get-by-category?categoryName=Jewelery",
+											"raw": "{{product_service}}/api/v1/products/get-by-category?categoryName=Industrial",
 											"host": [
 												"{{product_service}}"
 											],
@@ -1459,7 +1462,7 @@
 											"query": [
 												{
 													"key": "categoryName",
-													"value": "Jewelery"
+													"value": "Industrial"
 												}
 											]
 										}
@@ -1520,10 +1523,22 @@
 								{
 									"name": "increase stock",
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "PATCH",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    // {\n    //     \"productId\": \"{{productId}}\",\n    //     \"quantity\": 989\n    // }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/increase-stock?productId={{productId}}&increaseStock=10",
+											"raw": "{{product_service}}/api/v1/products/increase-stock",
 											"host": [
 												"{{product_service}}"
 											],
@@ -1532,16 +1547,6 @@
 												"v1",
 												"products",
 												"increase-stock"
-											],
-											"query": [
-												{
-													"key": "productId",
-													"value": "{{productId}}"
-												},
-												{
-													"key": "increaseStock",
-													"value": "10"
-												}
 											]
 										}
 									},
@@ -1550,11 +1555,14 @@
 								{
 									"name": "decrease stock",
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 989\n    }\n]",
+											"raw": "[\n    // {\n    //     \"productId\": \"{{productId}}\",\n    //     \"quantity\": 90\n    // }\n]",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1583,7 +1591,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 1\n    },\n    {\n        \"productId\": \"cfa4041c-58b5-4b06-8be7-69c3d1c488c4\",\n        \"quantity\": 71\n    }\n]",
+											"raw": "[\n    // {\n    //     \"productId\": \"{{productId}}\",\n    //     \"quantity\": 900\n    // },\n    // {\n    //     \"productId\": \"cfa4041c-58b5-4b06-8be7-69c3d1c488c4\",\n    //     \"quantity\": 71\n    // }\n]",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1608,10 +1616,22 @@
 								{
 									"name": "update product price",
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "PATCH",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"productId\": \"{{productId}}\",\n    \"productPrice\": {{$randomPrice}}\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/update-price?productId={{productId}}&updatedPrice=1000",
+											"raw": "{{product_service}}/api/v1/products/update-price",
 											"host": [
 												"{{product_service}}"
 											],
@@ -1620,16 +1640,6 @@
 												"v1",
 												"products",
 												"update-price"
-											],
-											"query": [
-												{
-													"key": "productId",
-													"value": "{{productId}}"
-												},
-												{
-													"key": "updatedPrice",
-													"value": "1000"
-												}
 											]
 										}
 									},
@@ -1638,6 +1648,9 @@
 								{
 									"name": "get product image",
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
@@ -1656,6 +1669,37 @@
 													"key": "imageId",
 													"value": "{{imageId}}"
 												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update product",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"productId\": \"{{productId}}\",\n    \"name\": \"updated\",\n    \"description\": \"updated\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{product_service}}/api/v1/products",
+											"host": [
+												"{{product_service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products"
 											]
 										}
 									},
@@ -1691,7 +1735,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"name\": \"{{$randomDepartment}}\"\n}",
+											"raw": "{\n    // \"name\": \"{{$randomDepartment}}\n    \"name\": \"\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1781,7 +1825,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
+											"raw": "{{product_service}}/api/v1/categories",
 											"host": [
 												"{{product_service}}"
 											],
@@ -1789,12 +1833,6 @@
 												"api",
 												"v1",
 												"categories"
-											],
-											"query": [
-												{
-													"key": "categoryId",
-													"value": "{{categoryId}}"
-												}
 											]
 										}
 									},

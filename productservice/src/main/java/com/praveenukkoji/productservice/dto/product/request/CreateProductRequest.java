@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto.request.product;
+package com.praveenukkoji.productservice.dto.product.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateProductRequest {
     @NotNull(message = "product name is null")
-    @NotEmpty(message = "product name is empty")
     private String name;
 
     @NotNull(message = "description is null")
-    @NotEmpty(message = "description is empty")
     private String description;
 
     @NotNull(message = "price is null")
@@ -27,6 +25,5 @@ public class CreateProductRequest {
     private Integer quantity;
 
     @NotNull(message = "category id is null")
-    @NotEmpty(message = "category id is empty")
     private String categoryId;
 }

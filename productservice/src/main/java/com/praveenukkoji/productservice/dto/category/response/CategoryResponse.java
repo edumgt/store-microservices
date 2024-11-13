@@ -1,4 +1,4 @@
-package com.praveenukkoji.productservice.dto.response.category;
+package com.praveenukkoji.productservice.dto.category.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
