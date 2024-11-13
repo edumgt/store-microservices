@@ -1,6 +1,8 @@
 package com.praveenukkoji.productservice.service;
 
 import com.praveenukkoji.productservice.dto.request.product.CreateProductRequest;
+import com.praveenukkoji.productservice.dto.request.product.UpdateProductPriceRequest;
+import com.praveenukkoji.productservice.dto.request.product.UpdateProductRequest;
 import com.praveenukkoji.productservice.dto.response.category.CategoryResponse;
 import com.praveenukkoji.productservice.dto.response.product.ProductResponse;
 import com.praveenukkoji.productservice.exception.category.CategoryNotFoundException;
@@ -9,9 +11,10 @@ import com.praveenukkoji.productservice.exception.product.ProductCreateException
 import com.praveenukkoji.productservice.exception.product.ProductDeleteException;
 import com.praveenukkoji.productservice.exception.product.ProductNotFoundException;
 import com.praveenukkoji.productservice.exception.product.ProductUpdateException;
-import com.praveenukkoji.productservice.external.product.request.DecreaseProductStockRequest;
-import com.praveenukkoji.productservice.external.product.request.ProductDetailRequest;
-import com.praveenukkoji.productservice.external.product.response.ProductDetailResponse;
+import com.praveenukkoji.productservice.feign.product.request.DecreaseProductStockRequest;
+import com.praveenukkoji.productservice.feign.product.request.IncreaseProductStockRequest;
+import com.praveenukkoji.productservice.feign.product.request.ProductDetailRequest;
+import com.praveenukkoji.productservice.feign.product.response.ProductDetailResponse;
 import com.praveenukkoji.productservice.model.Category;
 import com.praveenukkoji.productservice.model.Product;
 import com.praveenukkoji.productservice.repository.CategoryRepository;
@@ -97,6 +100,37 @@ public class ProductService {
                     .category(category)
                     .imageName(product.get().getImageName())
                     .build();
+        }
+
+        throw new ProductNotFoundException("product with id = " + productId + " not found");
+    }
+
+    // update
+    public UUID updateProduct(UpdateProductRequest updateProductRequest)
+            throws ProductNotFoundException, ProductUpdateException {
+
+        UUID productId = UUID.fromString(updateProductRequest.getProductId());
+
+        log.info("updating product having id = {}", productId);
+
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            Product updatedProduct = product.get();
+
+            if (!Objects.equals(updateProductRequest.getName(), "")) {
+                updatedProduct.setName(updateProductRequest.getName());
+            }
+
+            if (!Objects.equals(updateProductRequest.getDescription(), "")) {
+                updatedProduct.setDescription(updateProductRequest.getDescription());
+            }
+
+            try {
+                return productRepository.save(updatedProduct).getId();
+            } catch (Exception e) {
+                throw new ProductUpdateException(e.getMessage());
+            }
         }
 
         throw new ProductNotFoundException("product with id = " + productId + " not found");
@@ -188,24 +222,51 @@ public class ProductService {
     }
 
     // increase stock
-    public UUID increaseStock(UUID productId, Integer increaseStock)
+    public void increaseStock(List<IncreaseProductStockRequest> increaseProductStockRequestList)
             throws ProductNotFoundException, ProductUpdateException {
 
-        log.info("Increasing stock by: {}", increaseStock);
+        log.info("increase stock request");
 
-        Optional<Product> product = productRepository.findById(productId);
+        List<UUID> productIdList = increaseProductStockRequestList.stream().map(
+                        product -> UUID.fromString(product.getProductId()))
+                .toList();
 
-        if (product.isPresent()) {
-            Product productToIncrease = product.get();
-            productToIncrease.setQuantity(productToIncrease.getQuantity() + increaseStock);
-            try {
-                return productRepository.save(productToIncrease).getId();
-            } catch (Exception e) {
-                throw new ProductUpdateException(e.getMessage());
+        List<Product> productList = productRepository.findAllById(productIdList);
+
+        // updated product list
+        List<Product> updatedProductList = new ArrayList<>();
+
+        for (IncreaseProductStockRequest item : increaseProductStockRequestList) {
+            UUID itemId = UUID.fromString(item.getProductId());
+            Integer increaseStockValue = item.getQuantity();
+
+            if (increaseStockValue < 1) {
+                throw new ProductUpdateException("increase stock value cannot be less than 1");
+            }
+
+            Optional<Product> matchingProduct = productList.stream()
+                    .filter(product -> product.getId().equals(itemId))
+                    .findFirst();
+
+            if (matchingProduct.isPresent()) {
+                int updatedValueOfStock = matchingProduct.get().getQuantity() + increaseStockValue;
+
+                // updating stock value
+                Product updatedProduct = matchingProduct.get();
+                updatedProduct.setQuantity(updatedValueOfStock);
+
+                updatedProductList.add(updatedProduct);
+            } else {
+                throw new ProductNotFoundException("product with id = " + itemId + " not found");
             }
         }
 
-        throw new ProductNotFoundException("product with id = " + productId + " not found");
+        // commiting updatedProductList to db
+        try {
+            productRepository.saveAll(updatedProductList);
+        } catch (Exception e) {
+            throw new ProductUpdateException(e.getMessage());
+        }
     }
 
     // decrease stock
@@ -214,14 +275,16 @@ public class ProductService {
 
         log.info("decrease stock request");
 
-        List<UUID> productIdList = decreaseProductStockRequestList.stream().map(DecreaseProductStockRequest::getProductId)
+        List<UUID> productIdList = decreaseProductStockRequestList.stream().map(
+                        product -> UUID.fromString(product.getProductId())
+                )
                 .toList();
 
         List<Product> productList = productRepository.findAllById(productIdList);
 
         // Check stock availability before updating
         for (DecreaseProductStockRequest item : decreaseProductStockRequestList) {
-            UUID itemId = item.getProductId();
+            UUID itemId = UUID.fromString(item.getProductId());
             Integer decreaseStockValue = item.getQuantity();
 
             Optional<Product> matchingProduct = productList.stream()
@@ -242,7 +305,7 @@ public class ProductService {
         List<Product> updatedProductList = new ArrayList<>();
 
         for (DecreaseProductStockRequest item : decreaseProductStockRequestList) {
-            UUID itemId = item.getProductId();
+            UUID itemId = UUID.fromString(item.getProductId());
             Integer decreaseStockValue = item.getQuantity();
 
             Optional<Product> matchingProduct = productList.stream()
@@ -271,16 +334,24 @@ public class ProductService {
     }
 
     // update product price
-    public UUID updateProductPrice(UUID productId, Double updatedPrice)
+    public UUID updateProductPrice(UpdateProductPriceRequest updateProductPriceRequest)
             throws ProductNotFoundException, ProductUpdateException {
-        log.info("Updating price of product having id = {}", productId);
+        UUID productId = UUID.fromString(updateProductPriceRequest.getProductId());
+        Double newPrice = updateProductPriceRequest.getProductPrice();
+
+        if (newPrice <= 0.0) {
+            throw new ProductUpdateException("product price cannot be zero or less than zero");
+        }
+
+        log.info("updating price of product having id = {}", productId);
 
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
-            Product updatedProduct = product.get();
-            updatedProduct.setPrice(updatedPrice);
             try {
+                Product updatedProduct = product.get();
+                updatedProduct.setPrice(newPrice);
+
                 return productRepository.save(updatedProduct).getId();
             } catch (Exception e) {
                 throw new ProductUpdateException(e.getMessage());
@@ -297,26 +368,30 @@ public class ProductService {
 
         List<ProductDetailResponse> productDetailResponse = new ArrayList<>();
 
-        List<UUID> productIdList = productDetailRequest.stream().map(ProductDetailRequest::getProductId).toList();
+        List<UUID> productIdList = productDetailRequest.stream().map(
+                product -> UUID.fromString(product.getProductId())
+        ).toList();
 
         List<Product> productList = productRepository.findAllById(productIdList);
 
         if (!productList.isEmpty()) {
             productDetailRequest.forEach(requestedProduct -> {
+                UUID productId = UUID.fromString(requestedProduct.getProductId());
+
                 Optional<Product> matchingProduct = productList.stream()
-                        .filter(product -> product.getId().equals(requestedProduct.getProductId()))
+                        .filter(product -> product.getId().equals(productId))
                         .findFirst();
 
                 if (matchingProduct.isPresent()) {
                     productDetailResponse.add(ProductDetailResponse.builder()
-                            .productId(requestedProduct.getProductId())
+                            .productId(productId)
                             .price(matchingProduct.get().getPrice())
                             .inStock(matchingProduct.get().getQuantity() >= requestedProduct.getQuantity())
                             .build()
                     );
                 } else {
                     productDetailResponse.add(ProductDetailResponse.builder()
-                            .productId(requestedProduct.getProductId())
+                            .productId(productId)
                             .price(0.0)
                             .inStock(false)
                             .build()
@@ -326,7 +401,7 @@ public class ProductService {
         } else {
             productDetailRequest.forEach(requestedProduct -> {
                 productDetailResponse.add(ProductDetailResponse.builder()
-                        .productId(requestedProduct.getProductId())
+                        .productId(UUID.fromString(requestedProduct.getProductId()))
                         .price(0.0)
                         .inStock(false)
                         .build());
