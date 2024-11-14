@@ -27,7 +27,7 @@ spring:
                 spring:
                     json:
                         type:
-                            mapping: event:com.praveenukkoji.orderservice.kafka.order.OrderEvent
+                            mapping: event:com.praveenukkoji.orderservice.kafka.event.OrderEvent
     config:
         import: optional:configserver:http://localhost:8888/
 feign:
@@ -65,6 +65,6 @@ endpoints:
         enabled: true
 info:
     app:
-        name: "orderservice"
-        description: "Order Service for store-microservices"
+        name: "order-service"
+        description: "order service for store-microservices"
         version: "1.0"

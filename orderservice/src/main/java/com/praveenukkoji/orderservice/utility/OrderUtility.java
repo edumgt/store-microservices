@@ -1,7 +1,7 @@
 package com.praveenukkoji.orderservice.utility;
 
-import com.praveenukkoji.orderservice.dto.request.order.Item;
-import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
+import com.praveenukkoji.orderservice.dto.order.request.Item;
+import com.praveenukkoji.orderservice.exception.order.ProductNotFoundException;
 import com.praveenukkoji.orderservice.feign.dto.product.request.DecreaseProductStockRequest;
 import com.praveenukkoji.orderservice.feign.dto.product.request.ProductDetailRequest;
 import com.praveenukkoji.orderservice.feign.dto.product.response.ProductDetailResponse;
@@ -26,21 +26,26 @@ public class OrderUtility {
     private final ProductClient productClient;
 
     // getting product detail from product-service
-    public List<ProductDetailResponse> getProductDetail(List<ProductDetailRequest> productDetailRequest)
+    public List<ProductDetailResponse> getProductDetail(List<Item> itemList)
             throws ProductServiceException {
+
+        // creating product-detail-request dto
+        List<ProductDetailRequest> productDetailRequest = itemList.stream().map(item ->
+                ProductDetailRequest.builder()
+                        .productId(UUID.fromString(item.getProductId()))
+                        .quantity(item.getQuantity())
+                        .build()
+        ).toList();
 
         log.info("fetching product detail from product-service");
 
-        if (productDetailRequest.isEmpty()) {
-            throw new ProductServiceException("product detail request is empty");
-        }
-
         try {
             // Using FeignClient
-            ResponseEntity<List<ProductDetailResponse>> productDetailsResponse = productClient.getProductDetails(productDetailRequest);
+            ResponseEntity<List<ProductDetailResponse>> productDetailsResponse =
+                    productClient.getProductDetails(productDetailRequest);
 
             if (productDetailsResponse.getStatusCode().value() != 200) {
-                throw new ProductServiceException("some error occurred while fetching product details");
+                throw new ProductServiceException("some error occurred while fetching product detail");
             }
 
             return productDetailsResponse.getBody();
@@ -51,7 +56,7 @@ public class OrderUtility {
 
     // get order amount
     public Double getOrderAmount(List<Item> itemList, List<ProductDetailResponse> productDetailList)
-            throws CreateOrderException {
+            throws ProductNotFoundException {
 
         log.info("calculating order amount");
 
@@ -70,7 +75,7 @@ public class OrderUtility {
                 double productPrice = matchingProduct.get().getPrice();
                 orderAmount += quantity * productPrice;
             } else {
-                throw new CreateOrderException("product with id = " + itemId + " not found");
+                throw new ProductNotFoundException("product with id = " + itemId + " not found");
             }
         }
 
@@ -79,7 +84,7 @@ public class OrderUtility {
 
     // get order item list
     public List<OrderItem> getOrderItemList(List<Item> itemList, List<ProductDetailResponse> productDetailList)
-            throws CreateOrderException {
+            throws ProductNotFoundException {
 
         log.info("creating order item list");
 
@@ -101,7 +106,7 @@ public class OrderUtility {
                         .price(matchingProduct.get().getPrice())
                         .build());
             } else {
-                throw new CreateOrderException("product with id = " + itemId + " not found");
+                throw new ProductNotFoundException("product with id = " + itemId + " not found");
             }
         }
 
@@ -109,8 +114,16 @@ public class OrderUtility {
     }
 
     // decreasing product stock through product-service
-    public void decreaseProductStock(List<DecreaseProductStockRequest> decreaseProductStockRequest)
+    public void decreaseProductStock(List<Item> itemList)
             throws ProductServiceException {
+
+        // creating decrease-stock-request dto
+        List<DecreaseProductStockRequest> decreaseProductStockRequest = itemList.stream()
+                .map(item -> DecreaseProductStockRequest.builder()
+                        .productId(UUID.fromString(item.getProductId()))
+                        .quantity(item.getQuantity())
+                        .build()
+                ).toList();
         
         log.info("decreasing product stock through product-service");
 

@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.dto.request.order;
+package com.praveenukkoji.orderservice.dto.order.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -16,14 +16,11 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateOrderRequest {
     @NotNull(message = "item list is null")
-    @NotEmpty(message = "item list is empty")
     private List<@Valid Item> itemList;
 
-    @NotNull(message = "created by is null")
-    @NotEmpty(message = "created by is empty")
-    private String createdBy;
+    @NotNull(message = "user id is null")
+    private String userId;
 
     @NotNull(message = "address id is null")
-    @NotEmpty(message = "address id is empty")
     private String addressId;
 }

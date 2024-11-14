@@ -1,7 +1,5 @@
 package com.praveenukkoji.orderservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.praveenukkoji.orderservice.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,10 +34,16 @@ public class Order {
     private Double amount;
 
     @Column(nullable = false)
-    private OrderStatus status;
+    private String orderStatus;
 
     @Column(nullable = false)
-    private UUID addressId;
+    private String paymentStatus;
+
+    @Column(nullable = false)
+    private String addressId;
+
+    @Column(nullable = false)
+    private String userId;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -55,8 +59,4 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = EAGER, mappedBy = "order")
     private List<OrderItem> orderItemList;
-
-    @OneToOne(fetch = EAGER, mappedBy = "order")
-    @JsonIgnore
-    private Payment payment;
 }

@@ -1,11 +1,12 @@
 package com.praveenukkoji.orderservice.controller;
 
-import com.praveenukkoji.orderservice.dto.error.ValidationResponse;
-import com.praveenukkoji.orderservice.dto.request.order.ChangeOrderStatusRequest;
-import com.praveenukkoji.orderservice.dto.request.order.CreateOrderRequest;
+import com.praveenukkoji.orderservice.dto.order.request.ChangeOrderStatusRequest;
+import com.praveenukkoji.orderservice.dto.order.request.CreateOrderRequest;
+import com.praveenukkoji.orderservice.exception.error.ValidationException;
 import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
+import com.praveenukkoji.orderservice.exception.order.ProductNotFoundException;
 import com.praveenukkoji.orderservice.feign.exception.product.ProductServiceException;
 import com.praveenukkoji.orderservice.service.OrderService;
 import jakarta.validation.Valid;
@@ -27,8 +28,8 @@ public class OrderController {
 
     // create
     @PostMapping(path = "")
-    public ResponseEntity<?> createOrder(@RequestBody @Valid CreateOrderRequest createOrderRequest)
-            throws CreateOrderException, ProductServiceException {
+    public ResponseEntity<?> createOrder(@RequestBody @Valid CreateOrderRequest createOrderRequest
+    ) throws CreateOrderException, ProductServiceException, ProductNotFoundException, ValidationException {
         return ResponseEntity.status(201).body(orderService.createOrder(createOrderRequest));
     }
 
@@ -36,47 +37,24 @@ public class OrderController {
     @GetMapping(path = "")
     public ResponseEntity<?> getOrder(
             @RequestParam(defaultValue = "", name = "orderId") String orderId
-    ) throws OrderNotFoundException {
-        if (Objects.equals(orderId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("orderId", "order id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(orderId);
-        return ResponseEntity.status(200).body(orderService.getOrder(id));
+    ) throws OrderNotFoundException, ValidationException {
+        return ResponseEntity.status(200).body(orderService.getOrder(orderId));
     }
 
     // update order status
     @PatchMapping("/order-status")
     public ResponseEntity<?> changeOrderStatus(
             @RequestBody @Valid ChangeOrderStatusRequest changeOrderStatusRequest
-    ) throws OrderNotFoundException, OrderStatusUpdateException {
-        return ResponseEntity.status(200).body(orderService.changeOrderStatus(changeOrderStatusRequest));
+    ) throws OrderNotFoundException, OrderStatusUpdateException, ValidationException {
+        orderService.changeOrderStatus(changeOrderStatusRequest);
+        return ResponseEntity.status(204).body("");
     }
 
-    // get by user
+    // get order by user
     @GetMapping(path = "/get-by-user")
     public ResponseEntity<?> getOrderByUser(
             @RequestParam(defaultValue = "", name = "userId") String userId
-    ) {
-        if (Objects.equals(userId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("userId", "user id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(userId);
-        return ResponseEntity.status(200).body(orderService.getOrderByUser(id));
+    ) throws ValidationException {
+        return ResponseEntity.status(200).body(orderService.getOrderByUser(userId));
     }
 }

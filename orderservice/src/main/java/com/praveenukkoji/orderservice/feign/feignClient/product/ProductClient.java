@@ -21,5 +21,6 @@ public interface ProductClient {
 
     // decrease product stock
     @PatchMapping(value = "/decrease-stock")
-    ResponseEntity<Boolean> decreaseStock(@RequestBody List<DecreaseProductStockRequest> decreaseProductStockRequest);
+    ResponseEntity<Boolean> decreaseStock(
+            @RequestBody List<DecreaseProductStockRequest> decreaseProductStockRequest);
 }

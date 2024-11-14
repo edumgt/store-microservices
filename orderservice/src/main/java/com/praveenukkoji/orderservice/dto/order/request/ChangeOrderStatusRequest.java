@@ -1,4 +1,4 @@
-package com.praveenukkoji.orderservice.dto.request.order;
+package com.praveenukkoji.orderservice.dto.order.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,10 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChangeOrderStatusRequest {
     @NotNull(message = "order id is null")
-    @NotEmpty(message = "order id is empty")
     private String orderId;
 
     @NotNull(message = "order status is null")
-    @NotEmpty(message = "order status is empty")
     private String orderStatus;
 }
