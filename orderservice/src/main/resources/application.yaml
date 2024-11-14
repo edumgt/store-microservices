@@ -20,14 +20,15 @@ spring:
         template:
             default-topic: orderTopic
         producer:
-            group-id: orderEventId
+            group-id: notification-service-group
             key-serializer: org.apache.kafka.common.serialization.StringSerializer
             value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
             properties:
                 spring:
                     json:
                         type:
-                            mapping: event:com.praveenukkoji.orderservice.kafka.event.OrderEvent
+                            mapping:
+                                orderEvent: com.praveenukkoji.orderservice.kafka.event.OrderEvent
     config:
         import: optional:configserver:http://localhost:8888/
 feign:

@@ -584,7 +584,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 36\n            }\n        ],\n        \"createdBy\": \"8b8959bb-8a3e-4365-b116-27713cce32f2\",\n        \"addressId\": \"8b8959bb-8a3e-4365-b116-27713cce32f2\"\n}",
+											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 1\n            }\n        ],\n        \"userId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f9\",\n        \"addressId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f9\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -679,82 +679,6 @@
 												{
 													"key": "userId",
 													"value": "{{userId}}"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "payment",
-							"item": [
-								{
-									"name": "make payment",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"if (pm.response.code === 201) {",
-													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-													"    pm.globals.set(\"paymentId\", id);",
-													"}"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "noauth"
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"amount\": 20502.72,\n    \"status\": \"success\",\n    \"orderId\": \"{{orderId}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{order_service}}/api/v1/payments",
-											"host": [
-												"{{order_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"payments"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "get payment",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{order_service}}/api/v1/payments?paymentId={{paymentId}}",
-											"host": [
-												"{{order_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"payments"
-											],
-											"query": [
-												{
-													"key": "paymentId",
-													"value": "{{paymentId}}"
 												}
 											]
 										}
@@ -1735,7 +1659,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    // \"name\": \"{{$randomDepartment}}\n    \"name\": \"\"\n}",
+											"raw": "{\n    \"name\": \"{{$randomDepartment}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
