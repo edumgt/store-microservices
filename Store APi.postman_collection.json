@@ -819,7 +819,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"line\": \"updated\",\n    \"state\": \"updated\",\n    \"city\": \"updated\",\n    \"country\": \"updated\",\n    \"pincode\": \"000000\"\n}",
+											"raw": "{\n    \"addressId\": \"{{addressId}}\",\n    \"line\": \"updated\",\n    \"state\": \"updated\",\n    \"city\": \"updated\",\n    \"country\": \"updated\",\n    \"pincode\": \"000000\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -827,7 +827,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
+											"raw": "{{user_service}}/api/v1/addresses",
 											"host": [
 												"{{user_service}}"
 											],
@@ -835,12 +835,6 @@
 												"api",
 												"v1",
 												"addresses"
-											],
-											"query": [
-												{
-													"key": "addressId",
-													"value": "{{addressId}}"
-												}
 											]
 										}
 									},
@@ -950,11 +944,14 @@
 								{
 									"name": "update user",
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"fullname\": \"updated\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\"\n}",
+											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"fullname\": \"updated\",\n    \"username\": \"updated\",\n    \"email\": \"updated@domain.com\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -962,7 +959,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
+											"raw": "{{user_service}}/api/v1/users",
 											"host": [
 												"{{user_service}}"
 											],
@@ -970,12 +967,6 @@
 												"api",
 												"v1",
 												"users"
-											],
-											"query": [
-												{
-													"key": "userId",
-													"value": "{{userId}}"
-												}
 											]
 										}
 									},
@@ -1040,8 +1031,17 @@
 									"request": {
 										"method": "PATCH",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"activeStatus\": false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/users/active-status?userId={{userId}}&activeStatus=true",
+											"raw": "{{user_service}}/api/v1/users/active-status",
 											"host": [
 												"{{user_service}}"
 											],
@@ -1050,16 +1050,6 @@
 												"v1",
 												"users",
 												"active-status"
-											],
-											"query": [
-												{
-													"key": "userId",
-													"value": "{{userId}}"
-												},
-												{
-													"key": "activeStatus",
-													"value": "true"
-												}
 											]
 										}
 									},
@@ -1869,6 +1859,9 @@
 								{
 									"name": "get payment",
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
@@ -1896,6 +1889,9 @@
 						{
 							"name": "shutdown Copy",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "POST",
 								"header": [],
 								"url": {
