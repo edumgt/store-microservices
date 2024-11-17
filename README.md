@@ -18,11 +18,11 @@
 
 ## Model diagram
 
-![Store API Models.png](Store%20API%20Models.png)
+
 
 ## Architecture diagram
 
-![Architecture Diagram.png](Architecture%20Diagram.png)
+
 
 ## Setup Steps
 
@@ -40,33 +40,20 @@
         2. userservice            (port : 8000)
         3. productservice         (port : 8001)
         4. orderservice           (port : 8002)
-        5. notificationservice    (port : 8003)
+        4. paymentservice         (port : 8003)
+        5. notificationservice    (port : 8004)
 
 ## Future Things
 
-1. add payment-service:
-
-   - handles payment requests
-
-2. ELK Stack implementation:
-
-   - for logs
-
-3. swagger:
+1. swagger:
 
    - for documentation
 
-4. upgrade product service:
-
-   - addition of product images
-
-5. authentication and authorization
-
-6. add cart-service, shipping-service
+2. add cart-service, shipping-service
 
 ## API call file
 
-- you can refer postman_file : [Store APi.postman_collection.json](store-backend/Store%20APi.postman_collection.json)
+- you can refer postman_file : [Store APi.postman_collection.json](Store%20APi.postman_collection.json)
 
 ## License
 
