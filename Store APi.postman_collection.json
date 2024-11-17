@@ -323,6 +323,36 @@
 							"response": []
 						},
 						{
+							"name": "payment-service",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka-server}}/eureka/apps/payment-service",
+									"host": [
+										"{{eureka-server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"payment-service"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "order-service",
 							"protocolProfileBehavior": {
 								"disabledSystemHeaders": {
@@ -427,36 +457,6 @@
 									"path": [
 										"actuator",
 										"shutdown"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "payment-service",
-							"protocolProfileBehavior": {
-								"disabledSystemHeaders": {
-									"accept": true
-								}
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{eureka-server}}/eureka/apps/payment-service",
-									"host": [
-										"{{eureka-server}}"
-									],
-									"path": [
-										"eureka",
-										"apps",
-										"payment-service"
 									]
 								}
 							},
@@ -892,7 +892,14 @@
 						}
 					],
 					"auth": {
-						"type": "noauth"
+						"type": "oauth2",
+						"oauth2": [
+							{
+								"key": "addTokenTo",
+								"value": "header",
+								"type": "string"
+							}
+						]
 					},
 					"event": [
 						{
@@ -2271,7 +2278,7 @@
 												{
 													"key": "image",
 													"type": "file",
-													"src": []
+													"src": "postman-cloud:///1ef9ce71-ca4b-4730-9588-728e106e8f2d"
 												}
 											]
 										},
@@ -3305,7 +3312,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 1\n            }\n        ],\n        \"userId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f0\",\n        \"addressId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f0\"\n}",
+											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 10000\n            }\n        ],\n        \"userId\": \"{{userId}}\",\n        \"addressId\": \"{{addressId}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3903,6 +3910,59 @@
 									""
 								]
 							}
+						}
+					]
+				},
+				{
+					"name": "keycloak",
+					"item": [
+						{
+							"name": "client-credentials-access-token",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "text"
+										},
+										{
+											"key": "client_id",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "{{client_credentials_secret}}",
+											"type": "text"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"realms",
+										"master",
+										"protocol",
+										"openid-connect",
+										"token"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
