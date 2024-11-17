@@ -27,6 +27,9 @@ public class SecurityConfig {
                                 .pathMatchers(HttpMethod.GET, "/store/api/v1/products/image").permitAll() // For ?imageId=
                                 .pathMatchers(HttpMethod.GET, "/store/api/v1/categories/all").permitAll()
 
+                                // Allow Actuator endpoints to pass without authentication
+                                .pathMatchers("/actuator/**").permitAll()
+
                                 // Authenticate other requests
                                 .pathMatchers("/store/api/v1/users/**").hasRole("USERS")
                                 .pathMatchers("/store/api/v1/roles/**").hasRole("ROLES")
