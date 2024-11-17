@@ -1,8 +1,9 @@
 package com.praveenukkoji.userservice.service;
 
-import com.praveenukkoji.userservice.dto.request.role.CreateRoleRequest;
-import com.praveenukkoji.userservice.dto.request.role.UpdateRoleRequest;
-import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
+import com.praveenukkoji.userservice.dto.role.request.CreateRoleRequest;
+import com.praveenukkoji.userservice.dto.role.request.UpdateRoleRequest;
+import com.praveenukkoji.userservice.dto.role.response.RoleResponse;
+import com.praveenukkoji.userservice.exception.error.ValidationException;
 import com.praveenukkoji.userservice.exception.role.RoleCreateException;
 import com.praveenukkoji.userservice.exception.role.RoleDeleteException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
@@ -29,17 +30,20 @@ public class RoleService {
 
     // create
     public UUID createRole(CreateRoleRequest createRoleRequest)
-            throws RoleCreateException {
-
-        log.info("creating new role = {}", createRoleRequest.getType());
+            throws RoleCreateException, ValidationException {
 
         String roleType = createRoleRequest.getType().toUpperCase();
+        log.info("creating new role = {}", roleType);
 
-        Role newRole = Role.builder()
-                .type(roleType)
-                .build();
+        if(roleType.isEmpty()) {
+            throw new ValidationException("roleType", "role type cannot be empty");
+        }
 
         try {
+            Role newRole = Role.builder()
+                    .type(roleType)
+                    .build();
+
             return roleRepository.save(newRole).getId();
         } catch (DataIntegrityViolationException e) {
             throw new RoleCreateException(e.getMostSpecificCause().getMessage());
@@ -49,10 +53,16 @@ public class RoleService {
     }
 
     // get
-    public RoleResponse getRole(UUID roleId)
-            throws RoleNotFoundException {
+    public RoleResponse getRole(String id)
+            throws RoleNotFoundException, ValidationException {
 
-        log.info("fetching role having id = {}", roleId);
+        log.info("fetching role having id = {}", id);
+
+        if(id.isEmpty()) {
+            throw new ValidationException("roleId", "role id cannot be empty");
+        }
+
+        UUID roleId = UUID.fromString(id);
 
         Optional<Role> role = roleRepository.findById(roleId);
 
@@ -62,52 +72,76 @@ public class RoleService {
                     .type(role.get().getType())
                     .build();
 
-        throw new RoleNotFoundException("role with id = " + roleId + " not found");
+        throw new RoleNotFoundException("role with id = " + id + " not found");
     }
 
     // update
-    public UUID updateRole(UpdateRoleRequest updateRoleRequest)
-            throws RoleNotFoundException, RoleUpdateException {
+    public void updateRole(UpdateRoleRequest updateRoleRequest)
+            throws RoleNotFoundException, RoleUpdateException, ValidationException {
 
-        log.info("updating role having id = {}", updateRoleRequest.getRoleId());
+        String id = updateRoleRequest.getRoleId();
+        String updatedType = updateRoleRequest.getType().toUpperCase();
 
-        UUID roleId = UUID.fromString(updateRoleRequest.getRoleId());
-        Optional<Role> role = roleRepository.findById(roleId);
+        log.info("updating role having id = {}", id);
 
-        if (role.isPresent()) {
-            try {
-                String newType = updateRoleRequest.getType().toUpperCase();
-
-                Role updatedRole = role.get();
-                updatedRole.setType(newType);
-
-                return roleRepository.save(updatedRole).getId();
-            } catch (Exception e) {
-                throw new RoleUpdateException(e.getMessage());
-            }
+        if(id.isEmpty()) {
+            throw new ValidationException("roleId", "role id cannot be empty");
         }
 
-        throw new RoleNotFoundException("role with id = " + roleId + " not found");
+        if(updatedType.isEmpty()) {
+            throw new ValidationException("type",  "type cannot be empty");
+        }
+
+        try {
+            UUID roleId = UUID.fromString(id);
+            Optional<Role> role = roleRepository.findById(roleId);
+
+            if (role.isPresent()) {
+                Role updatedRole = role.get();
+                updatedRole.setType(updatedType);
+
+                roleRepository.save(updatedRole);
+            }
+            else {
+                throw new RoleNotFoundException("role with id = " + id + " not found");
+            }
+        }
+        catch (RoleNotFoundException e) {
+            throw new RoleNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new RoleUpdateException(e.getMessage());
+        }
     }
 
     // delete
-    public void deleteRole(UUID roleId)
-            throws RoleNotFoundException, RoleDeleteException {
+    public void deleteRole(String id)
+            throws RoleNotFoundException, RoleDeleteException, ValidationException {
 
-        log.info("deleting role having id = {}", roleId);
+        log.info("deleting role having id = {}", id);
 
-        Optional<Role> role = roleRepository.findById(roleId);
-
-        if (role.isPresent()) {
-            try {
-                roleRepository.deleteById(roleId);
-                return;
-            } catch (Exception e) {
-                throw new RoleDeleteException(e.getMessage());
-            }
+        if(id.isEmpty()) {
+            throw new ValidationException("roleId", "role id cannot be empty");
         }
 
-        throw new RoleNotFoundException("role with id = " + roleId + " not found");
+        try {
+            UUID roleId = UUID.fromString(id);
+
+            Optional<Role> role = roleRepository.findById(roleId);
+
+            if(role.isPresent()) {
+                roleRepository.deleteById(roleId);
+            }
+            else {
+                throw new RoleNotFoundException("role with id = " + roleId + " not found");
+            }
+        }
+        catch (RoleNotFoundException e) {
+            throw new RoleNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new RoleDeleteException(e.getMessage());
+        }
     }
 
     // get all
@@ -117,11 +151,11 @@ public class RoleService {
 
         List<Role> roleList = roleRepository.findAll();
 
-        return roleList.stream().map(role -> {
-            return RoleResponse.builder()
-                    .id(role.getId())
-                    .type(role.getType())
-                    .build();
-        }).toList();
+        return roleList.stream().map(role ->
+                RoleResponse.builder()
+                .id(role.getId())
+                .type(role.getType())
+                .build()
+        ).toList();
     }
 }

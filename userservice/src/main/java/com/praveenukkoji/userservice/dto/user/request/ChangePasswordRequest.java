@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.dto.request.user;
+package com.praveenukkoji.userservice.dto.user.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,10 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChangePasswordRequest {
     @NotNull(message = "user id is null")
-    @NotEmpty(message = "user id is empty")
     private String userId;
 
     @NotNull(message = "password is null")
-    @NotEmpty(message = "password is empty")
     private String password;
 }

@@ -1,6 +1,6 @@
-package com.praveenukkoji.userservice.dto.response.user;
+package com.praveenukkoji.userservice.dto.user.response;
 
-import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
+import com.praveenukkoji.userservice.dto.role.response.RoleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +17,5 @@ public class UserResponse {
     private String fullname;
     private String username;
     private String email;
-    private RoleResponse role;
+    private String roleType;
 }

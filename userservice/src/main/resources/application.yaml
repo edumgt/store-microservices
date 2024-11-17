@@ -52,6 +52,6 @@ endpoints:
         enabled: true
 info:
     app:
-        name: "userservice"
-        description: "User Service for store-microservices"
+        name: "user-service"
+        description: "user service for store-microservices"
         version: "1.0"

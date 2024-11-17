@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.dto.request.role;
+package com.praveenukkoji.userservice.dto.role.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateRoleRequest {
     @NotNull(message = "role type is null")
-    @NotEmpty(message = "role type is empty")
     private String type;
 }

@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.dto.response.role;
+package com.praveenukkoji.userservice.dto.role.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.praveenukkoji.userservice.dto.response.address;
+package com.praveenukkoji.userservice.dto.address.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

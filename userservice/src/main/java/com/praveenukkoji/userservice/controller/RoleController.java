@@ -1,8 +1,8 @@
 package com.praveenukkoji.userservice.controller;
 
-import com.praveenukkoji.userservice.dto.error.ValidationResponse;
-import com.praveenukkoji.userservice.dto.request.role.CreateRoleRequest;
-import com.praveenukkoji.userservice.dto.request.role.UpdateRoleRequest;
+import com.praveenukkoji.userservice.dto.role.request.CreateRoleRequest;
+import com.praveenukkoji.userservice.dto.role.request.UpdateRoleRequest;
+import com.praveenukkoji.userservice.exception.error.ValidationException;
 import com.praveenukkoji.userservice.exception.role.RoleCreateException;
 import com.praveenukkoji.userservice.exception.role.RoleDeleteException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
@@ -28,7 +28,7 @@ public class RoleController {
     // create
     @PostMapping(path = "")
     public ResponseEntity<?> createRole(@RequestBody @Valid CreateRoleRequest createRoleRequest)
-            throws RoleCreateException {
+            throws RoleCreateException, ValidationException {
         return ResponseEntity.status(201).body(roleService.createRole(createRoleRequest));
     }
 
@@ -36,49 +36,25 @@ public class RoleController {
     @GetMapping(path = "")
     public ResponseEntity<?> getRole(
             @RequestParam(defaultValue = "", name = "roleId") String roleId
-    ) throws RoleNotFoundException {
-        if (Objects.equals(roleId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("roleId", "role id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(roleId);
-        return ResponseEntity.status(200).body(roleService.getRole(id));
+    ) throws RoleNotFoundException, ValidationException {
+        return ResponseEntity.status(200).body(roleService.getRole(roleId));
     }
 
     // update
     @PatchMapping(path = "")
     public ResponseEntity<?> updateRole(
             @RequestBody @Valid UpdateRoleRequest updateRoleRequest
-    ) throws RoleNotFoundException, RoleUpdateException {
-        return ResponseEntity.status(200).body(roleService.updateRole(updateRoleRequest));
+    ) throws RoleNotFoundException, RoleUpdateException, ValidationException {
+        roleService.updateRole(updateRoleRequest);
+        return ResponseEntity.status(204).body("");
     }
 
     // delete
     @DeleteMapping(path = "")
     public ResponseEntity<?> deleteRole(
             @RequestParam(defaultValue = "", name = "roleId") String roleId
-    ) throws RoleNotFoundException, RoleDeleteException {
-        if (Objects.equals(roleId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("roleId", "role id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(roleId);
-        roleService.deleteRole(id);
-
+    ) throws RoleNotFoundException, RoleDeleteException, ValidationException {
+        roleService.deleteRole(roleId);
         return ResponseEntity.status(204).body("");
     }
 

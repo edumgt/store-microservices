@@ -21,6 +21,7 @@ public class UserUtility {
     @Value("${password.decryption.key}")
     private String passwordDecryptionKey;
 
+    // encrypt password
     public String getEncryptedPassword(String password) throws PasswordEncryptionException {
         byte[] decodedKey = Base64.getDecoder().decode(passwordEncryptionKey);
 
@@ -37,6 +38,7 @@ public class UserUtility {
         }
     }
 
+    // decrypt password
     public String getDecryptedPassword(String encryptedPassword) throws PasswordDecryptionException {
         byte[] decodedKey = Base64.getDecoder().decode(passwordDecryptionKey);
 

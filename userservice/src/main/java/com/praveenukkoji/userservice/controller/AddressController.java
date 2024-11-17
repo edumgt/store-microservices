@@ -1,11 +1,12 @@
 package com.praveenukkoji.userservice.controller;
 
-import com.praveenukkoji.userservice.dto.error.ValidationResponse;
-import com.praveenukkoji.userservice.dto.request.address.CreateAddressRequest;
+import com.praveenukkoji.userservice.dto.address.request.CreateAddressRequest;
+import com.praveenukkoji.userservice.dto.address.request.UpdateAddressRequest;
 import com.praveenukkoji.userservice.exception.address.AddressCreateException;
 import com.praveenukkoji.userservice.exception.address.AddressDeleteException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
+import com.praveenukkoji.userservice.exception.error.ValidationException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.service.AddressService;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class AddressController {
     // create
     @PostMapping(path = "")
     public ResponseEntity<?> createAddress(@RequestBody @Valid CreateAddressRequest createAddressRequest)
-            throws UserNotFoundException, AddressCreateException {
+            throws UserNotFoundException, AddressCreateException, ValidationException {
         return ResponseEntity.status(201).body(addressService.createAddress(createAddressRequest));
     }
 
@@ -36,63 +37,25 @@ public class AddressController {
     @GetMapping(path = "")
     public ResponseEntity<?> getAddress(
             @RequestParam(defaultValue = "", name = "addressId") String addressId
-    ) throws AddressNotFoundException {
-        if (Objects.equals(addressId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("addressId", "address id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(addressId);
-        return ResponseEntity.status(200).body(addressService.getAddress(id));
+    ) throws AddressNotFoundException, ValidationException {
+        return ResponseEntity.status(200).body(addressService.getAddress(addressId));
     }
 
-    // TODO: update variable to request class
     // update
     @PatchMapping(path = "")
     public ResponseEntity<?> updateAddress(
-            @RequestParam(defaultValue = "", name = "addressId") String addressId,
-            @RequestBody Map<String, String> updates
-    ) throws AddressNotFoundException, AddressUpdateException {
-        if (Objects.equals(addressId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("addressId", "address id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(addressId);
-        return ResponseEntity.status(200).body(addressService.updateAddress(id, updates));
+            @RequestBody @Valid UpdateAddressRequest updateAddressRequest
+    ) throws AddressNotFoundException, AddressUpdateException, ValidationException {
+        addressService.updateAddress(updateAddressRequest);
+        return ResponseEntity.status(204).body("");
     }
 
     // delete
     @DeleteMapping(path = "")
     public ResponseEntity<?> deleteAddress(
             @RequestParam(defaultValue = "", name = "addressId") String addressId
-    ) throws AddressNotFoundException, AddressDeleteException {
-        if (Objects.equals(addressId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("addressId", "address id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(addressId);
-        addressService.deleteAddress(id);
-
+    ) throws AddressNotFoundException, AddressDeleteException, ValidationException {
+        addressService.deleteAddress(addressId);
         return ResponseEntity.status(204).body("");
     }
 
@@ -100,19 +63,7 @@ public class AddressController {
     @GetMapping("/get-by-user")
     public ResponseEntity<?> getAddressByUser(
             @RequestParam(defaultValue = "", name = "userId") String userId
-    ) throws UserNotFoundException {
-        if (Objects.equals(userId, "")) {
-            Map<String, String> error = new HashMap<>();
-            error.put("userId", "user id is empty");
-
-            ValidationResponse response = ValidationResponse.builder()
-                    .error(error)
-                    .build();
-
-            return ResponseEntity.status(400).body(response);
-        }
-
-        UUID id = UUID.fromString(userId);
-        return ResponseEntity.status(200).body(addressService.getAddressByUser(id));
+    ) throws UserNotFoundException, ValidationException {
+        return ResponseEntity.status(200).body(addressService.getAddressByUser(userId));
     }
 }

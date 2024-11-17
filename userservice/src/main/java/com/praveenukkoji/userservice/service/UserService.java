@@ -1,9 +1,12 @@
 package com.praveenukkoji.userservice.service;
 
-import com.praveenukkoji.userservice.dto.request.user.ChangePasswordRequest;
-import com.praveenukkoji.userservice.dto.request.user.CreateUserRequest;
-import com.praveenukkoji.userservice.dto.response.role.RoleResponse;
-import com.praveenukkoji.userservice.dto.response.user.UserResponse;
+import com.praveenukkoji.userservice.dto.user.request.ChangePasswordRequest;
+import com.praveenukkoji.userservice.dto.user.request.CreateUserRequest;
+import com.praveenukkoji.userservice.dto.role.response.RoleResponse;
+import com.praveenukkoji.userservice.dto.user.request.UpdateActiveStatusRequest;
+import com.praveenukkoji.userservice.dto.user.request.UpdateUserRequest;
+import com.praveenukkoji.userservice.dto.user.response.UserResponse;
+import com.praveenukkoji.userservice.exception.error.ValidationException;
 import com.praveenukkoji.userservice.exception.role.RoleNotFoundException;
 import com.praveenukkoji.userservice.exception.user.*;
 import com.praveenukkoji.userservice.model.Role;
@@ -36,176 +39,251 @@ public class UserService {
 
     // create
     public UUID createUser(CreateUserRequest createUserRequest)
-            throws RoleNotFoundException, UserCreateException, PasswordEncryptionException {
+            throws RoleNotFoundException, UserCreateException, PasswordEncryptionException, ValidationException {
 
         log.info("creating new user = {}", createUserRequest);
 
-        UUID roleId = createUserRequest.getRoleId();
-        Optional<Role> role = roleRepository.findById(roleId);
+        String fullname = createUserRequest.getFullname();
+        String username = createUserRequest.getUsername();
+        String password = createUserRequest.getPassword();
+        String email = createUserRequest.getEmail();
+        String id = createUserRequest.getRoleId();
 
-        if (role.isPresent()) {
-            String password = createUserRequest.getPassword();
-
-            if (password.length() < 8) {
-                throw new UserCreateException("password must be at least 8 characters");
-            }
-
-            String encryptedPassword = userUtility.getEncryptedPassword(password);
-
-            User newUser = User.builder()
-                    .fullname(createUserRequest.getFullname())
-                    .username(createUserRequest.getUsername())
-                    .password(encryptedPassword)
-                    .email(createUserRequest.getEmail())
-                    .isActive(true)
-                    .role(role.get())
-                    .build();
-
-            try {
-                return userRepository.save(newUser).getId();
-            } catch (DataIntegrityViolationException e) {
-                throw new UserCreateException(e.getMostSpecificCause().getMessage());
-            } catch (Exception e) {
-                throw new UserCreateException(e.getMessage());
-            }
+        if(Objects.equals(id, "")) {
+            throw new ValidationException("roleId", "role id is empty");
+        }
+        if(Objects.equals(fullname, "")) {
+            throw new ValidationException("fullname", "fullname is empty");
+        }
+        if(Objects.equals(username, "")) {
+            throw new ValidationException("username", "username is empty");
         }
 
-        throw new RoleNotFoundException("role with id = " + roleId + " not found");
+        if(Objects.equals(password, "")) {
+            throw new ValidationException("password", "password is empty");
+        }
+        if (password.length() < 8) {
+            throw new ValidationException("password", "password must be at least 8 characters");
+        }
+
+        if(Objects.equals(email, "")) {
+            throw new ValidationException("email", "email is empty");
+        }
+
+        try {
+            UUID roleId = UUID.fromString(id);
+            Optional<Role> role = roleRepository.findById(roleId);
+
+            if (role.isPresent()) {
+                String encryptedPassword = userUtility.getEncryptedPassword(password);
+
+                User newUser = User.builder()
+                        .fullname(createUserRequest.getFullname())
+                        .username(createUserRequest.getUsername())
+                        .password(encryptedPassword)
+                        .email(createUserRequest.getEmail())
+                        .isActive(true)
+                        .role(role.get())
+                        .build();
+
+                return userRepository.save(newUser).getId();
+            } else {
+                throw new RoleNotFoundException("role with id = " + id + " not found");
+            }
+        }
+        catch (PasswordEncryptionException e) {
+            throw new PasswordEncryptionException(e.getMessage());
+        }
+        catch (RoleNotFoundException e) {
+            throw new RoleNotFoundException(e.getMessage());
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new UserCreateException(e.getMostSpecificCause().getMessage());
+        }
+        catch (Exception e) {
+            throw new UserCreateException(e.getMessage());
+        }
     }
 
     // get
-    public UserResponse getUser(UUID userId) throws UserNotFoundException {
+    public UserResponse getUser(String id) throws UserNotFoundException, ValidationException {
 
-        log.info("fetching user having id = {}", userId);
+        log.info("fetching user having id = {}", id);
+
+        if(id.isEmpty()) {
+            throw new ValidationException("userId", "user id is empty");
+        }
+
+        UUID userId = UUID.fromString(id);
 
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
-            Role userRole = user.get().getRole();
-            RoleResponse role = RoleResponse.builder()
-                    .id(userRole.getId())
-                    .type(userRole.getType())
-                    .build();
-
             return UserResponse.builder()
                     .id(user.get().getId())
                     .fullname(user.get().getFullname())
                     .username(user.get().getUsername())
                     .email(user.get().getEmail())
-                    .role(role)
+                    .roleType(user.get().getRole().getType())
                     .build();
         }
 
-        throw new UserNotFoundException("user with id = " + userId + " not found");
+        throw new UserNotFoundException("user with id = " + id + " not found");
     }
 
     //update
-    public UUID updateUser(UUID userId, Map<String, String> updates)
-            throws UserUpdateException, UserNotFoundException {
+    public void updateUser(UpdateUserRequest updateUserRequest)
+            throws UserUpdateException, UserNotFoundException, ValidationException {
 
-        log.info("Updating user: {}", userId);
+        String id = updateUserRequest.getUserId();
+        String username = updateUserRequest.getUsername();
+        String fullname = updateUserRequest.getFullname();
+        String email = updateUserRequest.getEmail();
 
-        Optional<User> user = userRepository.findById(userId);
+        log.info("updating user having id = {}", id);
 
-        if (user.isPresent()) {
-            User updatedUser = user.get();
-
-            for (Map.Entry<String, String> entry : updates.entrySet()) {
-                switch (entry.getKey()) {
-                    case "fullname":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedUser.setFullname(entry.getValue());
-                        }
-                        break;
-                    case "username":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedUser.setUsername(entry.getValue());
-                        }
-                        break;
-                    case "email":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedUser.setEmail(entry.getValue());
-                        }
-                        break;
-                }
-            }
-
-            try {
-                return userRepository.save(updatedUser).getId();
-            } catch (Exception e) {
-                throw new UserUpdateException(e.getMessage());
-            }
+        if(id.isEmpty()) {
+            throw new ValidationException("userId", "user id is empty");
         }
 
-        throw new UserNotFoundException("user with id = " + userId + " not found");
+        try {
+            UUID userId = UUID.fromString(id);
+            Optional<User> user = userRepository.findById(userId);
+
+            if (user.isPresent()) {
+                User updatedUser = user.get();
+
+                if(!Objects.equals(username, "")) {
+                    updatedUser.setUsername(username);
+                }
+                if(!Objects.equals(fullname, "")) {
+                    updatedUser.setFullname(fullname);
+                }
+                if(!Objects.equals(email, "")) {
+                    updatedUser.setEmail(email);
+                }
+
+                userRepository.save(updatedUser);
+            }
+            else {
+                throw new UserNotFoundException("user with id = " + id + " not found");
+            }
+        }
+        catch (UserNotFoundException e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new UserUpdateException(e.getMessage());
+        }
     }
 
     // delete
-    public void deleteUser(UUID userId)
-            throws UserNotFoundException, UserDeleteException {
+    public void deleteUser(String id)
+            throws UserNotFoundException, UserDeleteException, ValidationException {
 
-        log.info("deleting user having id = {}", userId);
+        log.info("deleting user having id = {}", id);
 
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()) {
-            try {
-                userRepository.deleteById(userId);
-                return;
-            } catch (Exception e) {
-                throw new UserDeleteException(e.getMessage());
-            }
+        if(id.isEmpty()) {
+            throw new ValidationException("userId", "user id is empty");
         }
 
-        throw new UserNotFoundException("user with id = " + userId + " not found");
+        try {
+            UUID userId = UUID.fromString(id);
+            Optional<User> user = userRepository.findById(userId);
+
+            if (user.isPresent()) {
+                    userRepository.deleteById(userId);
+            }
+            else {
+                throw new UserNotFoundException("user with id = " + id + " not found");
+            }
+        }
+        catch (UserNotFoundException e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new UserDeleteException(e.getMessage());
+        }
     }
 
     // change password
-    public UUID changePassword(ChangePasswordRequest changePasswordRequest)
-            throws UserNotFoundException, UserUpdateException, PasswordEncryptionException {
+    public void changePassword(ChangePasswordRequest changePasswordRequest)
+            throws UserNotFoundException, UserUpdateException, PasswordEncryptionException, ValidationException {
 
-        log.info("changing password for user having id = {}", changePasswordRequest.getUserId());
+        String id = changePasswordRequest.getUserId();
+        String password = changePasswordRequest.getPassword();
 
-        UUID userId = UUID.fromString(changePasswordRequest.getUserId());
-        Optional<User> user = userRepository.findById(userId);
+        log.info("changing password for user having id = {}", id);
 
-        if (user.isPresent()) {
-            User updatedUser = user.get();
-
-            String newPassword = changePasswordRequest.getPassword();
-
-            if (newPassword.length() < 8) {
-                throw new UserUpdateException("password must be at least 8 characters");
-            }
-
-            String encryptedPassword = userUtility.getEncryptedPassword(newPassword);
-            updatedUser.setPassword(encryptedPassword);
-
-            try {
-                return userRepository.save(updatedUser).getId();
-            } catch (Exception e) {
-                throw new UserUpdateException(e.getMessage());
-            }
+        if(id.isEmpty()) {
+            throw new ValidationException("userId", "user id is empty");
         }
 
-        throw new UserNotFoundException("user with id = " + userId + " not found");
+        if(Objects.equals(password, "")) {
+            throw new ValidationException("password", "password is empty");
+        }
+        if (password.length() < 8) {
+            throw new ValidationException("password", "password must be at least 8 characters");
+        }
+
+        try {
+            UUID userId = UUID.fromString(id);
+            Optional<User> user = userRepository.findById(userId);
+
+            if (user.isPresent()) {
+                User updatedUser = user.get();
+
+                String encryptedPassword = userUtility.getEncryptedPassword(password);
+                updatedUser.setPassword(encryptedPassword);
+
+                userRepository.save(updatedUser);
+            } else {
+                throw new UserNotFoundException("user with id = " + id + " not found");
+            }
+        }
+        catch (PasswordEncryptionException e) {
+            throw new PasswordEncryptionException(e.getMessage());
+        }
+        catch (UserNotFoundException e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new UserUpdateException(e.getMessage());
+        }
     }
 
     // update active status
-    public UUID updateActiveStatus(UUID userId, boolean status) throws UserUpdateException {
+    public void updateActiveStatus(UpdateActiveStatusRequest updateActiveStatusRequest)
+            throws UserUpdateException, ValidationException, UserNotFoundException {
 
-        log.info("Updating active status for user: {}", userId);
+        String id = updateActiveStatusRequest.getUserId();
+        Boolean activeStatus = updateActiveStatusRequest.getActiveStatus();
 
-        Optional<User> user = userRepository.findById(userId);
+        log.info("updating active status for user having id = {}", id);
 
-        if (user.isPresent()) {
-            User updatedUser = user.get();
-
-            updatedUser.setIsActive(status);
-
-            return userRepository.save(updatedUser).getId();
+        if(id.isEmpty()) {
+            throw new ValidationException("userId", "user id is empty");
         }
 
-        throw new UserUpdateException("user with id = " + userId + " not found");
+        try {
+            UUID userId = UUID.fromString(id);
+            Optional<User> user = userRepository.findById(userId);
+
+            if (user.isPresent()) {
+                User updatedUser = user.get();
+                updatedUser.setIsActive(activeStatus);
+
+                userRepository.save(updatedUser);
+            }
+            else {
+                throw new UserNotFoundException("user with id = " + id + " not found");
+            }
+        }
+        catch (UserNotFoundException e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new UserUpdateException(e.getMessage());
+        }
     }
 }

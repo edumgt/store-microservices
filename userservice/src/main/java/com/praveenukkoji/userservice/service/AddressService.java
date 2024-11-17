@@ -1,11 +1,13 @@
 package com.praveenukkoji.userservice.service;
 
-import com.praveenukkoji.userservice.dto.request.address.CreateAddressRequest;
-import com.praveenukkoji.userservice.dto.response.address.AddressResponse;
+import com.praveenukkoji.userservice.dto.address.request.CreateAddressRequest;
+import com.praveenukkoji.userservice.dto.address.request.UpdateAddressRequest;
+import com.praveenukkoji.userservice.dto.address.response.AddressResponse;
 import com.praveenukkoji.userservice.exception.address.AddressCreateException;
 import com.praveenukkoji.userservice.exception.address.AddressDeleteException;
 import com.praveenukkoji.userservice.exception.address.AddressNotFoundException;
 import com.praveenukkoji.userservice.exception.address.AddressUpdateException;
+import com.praveenukkoji.userservice.exception.error.ValidationException;
 import com.praveenukkoji.userservice.exception.user.UserNotFoundException;
 import com.praveenukkoji.userservice.model.Address;
 import com.praveenukkoji.userservice.model.User;
@@ -30,45 +32,82 @@ public class AddressService {
 
     // TODO: implement isDefault address logic
     // create
-    public UUID createAddress(CreateAddressRequest createAddressRequest)
-            throws UserNotFoundException, AddressCreateException {
+     public UUID createAddress(CreateAddressRequest createAddressRequest)
+             throws UserNotFoundException, AddressCreateException, ValidationException {
 
-        log.info("creating new address = {}", createAddressRequest);
+         String id = createAddressRequest.getUserId();
+         String line = createAddressRequest.getLine();
+         String country = createAddressRequest.getCountry();
+         String state = createAddressRequest.getState();
+         String city = createAddressRequest.getCity();
+         String pincode = createAddressRequest.getPincode();
+         Boolean isDefault = createAddressRequest.getIsDefault();
 
-        UUID userId = UUID.fromString(createAddressRequest.getUserId());
-        Optional<User> user = userRepository.findById(userId);
+         log.info("creating new address = {}", createAddressRequest);
 
-        if (user.isPresent()) {
-            Address newAddress = Address.builder()
-                    .line(createAddressRequest.getLine())
-                    .country(createAddressRequest.getCountry())
-                    .state(createAddressRequest.getState())
-                    .city(createAddressRequest.getCity())
-                    .pincode(createAddressRequest.getPincode())
-                    .isDefault(createAddressRequest.getIsDefault())
-                    .user(user.get())
-                    .build();
+         if (id.isEmpty()) {
+             throw new ValidationException("userId", "user id is empty");
+         }
+         if (line.isEmpty()) {
+             throw new ValidationException("line", "address line is empty");
+         }
+         if (country.isEmpty()) {
+             throw new ValidationException("country", "country is empty");
+         }
+         if (state.isEmpty()) {
+             throw new ValidationException("state", "state is empty");
+         }
+         if (city.isEmpty()) {
+             throw new ValidationException("city", "city is empty");
+         }
+         if (pincode.isEmpty()) {
+             throw new ValidationException("pincode", "pincode is empty");
+         }
 
-            try {
-                return addressRepository.save(newAddress).getId();
-            } catch (Exception e) {
-                throw new AddressCreateException(e.getMessage());
-            }
-        }
+         try {
 
-        throw new UserNotFoundException("user with id = " + userId + " not found");
+             UUID userId = UUID.fromString(id);
+             Optional<User> user = userRepository.findById(userId);
+
+             if (user.isPresent()) {
+                 Address newAddress = Address.builder()
+                         .line(line)
+                         .country(country)
+                         .state(state)
+                         .city(city)
+                         .pincode(pincode)
+                         .isDefault(isDefault)
+                         .user(user.get())
+                         .build();
+
+                 return addressRepository.save(newAddress).getId();
+             }
+             else {
+                 throw new UserNotFoundException("user with id = " + id + " not found");
+             }
+         }
+         catch (UserNotFoundException e) {
+             throw new UserNotFoundException(e.getMessage());
+         }
+         catch (Exception e) {
+             throw new AddressCreateException(e.getMessage());
+         }
     }
 
     // get
-    public AddressResponse getAddress(UUID addressId)
-            throws AddressNotFoundException {
+    public AddressResponse getAddress(String id)
+            throws AddressNotFoundException, ValidationException {
 
-        log.info("fetching address having id = {}", addressId);
+        log.info("fetching address having id = {}", id);
 
+        if(id.isEmpty()) {
+            throw new ValidationException("addressId", "address id is empty");
+        }
+
+        UUID addressId = UUID.fromString(id);
         Optional<Address> address = addressRepository.findById(addressId);
 
         if (address.isPresent()) {
-
             return AddressResponse.builder()
                     .id(address.get().getId())
                     .line(address.get().getLine())
@@ -80,109 +119,127 @@ public class AddressService {
                     .build();
         }
 
-        throw new AddressNotFoundException("address with id = " + addressId + " not found");
+        throw new AddressNotFoundException("address with id = " + id + " not found");
     }
 
     // update
-    public UUID updateAddress(UUID addressId, Map<String, String> updates)
-            throws AddressNotFoundException, AddressUpdateException {
+    public void updateAddress(UpdateAddressRequest updateAddressRequest)
+            throws AddressNotFoundException, AddressUpdateException, ValidationException {
 
-        log.info("Updating address: {}", updates);
+        String id = updateAddressRequest.getAddressId();
+        String line = updateAddressRequest.getLine();
+        String country = updateAddressRequest.getCountry();
+        String state = updateAddressRequest.getState();
+        String city = updateAddressRequest.getCity();
+        String pincode = updateAddressRequest.getPincode();
 
-        Optional<Address> address = addressRepository.findById(addressId);
+        log.info("updating address having id = {}", id);
 
-        if (address.isPresent()) {
-            Address updatedAddress = address.get();
+        try {
+            UUID addressId = UUID.fromString(id);
+            Optional<Address> address = addressRepository.findById(addressId);
 
-            for (Map.Entry<String, String> entry : updates.entrySet()) {
-                switch (entry.getKey()) {
-                    case "line":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedAddress.setLine(entry.getValue());
-                        }
-                        break;
-                    case "country":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedAddress.setCountry(entry.getValue());
-                        }
-                        break;
-                    case "state":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedAddress.setState(entry.getValue());
-                        }
-                        break;
-                    case "city":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedAddress.setCity(entry.getValue());
-                        }
-                        break;
-                    case "pincode":
-                        if (!Objects.equals(entry.getValue(), "")) {
-                            updatedAddress.setPincode(entry.getValue());
-                        }
-                        break;
+            if (address.isPresent()) {
+                Address updatedAddress = address.get();
+
+                if(!line.isEmpty()) {
+                    updatedAddress.setLine(line);
                 }
-            }
+                if(!country.isEmpty()) {
+                    updatedAddress.setCountry(country);
+                }
+                if(!state.isEmpty()) {
+                    updatedAddress.setState(state);
+                }
+                if(!city.isEmpty()) {
+                    updatedAddress.setCity(city);
+                }
+                if(!pincode.isEmpty()) {
+                    updatedAddress.setPincode(pincode);
+                }
 
-            try {
-                return addressRepository.save(updatedAddress).getId();
-            } catch (Exception e) {
-                throw new AddressUpdateException(e.getMessage());
+                addressRepository.save(updatedAddress);
+            }
+            else {
+                throw new AddressNotFoundException("address with id = " + id + " not found");
             }
         }
-
-        throw new AddressNotFoundException("address with id = " + addressId + " not found");
+        catch (AddressNotFoundException e) {
+            throw new AddressNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new AddressUpdateException(e.getMessage());
+        }
     }
 
     // delete
-    public void deleteAddress(UUID addressId)
-            throws AddressNotFoundException, AddressDeleteException {
+    public void deleteAddress(String id)
+            throws AddressNotFoundException, AddressDeleteException, ValidationException {
 
-        log.info("deleting address having id = {}", addressId);
+        log.info("deleting address having id = {}", id);
 
-        Optional<Address> address = addressRepository.findById(addressId);
-
-        if (address.isPresent()) {
-
-            // if address is default cannot delete it
-            if (address.get().getIsDefault()) {
-                throw new AddressDeleteException("cannot delete default address or make another address default " +
-                        "to delete this address");
-            }
-
-            try {
-                addressRepository.deleteById(addressId);
-                return;
-            } catch (Exception e) {
-                throw new AddressDeleteException(e.getMessage());
-            }
+        if(id.isEmpty()) {
+            throw new ValidationException("addressId", "address id is empty");
         }
 
-        throw new AddressNotFoundException("address with id = " + addressId + " not found");
+        try {
+            UUID addressId = UUID.fromString(id);
+            Optional<Address> address = addressRepository.findById(addressId);
+
+            if (address.isPresent()) {
+                // if address is default cannot delete it
+                if (address.get().getIsDefault()) {
+                    throw new AddressDeleteException("cannot delete default address");
+                }
+
+                addressRepository.deleteById(addressId);
+            }
+            else {
+                throw new AddressNotFoundException("address with id = " + id + " not found");
+            }
+        }
+        catch (AddressNotFoundException e) {
+            throw new AddressNotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new AddressDeleteException(e.getMessage());
+        }
     }
 
     // get address by user
-    public List<AddressResponse> getAddressByUser(UUID userId) throws UserNotFoundException {
+    public List<AddressResponse> getAddressByUser(String id)
+            throws UserNotFoundException, ValidationException {
 
-        log.info("fetching addresses of user having id =  {}", userId);
+        log.info("fetching addresses of user having id =  {}", id);
 
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()) {
-            List<Address> addressList = addressRepository.findAllAddressByUser(user.get());
-
-            return addressList.stream().map(address -> AddressResponse.builder()
-                            .id(address.getId())
-                            .line(address.getLine())
-                            .country(address.getCountry())
-                            .state(address.getState())
-                            .city(address.getCity())
-                            .pincode(address.getPincode())
-                            .isDefault(address.getIsDefault())
-                            .build())
-                    .toList();
+        if(id.isEmpty()) {
+            throw new ValidationException("userId", " user id is empty");
         }
 
-        throw new UserNotFoundException("user with id = " + userId + " not found");
+        try {
+            UUID userId = UUID.fromString(id);
+            Optional<User> user = userRepository.findById(userId);
+
+            if (user.isPresent()) {
+                List<Address> addressList = addressRepository.findAllAddressByUser(user.get());
+
+                return addressList.stream().map(address -> AddressResponse.builder()
+                                .id(address.getId())
+                                .line(address.getLine())
+                                .country(address.getCountry())
+                                .state(address.getState())
+                                .city(address.getCity())
+                                .pincode(address.getPincode())
+                                .isDefault(address.getIsDefault())
+                                .build())
+                        .toList();
+            }
+            else {
+                throw new UserNotFoundException("user with id = " + id + " not found");
+            }
+        }
+        catch (UserNotFoundException e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
     }
 }

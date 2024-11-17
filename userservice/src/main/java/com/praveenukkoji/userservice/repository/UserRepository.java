@@ -10,9 +10,4 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    // get user by username
-    @Query("""
-            SELECT u FROM User u WHERE u.username = :username
-            """)
-    Optional<User> findByUsername(String username);
 }
