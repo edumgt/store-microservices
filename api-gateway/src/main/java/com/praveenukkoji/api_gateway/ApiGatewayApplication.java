@@ -67,19 +67,19 @@ public class ApiGatewayApplication {
                         .filters(f ->
                                 f.rewritePath("/store/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
-                        .uri("lb://ORDER-SERVICE")
+                        .uri("lb://PAYMENT-SERVICE")
                 )
                 .route(p -> p
-                        .path("/store/notifications/**")
+                        .path("/store/api/v1/notifications/**")
                         .filters(f ->
-                                f.rewritePath("/store/notifications/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/api/v1/notifications/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://NOTIFICATION-SERVICE")
                 )
                 .route(p -> p
-                        .path("/store/config-server/**")
+                        .path("/store/api/v1/config-server/**")
                         .filters(f ->
-                                f.rewritePath("/store/config-server/(?<segment>.*)", "/${segment}")
+                                f.rewritePath("/store/api/v1/config-server/(?<segment>.*)", "/${segment}")
                                         .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                         .uri("lb://CONFIG-SERVER")
                 )

@@ -49,5 +49,5 @@ endpoints:
 info:
     app:
         name: "api-gateway"
-        description: "API Gateway for store-microservices"
+        description: "api gateway for store-microservices"
         version: "1.0"
