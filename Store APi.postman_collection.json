@@ -7,58 +7,199 @@
 	},
 	"item": [
 		{
-			"name": "secured",
+			"name": "health check",
 			"item": [
 				{
-					"name": "api-gateway",
-					"item": [
-						{
-							"name": "shutdown",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8222/actuator/shutdown",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"actuator",
-										"shutdown"
-									]
-								}
-							},
-							"response": []
+					"name": "eureka-server",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8761/actuator/health/readiness",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "notification-service",
-					"item": [
-						{
-							"name": "shutdown",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8003/actuator/shutdown",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8003",
-									"path": [
-										"actuator",
-										"shutdown"
-									]
-								}
-							},
-							"response": []
+					"name": "api-gateway",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8222/actuator/health/readiness",
+							"host": [
+								"localhost"
+							],
+							"port": "8222",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
 						}
-					]
+					},
+					"response": []
 				},
+				{
+					"name": "config-server",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8888/actuator/health/readiness",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/actuator/health/readiness",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8001/actuator/health/readiness",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/actuator/health/readiness",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payment service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/actuator/health/readiness",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notification service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8004/actuator/health/readiness",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"actuator",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "services",
+			"item": [
 				{
 					"name": "eureka-server",
 					"item": [
@@ -79,9 +220,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{eureka_server}}/eureka/apps",
+									"raw": "{{eureka-server}}/eureka/apps",
 									"host": [
-										"{{eureka_server}}"
+										"{{eureka-server}}"
 									],
 									"path": [
 										"eureka",
@@ -108,9 +249,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{eureka_server}}/eureka/apps/config-server",
+									"raw": "{{eureka-server}}/eureka/apps/config-server",
 									"host": [
-										"{{eureka_server}}"
+										"{{eureka-server}}"
 									],
 									"path": [
 										"eureka",
@@ -138,9 +279,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{eureka_server}}/eureka/apps/api-gateway",
+									"raw": "{{eureka-server}}/eureka/apps/api-gateway",
 									"host": [
-										"{{eureka_server}}"
+										"{{eureka-server}}"
 									],
 									"path": [
 										"eureka",
@@ -168,9 +309,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{eureka_server}}/eureka/apps/notification-service",
+									"raw": "{{eureka-server}}/eureka/apps/notification-service",
 									"host": [
-										"{{eureka_server}}"
+										"{{eureka-server}}"
 									],
 									"path": [
 										"eureka",
@@ -198,9 +339,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{eureka_server}}/eureka/apps/order-service",
+									"raw": "{{eureka-server}}/eureka/apps/order-service",
 									"host": [
-										"{{eureka_server}}"
+										"{{eureka-server}}"
 									],
 									"path": [
 										"eureka",
@@ -228,9 +369,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{eureka_server}}/eureka/apps/product-service",
+									"raw": "{{eureka-server}}/eureka/apps/product-service",
 									"host": [
-										"{{eureka_server}}"
+										"{{eureka-server}}"
 									],
 									"path": [
 										"eureka",
@@ -258,9 +399,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{eureka_server}}/eureka/apps/user-service",
+									"raw": "{{eureka-server}}/eureka/apps/user-service",
 									"host": [
-										"{{eureka_server}}"
+										"{{eureka-server}}"
 									],
 									"path": [
 										"eureka",
@@ -290,151 +431,61 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "payment-service",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{eureka-server}}/eureka/apps/payment-service",
+									"host": [
+										"{{eureka-server}}"
+									],
+									"path": [
+										"eureka",
+										"apps",
+										"payment-service"
+									]
+								}
+							},
+							"response": []
 						}
-					]
-				},
-				{
-					"name": "health check",
-					"item": [
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
 						{
-							"name": "eureka-server",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8761/actuator/health/readiness",
-									"host": [
-										"localhost"
-									],
-									"port": "8761",
-									"path": [
-										"actuator",
-										"health",
-										"readiness"
-									]
-								}
-							},
-							"response": []
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						},
 						{
-							"name": "api-gateway",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8222/actuator/health/readiness",
-									"host": [
-										"localhost"
-									],
-									"port": "8222",
-									"path": [
-										"actuator",
-										"health",
-										"readiness"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "config-server",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8888/actuator/health/readiness",
-									"host": [
-										"localhost"
-									],
-									"port": "8888",
-									"path": [
-										"actuator",
-										"health",
-										"readiness"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "user service",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8000/actuator/health/readiness",
-									"host": [
-										"localhost"
-									],
-									"port": "8000",
-									"path": [
-										"actuator",
-										"health",
-										"readiness"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "product service",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8001/actuator/health/readiness",
-									"host": [
-										"localhost"
-									],
-									"port": "8001",
-									"path": [
-										"actuator",
-										"health",
-										"readiness"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "order service",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8002/actuator/health/readiness",
-									"host": [
-										"localhost"
-									],
-									"port": "8002",
-									"path": [
-										"actuator",
-										"health",
-										"readiness"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "notification service",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "localhost:8003/actuator/health/readiness",
-									"host": [
-										"localhost"
-									],
-									"port": "8003",
-									"path": [
-										"actuator",
-										"health",
-										"readiness"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -442,68 +493,59 @@
 					"name": "config-server",
 					"item": [
 						{
-							"name": "order-service default",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config_server}}/order-service/default",
-									"host": [
-										"{{config_server}}"
-									],
-									"path": [
-										"order-service",
-										"default"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api-gateway default",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config_server}}/api-gateway/default",
-									"host": [
-										"{{config_server}}"
-									],
-									"path": [
-										"api-gateway",
-										"default"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "product-service default",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config_server}}/product-service/default",
-									"host": [
-										"{{config_server}}"
-									],
-									"path": [
-										"product-service",
-										"default"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "user-service default",
 							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{config_server}}/user-service/default",
+									"raw": "{{config-server}}/user-service/default",
 									"host": [
-										"{{config_server}}"
+										"{{config-server}}"
 									],
 									"path": [
 										"user-service",
@@ -514,17 +556,314 @@
 							"response": []
 						},
 						{
-							"name": "order-service default",
+							"name": "product-service default",
 							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{config_server}}/order-service/default",
+									"raw": "{{config-server}}/product-service/default",
 									"host": [
-										"{{config_server}}"
+										"{{config-server}}"
+									],
+									"path": [
+										"product-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order-service default",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config-server}}/order-service/default",
+									"host": [
+										"{{config-server}}"
 									],
 									"path": [
 										"order-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "payment-service default",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config-server}}/payment-service/default",
+									"host": [
+										"{{config-server}}"
+									],
+									"path": [
+										"payment-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "notification-service default",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config-server}}/notification-service/default",
+									"host": [
+										"{{config-server}}"
+									],
+									"path": [
+										"notification-service",
+										"default"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api-gateway default",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "client_authentication",
+											"value": "body",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "{{client_credentials_secret}}",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "{{client_credentials_cilent_id}}",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "token",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid email profile",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{config-server}}/api-gateway/default",
+									"host": [
+										"{{config-server}}"
+									],
+									"path": [
+										"api-gateway",
 										"default"
 									]
 								}
@@ -551,161 +890,30 @@
 							},
 							"response": []
 						}
-					]
-				},
-				{
-					"name": "order-service",
-					"item": [
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
 						{
-							"name": "order",
-							"item": [
-								{
-									"name": "create order",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"if (pm.response.code === 201) {",
-													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
-													"    pm.globals.set(\"orderId\", id);",
-													"}"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "noauth"
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 1\n            }\n        ],\n        \"userId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f9\",\n        \"addressId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f9\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{order_service}}/api/v1/orders",
-											"host": [
-												"{{order_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"orders"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "get order",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{order_service}}/api/v1/orders?orderId={{orderId}}",
-											"host": [
-												"{{order_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"orders"
-											],
-											"query": [
-												{
-													"key": "orderId",
-													"value": "{{orderId}}"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "update order status",
-									"request": {
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"orderId\": \"{{orderId}}\",\n    \"orderStatus\": \"delivered\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{order_service}}/api/v1/orders/order-status",
-											"host": [
-												"{{order_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"orders",
-												"order-status"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "get by user",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{order_service}}/api/v1/orders/get-by-user?userId={{userId}}",
-											"host": [
-												"{{order_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"orders",
-												"get-by-user"
-											],
-											"query": [
-												{
-													"key": "userId",
-													"value": "{{userId}}"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						},
 						{
-							"name": "shutdown",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8002/actuator/shutdown",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8002",
-									"path": [
-										"actuator",
-										"shutdown"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -734,13 +942,55 @@
 									],
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"{{$randomStreetAddress}}\",\n    \"country\": \"{{$randomStreetName}}\",\n    \"state\": \"{{$randomStreetName}}\",\n    \"city\": \"{{$randomStreetName}}\",\n    \"pincode\": \"123456\",\n    \"isDefault\": true\n}",
+											"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"line\":\"{{$randomStreetAddress}}\",\n    \"country\": \"{{$randomStreetName}}\",\n    \"state\": \"{{$randomStreetName}}\",\n    \"city\": \"{{$randomStreetName}}\",\n    \"pincode\": \"123456\",\n    \"isDefault\": false\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -748,9 +998,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses",
+											"raw": "{{user-service}}/api/v1/addresses",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -764,12 +1014,57 @@
 								{
 									"name": "get address",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
+											"raw": "{{user-service}}/api/v1/addresses?addressId={{addressId}}",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -789,12 +1084,57 @@
 								{
 									"name": "get address by user",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses/get-by-user?userId={{userId}}",
+											"raw": "{{user-service}}/api/v1/addresses/get-by-user?userId={{userId}}",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -815,6 +1155,51 @@
 								{
 									"name": "update address",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
@@ -827,9 +1212,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses",
+											"raw": "{{user-service}}/api/v1/addresses",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -843,12 +1228,57 @@
 								{
 									"name": "delete address",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/addresses?addressId={{addressId}}",
+											"raw": "{{user-service}}/api/v1/addresses?addressId={{addressId}}",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -889,7 +1319,49 @@
 									],
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "POST",
 										"header": [],
@@ -903,9 +1375,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/users",
+											"raw": "{{user-service}}/api/v1/users",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -919,12 +1391,57 @@
 								{
 									"name": "get user",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
+											"raw": "{{user-service}}/api/v1/users?userId={{userId}}",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -945,7 +1462,49 @@
 									"name": "update user",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "PATCH",
 										"header": [],
@@ -959,9 +1518,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/users",
+											"raw": "{{user-service}}/api/v1/users",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -975,12 +1534,57 @@
 								{
 									"name": "delete user",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/users?userId={{userId}}",
+											"raw": "{{user-service}}/api/v1/users?userId={{userId}}",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1000,6 +1604,51 @@
 								{
 									"name": "change password",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
@@ -1012,9 +1661,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/users/change-password",
+											"raw": "{{user-service}}/api/v1/users/change-password",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1029,6 +1678,51 @@
 								{
 									"name": "update active status",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
@@ -1041,9 +1735,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/users/active-status",
+											"raw": "{{user-service}}/api/v1/users/active-status",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1079,13 +1773,55 @@
 									],
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"type\": \"superuser\"\n}",
+											"raw": "{\n    \"type\": \"demo\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1093,9 +1829,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/roles",
+											"raw": "{{user-service}}/api/v1/roles",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1109,12 +1845,57 @@
 								{
 									"name": "get role",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
+											"raw": "{{user-service}}/api/v1/roles?roleId={{roleId}}",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1134,6 +1915,51 @@
 								{
 									"name": "update role",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
@@ -1146,9 +1972,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{user_service}}/api/v1/roles",
+											"raw": "{{user-service}}/api/v1/roles",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1162,12 +1988,57 @@
 								{
 									"name": "delete role",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/roles?roleId={{roleId}}",
+											"raw": "{{user-service}}/api/v1/roles?roleId={{roleId}}",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1188,14 +2059,56 @@
 									"name": "get all role",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{user_service}}/api/v1/roles/all",
+											"raw": "{{user-service}}/api/v1/roles/all",
 											"host": [
-												"{{user_service}}"
+												"{{user-service}}"
 											],
 											"path": [
 												"api",
@@ -1229,6 +2142,31 @@
 							},
 							"response": []
 						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				},
 				{
@@ -1256,7 +2194,49 @@
 									],
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "POST",
 										"header": [],
@@ -1291,14 +2271,14 @@
 												{
 													"key": "image",
 													"type": "file",
-													"src": "postman-cloud:///1ef9ce71-ca4b-4730-9588-728e106e8f2d"
+													"src": []
 												}
 											]
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/products",
+											"raw": "{{product-service}}/api/v1/products",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1335,9 +2315,9 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/products?productId={{productId}}",
+											"raw": "{{product-service}}/api/v1/products?productId={{productId}}",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1363,9 +2343,9 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/get-by-category?categoryName=Industrial",
+											"raw": "{{product-service}}/api/v1/products/get-by-category?categoryName=Games",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1376,7 +2356,7 @@
 											"query": [
 												{
 													"key": "categoryName",
-													"value": "Industrial"
+													"value": "Games"
 												}
 											]
 										}
@@ -1392,9 +2372,9 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/all",
+											"raw": "{{product-service}}/api/v1/products/all",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1407,17 +2387,132 @@
 									"response": []
 								},
 								{
+									"name": "update product",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"productId\": \"{{productId}}\",\n    \"name\": \"updated\",\n    \"description\": \"updated\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{product-service}}/api/v1/products",
+											"host": [
+												"{{product-service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "delete product",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/products?productId={{productId}}",
+											"raw": "{{product-service}}/api/v1/products?productId={{productId}}",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1438,13 +2533,55 @@
 									"name": "increase stock",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "[\n    // {\n    //     \"productId\": \"{{productId}}\",\n    //     \"quantity\": 989\n    // }\n]",
+											"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 989\n    }\n]",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1452,9 +2589,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/increase-stock",
+											"raw": "{{product-service}}/api/v1/products/increase-stock",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1470,13 +2607,55 @@
 									"name": "decrease stock",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "PATCH",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "[\n    // {\n    //     \"productId\": \"{{productId}}\",\n    //     \"quantity\": 90\n    // }\n]",
+											"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 989\n    }\n]",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1484,9 +2663,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/decrease-stock",
+											"raw": "{{product-service}}/api/v1/products/decrease-stock",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1501,11 +2680,56 @@
 								{
 									"name": "get product detail",
 									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "[\n    // {\n    //     \"productId\": \"{{productId}}\",\n    //     \"quantity\": 900\n    // },\n    // {\n    //     \"productId\": \"cfa4041c-58b5-4b06-8be7-69c3d1c488c4\",\n    //     \"quantity\": 71\n    // }\n]",
+											"raw": "[\n    {\n        \"productId\": \"{{productId}}\",\n        \"quantity\": 9\n    },\n    {\n        \"productId\": \"cfa4041c-58b5-4b06-8be7-69c3d1c488c4\",\n        \"quantity\": 71\n    }\n]",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1513,9 +2737,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/product-detail",
+											"raw": "{{product-service}}/api/v1/products/product-detail",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1531,7 +2755,49 @@
 									"name": "update product price",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "PATCH",
 										"header": [],
@@ -1545,9 +2811,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/update-price",
+											"raw": "{{product-service}}/api/v1/products/update-price",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1568,9 +2834,9 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/products/image?imageId={{imageId}}",
+											"raw": "{{product-service}}/api/v1/products/image?imageId={{imageId}}",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1583,37 +2849,6 @@
 													"key": "imageId",
 													"value": "{{imageId}}"
 												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "update product",
-									"request": {
-										"auth": {
-											"type": "noauth"
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"productId\": \"{{productId}}\",\n    \"name\": \"updated\",\n    \"description\": \"updated\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{product_service}}/api/v1/products",
-											"host": [
-												"{{product_service}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"products"
 											]
 										}
 									},
@@ -1643,7 +2878,49 @@
 									],
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "POST",
 										"header": [],
@@ -1657,9 +2934,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/categories",
+											"raw": "{{product-service}}/api/v1/categories",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1674,14 +2951,56 @@
 									"name": "get category",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
+											"raw": "{{product-service}}/api/v1/categories?categoryId={{categoryId}}",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1707,9 +3026,9 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/categories/all",
+											"raw": "{{product-service}}/api/v1/categories/all",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1725,7 +3044,49 @@
 									"name": "update category",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "PATCH",
 										"header": [],
@@ -1739,9 +3100,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{product_service}}/api/v1/categories",
+											"raw": "{{product-service}}/api/v1/categories",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1756,14 +3117,56 @@
 									"name": "delete category",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{product_service}}/api/v1/categories?categoryId={{categoryId}}",
+											"raw": "{{product-service}}/api/v1/categories?categoryId={{categoryId}}",
 											"host": [
-												"{{product_service}}"
+												"{{product-service}}"
 											],
 											"path": [
 												"api",
@@ -1802,6 +3205,389 @@
 							},
 							"response": []
 						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "order-service",
+					"item": [
+						{
+							"name": "order",
+							"item": [
+								{
+									"name": "create order",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code === 201) {",
+													"    let id = pm.response.text().trim().replace(/^\"|\"$/g, '');",
+													"    pm.globals.set(\"orderId\", id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 1\n            }\n        ],\n        \"userId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f0\",\n        \"addressId\": \"8c337241-e3a9-416b-a78c-b12eb62c27f0\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{order-service}}/api/v1/orders",
+											"host": [
+												"{{order-service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get order",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{order-service}}/api/v1/orders?orderId={{orderId}}",
+											"host": [
+												"{{order-service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders"
+											],
+											"query": [
+												{
+													"key": "orderId",
+													"value": "{{orderId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update order status",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"orderId\": \"{{orderId}}\",\n    \"orderStatus\": \"delivered\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{order-service}}/api/v1/orders/order-status",
+											"host": [
+												"{{order-service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders",
+												"order-status"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get by user",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{order-service}}/api/v1/orders/get-by-user?userId={{userId}}",
+											"host": [
+												"{{order-service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"orders",
+												"get-by-user"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				},
 				{
@@ -1829,7 +3615,49 @@
 									],
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "POST",
 										"header": [],
@@ -1843,9 +3671,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{payment_service}}/api/v1/payments",
+											"raw": "{{payment-service}}/api/v1/payments",
 											"host": [
-												"{{payment_service}}"
+												"{{payment-service}}"
 											],
 											"path": [
 												"api",
@@ -1860,14 +3688,56 @@
 									"name": "get payment",
 									"request": {
 										"auth": {
-											"type": "noauth"
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{payment_service}}/api/v1/payments?paymentId={{paymentId}}",
+											"raw": "{{payment-service}}/api/v1/payments?paymentId={{paymentId}}",
 											"host": [
-												"{{payment_service}}"
+												"{{payment-service}}"
 											],
 											"path": [
 												"api",
@@ -1908,6 +3778,131 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "notification-service",
+					"item": [
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8003/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8003",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "api-gateway",
+					"item": [
+						{
+							"name": "shutdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8222/actuator/shutdown",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"actuator",
+										"shutdown"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				}
