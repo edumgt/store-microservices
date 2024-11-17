@@ -41,5 +41,5 @@ endpoints:
 info:
     app:
         name: "config-server"
-        description: "Config Server for store-microservices"
+        description: "config server for store-microservices"
         version: "1.0"
