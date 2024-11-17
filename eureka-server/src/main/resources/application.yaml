@@ -34,5 +34,5 @@ endpoints:
 info:
     app:
         name: "eureka-server"
-        description: "Eureka Server for store-microservices"
+        description: "eureka server for store-microservices"
         version: "1.0"
