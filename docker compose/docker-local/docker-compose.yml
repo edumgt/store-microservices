@@ -110,10 +110,10 @@ services:
     notificationservice:
         image: "praveenukkoji/notificationservice:1.0"
         container_name: notification-service
-        #        ports:
-        #            - "8003:8003"
+        ports:
+            - "8004:8004"
         healthcheck:
-            test: "curl --fail --silent localhost:8003/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8004/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
@@ -127,11 +127,35 @@ services:
             file: common-config.yml
             service: notification-service-config
 
+    paymentservice:
+        image: "praveenukkoji/paymentservice:1.0"
+        container_name: payment-service
+        ports:
+            - "8003:8003"
+        healthcheck:
+            test: "curl --fail --silent localhost:8003/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
+        depends_on:
+            orderservice:
+                condition: service_healthy
+            kafka:
+                condition: service_started
+            configserver:
+                condition: service_healthy
+            postgres:
+                condition: service_started
+        extends:
+            file: common-config.yml
+            service: payment-service-config
+
     orderservice:
         image: "praveenukkoji/orderservice:1.0"
         container_name: order-service
-        #        ports:
-        #            - "8002:8002"
+        ports:
+            - "8002:8002"
         healthcheck:
             test: "curl --fail --silent localhost:8002/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -154,8 +178,8 @@ services:
     productservice:
         image: "praveenukkoji/productservice:1.0"
         container_name: product-service
-        #        ports:
-        #            - "8001:8001"
+        ports:
+            - "8001:8001"
         healthcheck:
             test: "curl --fail --silent localhost:8001/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -174,8 +198,8 @@ services:
     userservice:
         image: "praveenukkoji/userservice:1.0"
         container_name: user-service
-        #        ports:
-        #            - "8000:8000"
+        ports:
+            - "8000:8000"
         healthcheck:
             test: "curl --fail --silent localhost:8000/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -203,9 +227,13 @@ services:
             retries: 10
             start_period: 10s
         depends_on:
+            keycloak:
+                condition: service_started
             configserver:
                 condition: service_healthy
             notificationservice:
+                condition: service_healthy
+            paymentservice:
                 condition: service_healthy
             orderservice:
                 condition: service_healthy

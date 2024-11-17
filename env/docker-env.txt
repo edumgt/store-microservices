@@ -17,7 +17,7 @@
     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
     - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
     - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
-    - SPRING_MAIL_FROM=demo@demomailtrap.com
+    - SPRING_MAIL_FROM=praveens-store@demomailtrap.com
     - SPRING_MAIL_HOST=live.smtp.mailtrap.io
     - SPRING_MAIL_PASSWORD=4c6d189f9cb8c8072973cd447b21ebea
     - SPRING_MAIL_USERNAME=api
@@ -37,7 +37,6 @@
 	- EUREKA_INSTANCE_HOSTNAME: eurekaserver
     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
     - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
-    - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
     - SPRING_DATASOURCE_PASSWORD: password
     - SPRING_DATASOURCE_USERNAME: username
     - SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/store
@@ -46,9 +45,18 @@
 	- EUREKA_INSTANCE_HOSTNAME: eurekaserver
     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
     - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
-    - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
     - SPRING_DATASOURCE_PASSWORD: password
     - SPRING_DATASOURCE_USERNAME: username
     - SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/store
     - PASSWORD_ENCRYPTION_KEY: 1234567890abcdef
     - PASSWORD_DECRYPTION_KEY: 1234567890abcdef
+
+8. Payment-Service:
+    - EUREKA_INSTANCE_HOSTNAME: eurekaserver
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka
+    - SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8888/
+    - SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+    - SPRING_DATASOURCE_PASSWORD: password
+    - SPRING_DATASOURCE_USERNAME: username
+    - SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/store
+	- FEIGN_CLIENT_CONFIG_ORDERSERVICE_URL: http://orderservice:8002/api/v1/orders

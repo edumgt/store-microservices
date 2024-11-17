@@ -48,11 +48,17 @@ services:
         extends:
             service: eureka-config-kafka-server-config
         environment:
-            SPRING_MAIL_FROM: demo@demomailtrap.com
+            SPRING_MAIL_FROM: praveens-store@demomailtrap.com
             SPRING_MAIL_HOST: live.smtp.mailtrap.io
             SPRING_MAIL_PASSWORD: 4c6d189f9cb8c8072973cd447b21ebea
             SPRING_MAIL_USERNAME: api
             SPRING_MAIL_TO: praveenukkoji.dev@gmail.com
+
+    payment-service-config:
+        extends:
+            service: eureka-config-db-kafka-server-config
+        environment:
+            FEIGN_CLIENT_CONFIG_ORDERSERVICE_URL: http://orderservice:8002/api/v1/orders
 
     order-service-config:
         extends:
