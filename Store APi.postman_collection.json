@@ -2860,6 +2860,72 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "get products by pagination",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product-service}}/api/v1/products/pagination?pageNumber=1&pageSize=10",
+											"host": [
+												"{{product-service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"pagination"
+											],
+											"query": [
+												{
+													"key": "pageNumber",
+													"value": "1"
+												},
+												{
+													"key": "pageSize",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get product sorted by parameter",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{product-service}}/api/v1/products/sorted?sortingParameter=price&sortDescending=true",
+											"host": [
+												"{{product-service}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"products",
+												"sorted"
+											],
+											"query": [
+												{
+													"key": "sortingParameter",
+													"value": "price"
+												},
+												{
+													"key": "sortDescending",
+													"value": "true"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
