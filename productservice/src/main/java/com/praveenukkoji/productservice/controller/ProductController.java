@@ -1,6 +1,5 @@
 package com.praveenukkoji.productservice.controller;
 
-import com.praveenukkoji.productservice.dto.error.ErrorResponse;
 import com.praveenukkoji.productservice.dto.product.request.CreateProductRequest;
 import com.praveenukkoji.productservice.dto.product.request.UpdateProductPriceRequest;
 import com.praveenukkoji.productservice.dto.product.request.UpdateProductRequest;
@@ -134,5 +133,23 @@ public class ProductController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
+    }
+
+    // get product by pagination
+    @GetMapping("/pagination")
+    public ResponseEntity<?> getProductByPagination(
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize
+    ) throws ValidationException {
+        return ResponseEntity.status(200).body(productService.getProductByPagination(pageNumber, pageSize));
+    }
+
+    // get product sorted by
+    @GetMapping("/sorted")
+    public ResponseEntity<?> getProductSortedBy(
+            @RequestParam(defaultValue = "", name = "sortingParameter") String sortingParameter,
+            @RequestParam(name = "sortDescending", required = false) Boolean sortDescending
+    ) throws ValidationException {
+        return ResponseEntity.status(200).body(productService.getProductSortedBy(sortingParameter, sortDescending));
     }
 }

@@ -23,6 +23,10 @@ import com.praveenukkoji.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -496,5 +500,69 @@ public class ProductService {
         }
 
         return fileStorageService.getImage(imageId);
+    }
+
+    // get product by pagination
+    public List<ProductResponse> getProductByPagination(Integer pageNumber, Integer pageSize) throws ValidationException {
+
+        log.info("fetching all products with pagination");
+
+        if(pageNumber <= 0) {
+            throw new ValidationException("pageNumber", "page number should be greater than 0");
+        }
+
+        if(pageSize <= 0) {
+            throw new ValidationException("pageSize", "page size should be greater than 0");
+        }
+
+        pageNumber = pageNumber - 1; // handling for 0th page number
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        return productRepository.findAll(pageable).map(product -> {
+            String productCategory = product.getCategory().getName();
+
+            return ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .quantity(product.getQuantity())
+                    .imageName(product.getImageName())
+                    .categoryName(productCategory)
+                    .build();
+        }).toList();
+    }
+
+    // get product sorted by
+    public List<ProductResponse> getProductSortedBy(String sortingParameter, Boolean sortDescending)
+            throws ValidationException {
+
+        log.info("fetching products by sorting parameter {}", sortingParameter);
+
+        if(sortingParameter.isEmpty()) {
+            throw new ValidationException("sortingParameter", "sorting parameter cannot be empty");
+        }
+
+        if(sortDescending == null) {
+            throw new ValidationException("sortDescending", "sort descending is null");
+        }
+
+        Direction direction = sortDescending ? Direction.DESC : Direction.ASC;
+        Sort sort = Sort.by(direction, sortingParameter);
+
+        return productRepository.findAll(sort).stream().map(product -> {
+            String productCategory = product.getCategory().getName();
+
+            return ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .quantity(product.getQuantity())
+                    .imageName(product.getImageName())
+                    .categoryName(productCategory)
+                    .build();
+        }).toList();
     }
 }

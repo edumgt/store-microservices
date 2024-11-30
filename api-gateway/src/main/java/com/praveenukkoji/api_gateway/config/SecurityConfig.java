@@ -22,6 +22,8 @@ public class SecurityConfig {
         serverHttpSecurity.authorizeExchange(exchanges ->
                         // Allow GET requests for specified paths
                         exchanges.pathMatchers(HttpMethod.GET, "/store/api/v1/products/all").permitAll()
+                                .pathMatchers(HttpMethod.GET, "/store/api/v1/products/pagination").permitAll() // For Pagination
+                                .pathMatchers(HttpMethod.GET, "/store/api/v1/products/sorted").permitAll() // For Sorting
                                 .pathMatchers(HttpMethod.GET, "/store/api/v1/products").permitAll() // For ?productId=
                                 .pathMatchers(HttpMethod.GET, "/store/api/v1/products/get-by-category").permitAll() // For ?categoryName=
                                 .pathMatchers(HttpMethod.GET, "/store/api/v1/products/image").permitAll() // For ?imageId=
