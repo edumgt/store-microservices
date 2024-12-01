@@ -1,33 +1,8 @@
-<h1>Store Microservices</h1>
+# Store Microservices
 
-<p>Simple Store API using Spring Boot (microservice).</p>
+A scalable e-commerce backend developed using Spring Boot with microservices architecture. This project is designed to handle various aspects of an e-commerce platform, including user management, product catalog, order processing, notifications, and payment handling. The system employs best practices for service discovery, communication, security, and deployment.
 
-## Technologies Used
-
-- Java 21
-- Open JDK 22.X.X
-- Apache Maven
-- Spring Boot 3.X.X
-- PostgreSQL
-- Docker 27.X.X
-
-## Features
-
-- .....
-- .....
-
-## Model diagram
-
-
-
-## Architecture diagram
-
-
-
-## Setup Steps
-
-- .....
-- .....
+---
 
 ## Microservices
 
@@ -43,17 +18,99 @@
         4. paymentservice         (port : 8003)
         5. notificationservice    (port : 8004)
 
-## Future Things
+## API Overview
 
-1. swagger:
+| Service                  | Base URL             | Description                      |
+| ------------------------ | -------------------- | -------------------------------- |
+| **User Service**         | `/api/users`         | User registration and management |
+| **Product Service**      | `/api/products`      | Product catalog and inventory    |
+| **Order Service**        | `/api/orders`        | Order processing and lifecycle   |
+| **Notification Service** | `/api/notifications` | Email alerts based on events     |
+| **Payment Service**      | `/api/payments`      | Payment processing               |
 
-   - for documentation
+## Key Features
 
-2. add cart-service, shipping-service
+- **Microservices Architecture**:
+
+  - **User Service**: Manage user registration, authentication, and profile.
+  - **Product Service**: Handle product catalog and inventory.
+  - **Order Service**: Process customer orders and manage order lifecycle.
+  - **Notification Service**: Send email alerts based on system events.
+  - **Payment Service**: Integrate and handle payment transactions.
+
+- **Service Discovery and Routing**:
+
+  - Configured **Eureka Server** for dynamic service discovery.
+  - Set up **API Gateway** to route client requests to appropriate services.
+
+- **Centralized Configuration**:
+
+  - Leveraged **Spring Cloud Config Server** to manage service configurations centrally.
+
+- **Asynchronous Communication**:
+
+  - Integrated **Apache Kafka** for inter-service communication.
+  - Implemented **OrderEvent** and **PaymentEvent** to enable a responsive and event-driven architecture.
+
+- **Secure APIs**:
+
+  - Secured all APIs with **Keycloak** using JWT-based authentication.
+  - Ensured **role-based access control** through the API Gateway.
+
+- **Containerization**:
+  - Dockerized all microservices for consistent environments and streamlined deployment.
+
+---
+
+## Technologies Used
+
+- **Languages**: Java
+- **Frameworks**: Spring Boot, Spring Security
+- **Databases**: PostgreSQL
+- **Authentication**: Keycloak
+- **Messaging**: Apache Kafka
+- **Tools**: Docker
+- **Configuration**: Spring Cloud Config Server
+- **Service Discovery**: Eureka Server
+- **API Gateway**: Spring Cloud Gateway
+
+---
+
+## Architecture Overview
+
+![Microservices Architecture Diagram](Architecture%20Diagram.png)
 
 ## API call file
 
 - you can refer postman_file : [Store APi.postman_collection.json](Store%20APi.postman_collection.json)
+
+---
+
+## How to Run
+
+### Prerequisites
+
+1. **Install Java (JDK 17 or higher)**: [Download JDK](https://adoptium.net/)
+2. **Install Docker**: [Get Docker](https://docs.docker.com/get-docker/)
+
+### Steps to run
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/praveenukkoji/store-microservices.git
+   ```
+   ```bash
+   cd store-microservices
+   ```
+2. **Running using docker**:
+
+   ```bash
+   cd docker\ compose/docker-local
+   ```
+
+   ```bash
+   docker compose up -d
+   ```
 
 ## License
 
