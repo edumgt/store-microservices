@@ -27,14 +27,12 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Compile Project
-      run: mvn clean compile
-
     - name: Build and Push Service Images
       run: |
         for service in api-gateway config-server eureka-server notificationservice orderservice paymentservice productservice userservice; do
           echo "Building and pushing $service..."
           cd $service
+          mvn clean compile
           mvn jib:build -Ddocker.username=${{ secrets.DOCKER_USERNAME }}
           cd ..
         done
