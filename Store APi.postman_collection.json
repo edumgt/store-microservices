@@ -2350,7 +2350,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product-service}}/api/v1/products/get-by-category?categoryName=Games",
+											"raw": "{{product-service}}/api/v1/products/get-by-category?categoryName=Computers",
 											"host": [
 												"{{product-service}}"
 											],
@@ -2363,7 +2363,7 @@
 											"query": [
 												{
 													"key": "categoryName",
-													"value": "Games"
+													"value": "Computers"
 												}
 											]
 										}
@@ -2870,7 +2870,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{product-service}}/api/v1/products/pagination?pageNumber=1&pageSize=10",
+											"raw": "{{product-service}}/api/v1/products/pagination?pageNumber=2&pageSize=3",
 											"host": [
 												"{{product-service}}"
 											],
@@ -2883,11 +2883,11 @@
 											"query": [
 												{
 													"key": "pageNumber",
-													"value": "1"
+													"value": "2"
 												},
 												{
 													"key": "pageSize",
-													"value": "10"
+													"value": "3"
 												}
 											]
 										}
@@ -3378,7 +3378,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"itemList\" : [\n            {\n                \"productId\": \"{{productId}}\",\n                \"quantity\": 10000\n            }\n        ],\n        \"userId\": \"{{userId}}\",\n        \"addressId\": \"{{addressId}}\"\n}",
+											"raw": "{\n    \"itemList\" : [\n        {\n            \"productId\": \"{{productId}}\",\n            \"quantity\": 1\n        }\n    ],\n    \"userId\": \"{{userId}}\",\n    \"addressId\": \"{{addressId}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3736,7 +3736,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"amount\": 20502.72,\n    \"paymentStatus\": \"success\",\n    \"orderId\": \"{{orderId}}\"\n}",
+											"raw": "{\n    \"amount\": 20502.72,\n    \"paymentStatus\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
