@@ -1,19 +1,22 @@
 server:
-    port: 8003
+    port: 8004
 spring:
     application:
         name: notification-service
     kafka:
         bootstrap-servers: localhost:9092
+        topics:
+            orderTopic: orderTopic
+            paymentTopic: paymentTopic
         consumer:
-            group-id: orderEventId
+            group-id: notification-service
             key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
             value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
             properties:
                 spring:
                     json:
-                        type:
-                            mapping: event:com.praveenukkoji.notificationservice.event.OrderEvent
+                        trusted:
+                            packages: "com.praveenukkoji.events"
     config:
         import: optional:configserver:http://localhost:8888/
     mail:
@@ -60,5 +63,5 @@ endpoints:
 info:
     app:
         name: "notificationservice"
-        description: "Notification Service for store-microservices"
+        description: "notification service for store-microservices"
         version: "1.0"

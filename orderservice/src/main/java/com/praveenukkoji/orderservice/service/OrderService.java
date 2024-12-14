@@ -1,5 +1,6 @@
 package com.praveenukkoji.orderservice.service;
 
+import com.praveenukkoji.events.OrderEvent;
 import com.praveenukkoji.orderservice.dto.order.request.ChangeOrderStatusRequest;
 import com.praveenukkoji.orderservice.dto.order.request.CreateOrderRequest;
 import com.praveenukkoji.orderservice.dto.order.request.Item;
@@ -9,11 +10,8 @@ import com.praveenukkoji.orderservice.exception.order.CreateOrderException;
 import com.praveenukkoji.orderservice.exception.order.OrderNotFoundException;
 import com.praveenukkoji.orderservice.exception.order.OrderStatusUpdateException;
 import com.praveenukkoji.orderservice.exception.order.ProductNotFoundException;
-import com.praveenukkoji.orderservice.feign.dto.product.request.DecreaseProductStockRequest;
-import com.praveenukkoji.orderservice.feign.dto.product.request.ProductDetailRequest;
 import com.praveenukkoji.orderservice.feign.dto.product.response.ProductDetailResponse;
 import com.praveenukkoji.orderservice.feign.exception.product.ProductServiceException;
-import com.praveenukkoji.orderservice.kafka.event.OrderEvent;
 import com.praveenukkoji.orderservice.model.Order;
 import com.praveenukkoji.orderservice.model.OrderItem;
 import com.praveenukkoji.orderservice.model.OrderStatus;
@@ -22,6 +20,7 @@ import com.praveenukkoji.orderservice.repository.OrderRepository;
 import com.praveenukkoji.orderservice.utility.OrderUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +38,9 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
+
+    @Value("${spring.kafka.topic}")
+    private String orderTopic;
 
     // TODO: verify userId and addressId
     // create
@@ -131,10 +133,11 @@ public class OrderService {
 
         // kafka sending order created notification
         OrderEvent orderEvent = OrderEvent.builder()
-                .title("Order Created")
-                .message("order created successfully with id = " + orderId)
+                .orderId(String.valueOf(orderId))
+                .status(OrderStatus.CREATED.getValue())
+                .message("order created")
                 .build();
-        kafkaTemplate.send("orderTopic", orderEvent);
+        kafkaTemplate.send(orderTopic, orderEvent);
 
         return orderId;
     }
@@ -219,10 +222,11 @@ public class OrderService {
 
         // kafka sending order status changed notification
         OrderEvent orderEvent = OrderEvent.builder()
-                .title("Order Status Changed")
-                .message("order status changed to " + newOrderStatus.toUpperCase() + " for order id = " + id)
+                .orderId(id)
+                .status(newOrderStatus)
+                .message("order status changed")
                 .build();
-        kafkaTemplate.send("orderTopic", orderEvent);
+        kafkaTemplate.send(orderTopic, orderEvent);
     }
 
     // get by user

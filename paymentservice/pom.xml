@@ -58,6 +58,13 @@
 			<version>13.5</version>
 		</dependency>
 
+		<!-- Kafka Event Models -->
+		<dependency>
+			<groupId>com.praveenukkoji</groupId>
+			<artifactId>event-models</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>

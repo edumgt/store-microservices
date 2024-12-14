@@ -1,6 +1,7 @@
 package com.praveenukkoji.notificationservice;
 
-import com.praveenukkoji.notificationservice.event.OrderEvent;
+import com.praveenukkoji.events.OrderEvent;
+import com.praveenukkoji.events.PaymentEvent;
 import com.praveenukkoji.notificationservice.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,23 @@ public class NotificationserviceApplication {
         SpringApplication.run(NotificationserviceApplication.class, args);
     }
 
-    @KafkaListener(topics = "orderTopic")
+    @KafkaListener(topics = "orderTopic", groupId = "notification-service")
     public void handleOrderNotification(OrderEvent orderEvent) {
-        log.info("ORDER-SERVICE NOTIFICATION ---- received notification  {title: {}, message: {}}",
-                orderEvent.getTitle(), orderEvent.getMessage());
+        log.info("ORDER-SERVICE NOTIFICATION ---- received notification : {message: {}}", orderEvent.getMessage());
 
         // send email notification
-        emailService.sendEmail(to, orderEvent.getTitle(), orderEvent.getMessage());
+        String body = orderEvent.getMessage() + " with status : " + orderEvent.getStatus()
+                + " with id : " + orderEvent.getOrderId();
+        emailService.sendEmail(to, orderEvent.getMessage(), body);
     }
 
+    @KafkaListener(topics = "paymentTopic", groupId = "notification-service")
+    public void handlePaymentNotification(PaymentEvent paymentEvent) {
+        log.info("PAYMENT-SERVICE NOTIFICATION ---- received notification  {message: {}}", paymentEvent.getMessage());
+
+        // send email notification
+        String body = paymentEvent.getMessage() + " with status : " + paymentEvent.getStatus()
+                + " with id : " + paymentEvent.getPaymentId();
+        emailService.sendEmail(to, paymentEvent.getMessage(), body);
+    }
 }

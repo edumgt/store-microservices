@@ -17,18 +17,11 @@ spring:
         password: password
     kafka:
         bootstrap-servers: localhost:9092
-        template:
-            default-topic: paymentTopic
+        topic: paymentTopic
         producer:
-            group-id: notification-service-group
+            group-id: notification-service
             key-serializer: org.apache.kafka.common.serialization.StringSerializer
             value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-            properties:
-                spring:
-                    json:
-                        type:
-                            mapping:
-                                paymentEvent: com.praveenukkoji.paymentservice.kafka.event.PaymentEvent
     config:
         import: optional:configserver:http://localhost:8888/
 #feign:

@@ -5,11 +5,12 @@ import com.praveenukkoji.paymentservice.dto.payment.response.PaymentResponse;
 import com.praveenukkoji.paymentservice.exception.error.ValidationException;
 import com.praveenukkoji.paymentservice.exception.payment.CreatePaymentException;
 import com.praveenukkoji.paymentservice.exception.payment.PaymentNotFoundException;
-import com.praveenukkoji.paymentservice.kafka.event.PaymentEvent;
+import com.praveenukkoji.events.PaymentEvent;
 import com.praveenukkoji.paymentservice.model.Payment;
 import com.praveenukkoji.paymentservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,9 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
 
     private final KafkaTemplate<String, PaymentEvent> kafkaTemplate;
+
+    @Value("${spring.kafka.topic}")
+    private String paymentTopic;
 
     // TODO: verify userId and addressId
     // create
@@ -67,6 +71,8 @@ public class PaymentService {
                     .build();
 
             paymentId = paymentRepository.save(newPayment).getId();
+
+            // TODO: update order object accordingly
         }
         catch (Exception e) {
             throw new CreatePaymentException(e.getMessage());
@@ -74,10 +80,12 @@ public class PaymentService {
 
         // kafka sending payment created notification
         PaymentEvent paymentEvent = PaymentEvent.builder()
-                .title("Payment Created")
-                .message("payment created with status = " + paymentStatus.toUpperCase() + " for order id = " + orderId)
+                .paymentId(String.valueOf(paymentId))
+                .status(paymentStatus)
+                .orderId(orderId)
+                .message("payment created")
                 .build();
-        kafkaTemplate.send("paymentTopic", paymentEvent);
+        kafkaTemplate.send(paymentTopic, paymentEvent);
 
         return paymentId;
     }
