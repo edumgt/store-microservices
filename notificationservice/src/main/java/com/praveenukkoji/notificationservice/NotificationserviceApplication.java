@@ -1,8 +1,8 @@
 package com.praveenukkoji.notificationservice;
 
-import com.praveenukkoji.events.OrderEvent;
-import com.praveenukkoji.events.PaymentEvent;
 import com.praveenukkoji.notificationservice.service.EmailService;
+import io.github.praveenukkoji.events.OrderEvent;
+import io.github.praveenukkoji.events.PaymentEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,6 +1,5 @@
 package com.praveenukkoji.orderservice.service;
 
-import com.praveenukkoji.events.OrderEvent;
 import com.praveenukkoji.orderservice.dto.order.request.ChangeOrderStatusRequest;
 import com.praveenukkoji.orderservice.dto.order.request.CreateOrderRequest;
 import com.praveenukkoji.orderservice.dto.order.request.Item;
@@ -18,6 +17,7 @@ import com.praveenukkoji.orderservice.model.OrderStatus;
 import com.praveenukkoji.orderservice.model.PaymentStatus;
 import com.praveenukkoji.orderservice.repository.OrderRepository;
 import com.praveenukkoji.orderservice.utility.OrderUtility;
+import io.github.praveenukkoji.events.OrderEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

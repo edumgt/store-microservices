@@ -42,9 +42,9 @@
 
         <!-- Kafka Event Models -->
         <dependency>
-            <groupId>com.praveenukkoji</groupId>
+            <groupId>io.github.praveenukkoji</groupId>
             <artifactId>event-models</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.5</version>
         </dependency>
 
         <dependency>

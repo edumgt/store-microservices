@@ -1,7 +1,7 @@
 package com.praveenukkoji.notificationservice.config;
 
-import com.praveenukkoji.events.OrderEvent;
-import com.praveenukkoji.events.PaymentEvent;
+import io.github.praveenukkoji.events.OrderEvent;
+import io.github.praveenukkoji.events.PaymentEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
