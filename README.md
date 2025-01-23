@@ -9,24 +9,23 @@ A scalable e-commerce backend developed using Spring Boot with microservices arc
     Server's :
         1. eureka-server          (port : 8761)
         2. config-server          (port : 8888)
+        3. gatewayservice         (port : 8222)
 
     Service's :
-        1. gatewayservice         (port : 8222)
-        2. userservice            (port : 8000)
-        3. productservice         (port : 8001)
-        4. orderservice           (port : 8002)
+        1. userservice            (port : 8000)
+        2. productservice         (port : 8001)
+        3. orderservice           (port : 8002)
         4. paymentservice         (port : 8003)
         5. notificationservice    (port : 8004)
 
 ## API Overview
 
-| Service                  | Base URL             | Description                      |
-| ------------------------ | -------------------- | -------------------------------- |
-| **User Service**         | `/api/users`         | User registration and management |
-| **Product Service**      | `/api/products`      | Product catalog and inventory    |
-| **Order Service**        | `/api/orders`        | Order processing and lifecycle   |
-| **Notification Service** | `/api/notifications` | Email alerts based on events     |
-| **Payment Service**      | `/api/payments`      | Payment processing               |
+| Service                  | Base URL                                              | Description                              |
+| ------------------------ |-------------------------------------------------------|------------------------------------------|
+| **User Service**         | `/api/v1/roles`, `/api/v1/users`, `/api/v1/addresses` | (Roles, Users, Addresses) management.    |
+| **Product Service**      | `/api/v1/products`, `/api/v1/categories`              | Product category, catalog and inventory. |
+| **Order Service**        | `/api/v1/orders`                                      | Order processing.                        |
+| **Payment Service**      | `/api/v1/payments`                                    | Payment processing.                      |
 
 ## Key Features
 
@@ -65,7 +64,7 @@ A scalable e-commerce backend developed using Spring Boot with microservices arc
 ## Technologies Used
 
 - **Languages**: Java
-- **Frameworks**: Spring Boot, Spring Security
+- **Frameworks**: Spring Boot
 - **Databases**: PostgreSQL
 - **Authentication**: Keycloak
 - **Messaging**: Apache Kafka
@@ -90,7 +89,7 @@ A scalable e-commerce backend developed using Spring Boot with microservices arc
 
 ### Prerequisites
 
-1. **Install Java (JDK 17 or higher)**: [Download JDK](https://adoptium.net/)
+1. **Install Java (JDK 21 or higher)**: [Download JDK](https://adoptium.net/)
 2. **Install Docker**: [Get Docker](https://docs.docker.com/get-docker/)
 
 ### Steps to run
