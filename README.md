@@ -6,7 +6,8 @@ A scalable e-commerce backend developed using Spring Boot with microservices arc
 
 ## Dependency
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.praveenukkoji/event-models?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.praveenukkoji/event-models)
+- [![](https://img.shields.io/maven-central/v/io.github.praveenukkoji/event-models?label=event-models)](https://central.sonatype.com/artifact/io.github.praveenukkoji/event-models)
+- event-models [repo_link](https://github.com/praveenukkoji/event-models)
 
 ## Microservices
 
