@@ -1,3 +1,5 @@
+// no env variable required local profile
+
 1. Eureka-Server:
 
 2. Config-Server:
@@ -5,11 +7,6 @@
 3. Api-Gateway:
 
 4. Notification-Service:
-    - SPRING_MAIL_FROM=
-    - SPRING_MAIL_HOST=
-    - SPRING_MAIL_PASSWORD=
-    - SPRING_MAIL_USERNAME=
-    - SPRING_MAIL_TO=
 
 5. Order-Service:
 

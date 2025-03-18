@@ -22,16 +22,16 @@ spring:
     mail:
         host: live.smtp.mailtrap.io
         port: 587
-        username: username
-        password: password
+        username: api
+        password: 4c6d189f9cb8c8072973cd447b21ebea
         properties:
             mail:
                 smtp:
                     auth: false
                     starttls:
                         enable: true
-        to: demo@domain.com
-        from: demo@demomailtrap.com
+        to: praveenukkoji.dev@gmail.com
+        from: praveens-store@demomailtrap.com
 eureka:
     instance:
         prefer-ip-address: true

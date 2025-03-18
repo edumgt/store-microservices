@@ -31,8 +31,8 @@ public class NotificationserviceApplication {
         log.info("ORDER-SERVICE NOTIFICATION ---- received notification : {message: {}}", orderEvent.getMessage());
 
         // send email notification
-        String body = orderEvent.getMessage() + " with status : " + orderEvent.getStatus()
-                + " with id : " + orderEvent.getOrderId();
+        String body = orderEvent.getMessage().toUpperCase() + " with status : " + orderEvent.getStatus().toUpperCase()
+                + " having order id : " + orderEvent.getOrderId();
         emailService.sendEmail(to, orderEvent.getMessage(), body);
     }
 
@@ -41,8 +41,8 @@ public class NotificationserviceApplication {
         log.info("PAYMENT-SERVICE NOTIFICATION ---- received notification  {message: {}}", paymentEvent.getMessage());
 
         // send email notification
-        String body = paymentEvent.getMessage() + " with status : " + paymentEvent.getStatus()
-                + " with id : " + paymentEvent.getPaymentId();
+        String body = paymentEvent.getMessage().toUpperCase() + " with status : " + paymentEvent.getStatus().toUpperCase()
+                + " having payment id : " + paymentEvent.getPaymentId();
         emailService.sendEmail(to, paymentEvent.getMessage(), body);
     }
 }
