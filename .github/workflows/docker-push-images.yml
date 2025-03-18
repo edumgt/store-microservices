@@ -1,9 +1,9 @@
-name: Build and Push Docker Images
+name: Build and Push Store-Microservices Project Docker Images
 
 on:
   push:
     branches:
-      - main
+      - docker # change this branch name to main to trigger for every change in main branch
   workflow_dispatch: # Allows manual triggering
 
 jobs:
