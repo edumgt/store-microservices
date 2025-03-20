@@ -3,6 +3,14 @@ server:
 spring:
     application:
         name: payment-service
+    cloud:
+        config:
+            enabled: false
+        gateway:
+            discovery:
+                locator:
+                    enabled: false
+                    lowerCaseServiceId: true
     jpa:
         database: postgresql
         hibernate:
@@ -22,13 +30,11 @@ spring:
             group-id: notification-service
             key-serializer: org.apache.kafka.common.serialization.StringSerializer
             value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    config:
-        import: optional:configserver:http://localhost:8888/
-#feign:
-#    client:
-#        config:
-#            orderservice:
-#                url: http://localhost:8002/api/v1/orders
+feign:
+    client:
+        config:
+            orderservice:
+                url: http://localhost:8002/api/v1/orders
 eureka:
     instance:
         prefer-ip-address: true
