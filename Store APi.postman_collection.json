@@ -493,382 +493,770 @@
 					"name": "config-server",
 					"item": [
 						{
-							"name": "user-service default",
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
+							"name": "default",
+							"item": [
+								{
+									"name": "user-service default",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/user-service/default",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"user-service",
+												"default"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config-server}}/user-service/default",
-									"host": [
-										"{{config-server}}"
-									],
-									"path": [
-										"user-service",
-										"default"
-									]
+								{
+									"name": "product-service default",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/product-service/default",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"product-service",
+												"default"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "order-service default",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/order-service/default",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"order-service",
+												"default"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "payment-service default",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/payment-service/default",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"payment-service",
+												"default"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "notification-service default",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/notification-service/default",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"notification-service",
+												"default"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "api-gateway default",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/api-gateway/default",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"api-gateway",
+												"default"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
-							"name": "product-service default",
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
+							"name": "docker",
+							"item": [
+								{
+									"name": "user-service docker",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/user-service/docker",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"user-service",
+												"docker"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config-server}}/product-service/default",
-									"host": [
-										"{{config-server}}"
-									],
-									"path": [
-										"product-service",
-										"default"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "order-service default",
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
+								{
+									"name": "product-service docker",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/product-service/docker",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"product-service",
+												"docker"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config-server}}/order-service/default",
-									"host": [
-										"{{config-server}}"
-									],
-									"path": [
-										"order-service",
-										"default"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "payment-service default",
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
+								{
+									"name": "order-service docker",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/order-service/docker",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"order-service",
+												"docker"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config-server}}/payment-service/default",
-									"host": [
-										"{{config-server}}"
-									],
-									"path": [
-										"payment-service",
-										"default"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "notification-service default",
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
+								{
+									"name": "payment-service docker",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/payment-service/docker",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"payment-service",
+												"docker"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config-server}}/notification-service/default",
-									"host": [
-										"{{config-server}}"
-									],
-									"path": [
-										"notification-service",
-										"default"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api-gateway default",
-							"request": {
-								"auth": {
-									"type": "oauth2",
-									"oauth2": [
-										{
-											"key": "client_authentication",
-											"value": "body",
-											"type": "string"
+								{
+									"name": "notification-service docker",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
 										},
-										{
-											"key": "addTokenTo",
-											"value": "header",
-											"type": "string"
-										},
-										{
-											"key": "clientSecret",
-											"value": "{{client_credentials_secret}}",
-											"type": "string"
-										},
-										{
-											"key": "clientId",
-											"value": "{{client_credentials_cilent_id}}",
-											"type": "string"
-										},
-										{
-											"key": "tokenName",
-											"value": "token",
-											"type": "string"
-										},
-										{
-											"key": "scope",
-											"value": "openid email profile",
-											"type": "string"
-										},
-										{
-											"key": "accessTokenUrl",
-											"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
-											"type": "string"
-										},
-										{
-											"key": "grant_type",
-											"value": "client_credentials",
-											"type": "string"
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/notification-service/docker",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"notification-service",
+												"docker"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{config-server}}/api-gateway/default",
-									"host": [
-										"{{config-server}}"
-									],
-									"path": [
-										"api-gateway",
-										"default"
-									]
+								{
+									"name": "api-gateway docker",
+									"request": {
+										"auth": {
+											"type": "oauth2",
+											"oauth2": [
+												{
+													"key": "client_authentication",
+													"value": "body",
+													"type": "string"
+												},
+												{
+													"key": "addTokenTo",
+													"value": "header",
+													"type": "string"
+												},
+												{
+													"key": "clientSecret",
+													"value": "{{client_credentials_secret}}",
+													"type": "string"
+												},
+												{
+													"key": "clientId",
+													"value": "{{client_credentials_cilent_id}}",
+													"type": "string"
+												},
+												{
+													"key": "tokenName",
+													"value": "token",
+													"type": "string"
+												},
+												{
+													"key": "scope",
+													"value": "openid email profile",
+													"type": "string"
+												},
+												{
+													"key": "accessTokenUrl",
+													"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+													"type": "string"
+												},
+												{
+													"key": "grant_type",
+													"value": "client_credentials",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{config-server}}/api-gateway/docker",
+											"host": [
+												"{{config-server}}"
+											],
+											"path": [
+												"api-gateway",
+												"docker"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
 							"name": "shutdown",
@@ -3736,7 +4124,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"amount\": 20502.72,\n    \"paymentStatus\": \"failed\",\n    \"orderId\": \"{{orderId}}\"\n}",
+											"raw": "{\n    \"amount\": 20502.72,\n    \"paymentStatus\": \"success\",\n    \"orderId\": \"{{orderId}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"

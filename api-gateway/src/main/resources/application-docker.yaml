@@ -1,0 +1,13 @@
+spring:
+    application:
+        name: api-gateway
+    cloud:
+        config:
+            enabled: true
+    config:
+        import: optional:configserver:http://config-server:8888
+info:
+    app:
+        name: "api-gateway"
+        description: "api gateway for store-microservices (docker)"
+        version: "1.0"

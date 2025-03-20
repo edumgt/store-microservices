@@ -3,6 +3,14 @@ server:
 spring:
     application:
         name: product-service
+    cloud:
+        config:
+            enabled: false
+        gateway:
+            discovery:
+                locator:
+                    enabled: false
+                    lowerCaseServiceId: true
     jpa:
         database: postgresql
         hibernate:
@@ -15,8 +23,6 @@ spring:
         url: jdbc:postgresql://localhost:5432/store
         username: username
         password: password
-    config:
-        import: optional:configserver:http://localhost:8888/
     servlet:
         multipart:
             enabled: true

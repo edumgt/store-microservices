@@ -1,0 +1,13 @@
+server:
+    port: 7001
+spring:
+    application:
+        name: product-service
+    datasource:
+        url: jdbc:postgresql://postgres:5432/store
+        username: username
+        password: password
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://eureka-server:8761/eureka

@@ -3,6 +3,14 @@ server:
 spring:
     application:
         name: notification-service
+    cloud:
+        config:
+            enabled: false
+        gateway:
+            discovery:
+                locator:
+                    enabled: false
+                    lowerCaseServiceId: true
     kafka:
         bootstrap-servers: localhost:9092
         topics:
@@ -17,8 +25,6 @@ spring:
                     json:
                         trusted:
                             packages: "io.github.praveenukkoji.events"
-    config:
-        import: optional:configserver:http://localhost:8888/
     mail:
         host: live.smtp.mailtrap.io
         port: 587

@@ -74,11 +74,13 @@ services:
             file: common-config.yml
             service: microservice-base-config
 
-    eurekaserver:
+    eureka-server:
         image: "praveenukkoji/eureka-server:1.0"
         container_name: eureka-server
         ports:
             - "8761:8761"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
         healthcheck:
             test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -87,9 +89,9 @@ services:
             start_period: 10s
         extends:
             file: common-config.yml
-            service: eureka-server-config
+            service: microservice-base-config
 
-    configserver:
+    config-server:
         image: "praveenukkoji/config-server:1.0"
         container_name: config-server
         ports:
@@ -101,39 +103,43 @@ services:
             retries: 10
             start_period: 10s
         depends_on:
-            eurekaserver:
+            eureka-server:
                 condition: service_healthy
         extends:
             file: common-config.yml
-            service: eureka-server-config
+            service: microservice-base-config
 
     notificationservice:
         image: "praveenukkoji/notificationservice:1.0"
-        container_name: notification-service
+        container_name: notificationservice
         ports:
-            - "8004:8004"
+            - "7004:7004"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
         healthcheck:
-            test: "curl --fail --silent localhost:8004/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:7004/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
             start_period: 10s
         depends_on:
-            configserver:
+            config-server:
                 condition: service_healthy
             kafka:
                 condition: service_started
         extends:
             file: common-config.yml
-            service: notification-service-config
+            service: microservice-base-config
 
     paymentservice:
         image: "praveenukkoji/paymentservice:1.0"
-        container_name: payment-service
+        container_name: paymentservice
         ports:
-            - "8003:8003"
+            - "7003:7003"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
         healthcheck:
-            test: "curl --fail --silent localhost:8003/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:7003/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
@@ -143,21 +149,23 @@ services:
                 condition: service_healthy
             kafka:
                 condition: service_started
-            configserver:
+            config-server:
                 condition: service_healthy
             postgres:
                 condition: service_started
         extends:
             file: common-config.yml
-            service: payment-service-config
+            service: microservice-base-config
 
     orderservice:
         image: "praveenukkoji/orderservice:1.0"
-        container_name: order-service
+        container_name: orderservice
         ports:
-            - "8002:8002"
+            - "7002:7002"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
         healthcheck:
-            test: "curl --fail --silent localhost:8002/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:7002/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
@@ -167,59 +175,65 @@ services:
                 condition: service_healthy
             kafka:
                 condition: service_started
-            configserver:
+            config-server:
                 condition: service_healthy
             postgres:
                 condition: service_started
         extends:
             file: common-config.yml
-            service: order-service-config
+            service: microservice-base-config
 
     productservice:
         image: "praveenukkoji/productservice:1.0"
-        container_name: product-service
+        container_name: productservice
         ports:
-            - "8001:8001"
+            - "7001:7001"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
         healthcheck:
-            test: "curl --fail --silent localhost:8001/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:7001/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
             start_period: 10s
         depends_on:
-            configserver:
+            config-server:
                 condition: service_healthy
             postgres:
                 condition: service_started
         extends:
             file: common-config.yml
-            service: product-service-config
+            service: microservice-base-config
 
     userservice:
         image: "praveenukkoji/userservice:1.0"
-        container_name: user-service
+        container_name: userservice
         ports:
-            - "8000:8000"
+            - "7010:7010"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
         healthcheck:
-            test: "curl --fail --silent localhost:8000/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:7010/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
             start_period: 10s
         depends_on:
-            configserver:
+            config-server:
                 condition: service_healthy
             postgres:
                 condition: service_started
         extends:
             file: common-config.yml
-            service: user-service-config
+            service: microservice-base-config
 
-    apigateway:
+    api-gateway:
         image: "praveenukkoji/api-gateway:1.0"
         container_name: api-gateway
         ports:
             - "8222:8222"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
         healthcheck:
             test: "curl --fail --silent localhost:8222/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -229,7 +243,7 @@ services:
         depends_on:
             keycloak:
                 condition: service_started
-            configserver:
+            config-server:
                 condition: service_healthy
             notificationservice:
                 condition: service_healthy
@@ -243,7 +257,7 @@ services:
                 condition: service_healthy
         extends:
             file: common-config.yml
-            service: api-gateway-service-config
+            service: microservice-base-config
 
 networks:
     store-backend:
