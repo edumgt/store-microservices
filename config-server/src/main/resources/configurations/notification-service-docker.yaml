@@ -1,0 +1,24 @@
+server:
+    port: 7004
+spring:
+    application:
+        name: notification-service
+    kafka:
+        bootstrap-servers: kafka:9092
+    mail:
+        host: live.smtp.mailtrap.io
+        port: 587
+        username: api
+        password: 4c6d189f9cb8c8072973cd447b21ebea
+        properties:
+            mail:
+                smtp:
+                    auth: false
+                    starttls:
+                        enable: true
+        to: praveenukkoji.dev@gmail.com
+        from: praveens-store@demomailtrap.com
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://eureka-server:8761/eureka

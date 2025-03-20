@@ -13,9 +13,10 @@ spring:
 eureka:
     instance:
         prefer-ip-address: true
+        hostname: eureka-server
     client:
         serviceUrl:
-            defaultZone: http://localhost:8761/eureka
+            defaultZone: http://eureka-server:8761/eureka
 management:
     endpoints:
         web:
@@ -41,5 +42,5 @@ endpoints:
 info:
     app:
         name: "config-server"
-        description: "config server for store-microservices"
+        description: "config server for store-microservices (docker)"
         version: "1.0"
