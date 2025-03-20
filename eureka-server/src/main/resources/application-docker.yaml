@@ -1,0 +1,16 @@
+server:
+    port: 8761
+spring:
+    application:
+        name: eureka-server
+eureka:
+    instance:
+        hostname: eureka-server
+    client:
+        registerWithEureka: false
+        fetchRegistry: false
+info:
+    app:
+        name: "eureka-server"
+        description: "eureka server for store-microservices (docker)"
+        version: "1.0"
