@@ -1,0 +1,13 @@
+spring:
+    application:
+        name: order-service
+    cloud:
+        config:
+            enabled: true
+    config:
+        import: optional:configserver:http://config-server:8888
+info:
+    app:
+        name: "order-service"
+        description: "order service for store-microservices (docker)"
+        version: "1.0"
